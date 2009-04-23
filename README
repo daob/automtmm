@@ -1,0 +1,12 @@
+The plan:
+----------
+1. ESS SPSS file is read and preprocessed; transformed into cov matrices
+2. User specifies input templates and program (LISREL, Mplus, ...
+3. Input files generated from templates
+4. Input files run
+5. Parameters estimates and their cov matrices extracted from outputs, 
+	summary report made (can be qualities, even meta-analysis of qualities)
+6. Git commit is done
+7. User can go back to 2. or even 1.,
+8. History is visible via qgit, can even branch and merge, 
+ 	keeping track of reports.
