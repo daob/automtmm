@@ -1,0 +1,88 @@
+ Analysis of experiment 3 (current job) PORTUGAL with 2 groups SB-MTMM model  
+group A
+
+data ng=2 ni=9 no=191 ma=km
+
+km		
+1					
+.202	1				
+.074	-.089	1			
+.636	.155	-.017	1		
+.123	.639	-.141	.156	1	
+-.079	-.268	.600	-.249	-.357	1
+0.000 0.000 0.000 0.000 0.000 0.000 1.000
+0.000 0.000 0.000 0.000 0.000 0.000 0.000 1.000
+0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 1.000
+
+ME
+.4398 .5829 .1832 .4642 .6387 .1222 0 0 0 
+
+SD
+.29963 .32258 .27707 .27946 .27216 .20569 1 1 1
+
+model ny=9 ne=9 nk=6 ly=fu,fi te=sy,fi ps=di,fi be=fu,fi ga=fu,fi ph=sy,fi
+
+!selection of variables
+value 0 ly 7 7 ly 8 8 ly 9 9 
+
+free te 1 1 te 2 2 te 3 3  te 4 4 te 5 5 te 6 6   
+value 1 te 7 7 te 8 8 te 9 9 
+free te 2 1
+value 1 ly 1 1 ly 2 2 ly 4 4 ly 5 5
+value -1 ly 3 3 ly 6 6
+
+!validities
+free ga 1 1 ga 4 1 ga 7 1 ga 2 2 ga 5 2 ga 8 2 ga 3 3 ga 6 3 ga 9 3 
+!equal ga 1 1 ga 2 2 ga 3 3 
+!equal ga 4 1 ga 5 2 ga 6 3 
+equal ga 7 1 ga 8 2 ga 9 3 
+
+!method factors
+value 1 ga 1 4 ga 2 4 ga 3 4 ga 4 5 ga 5 5 ga 6 5 ga 7 6 ga 8 6 ga 9 6 
+
+!cov between traits
+free ph 2 1 ph 3 1 ph 3 2 
+free  ph 5 5 ph 6 6 
+!equal ph 4 4 ph 5 5 ph 6 6
+
+value 1 ph 1 1 ph 2 2 ph 3 3 
+start .5 all
+path diagram
+out mi sc iter=200 adm=of ns rs
+
+analysis group B
+data ni=9 no=245 ma=km
+
+km
+1					
+.147 1				
+.140 -.115 1	
+0.0 0.0 0.0 1
+0.0 0.0 0.0 0.0 1
+0.0 0.0 0.0 0.0 0.0 1			
+.659 .107 -.066 0.0 0.0 0.0 1		
+.128 .585 -.371 0.0 0.0 0.0 .217 1	
+-.001 -.173 .636 0.0 0.0 0.0 -.109 -.405 1
+
+ME
+.4490 .5224 .2027 0 0 0 .5106 .6396 .2820 
+ 
+SD
+.29377 .34550 .28018 1 1 1 .25116 .26555 .25879
+
+model ny=91 ne=9 nk=6 ly=fu,fi te=sy,fi ps=in be=in ga=in ph=in
+
+!selection of variables
+value 0 ly 4 4 ly 5 5 ly 6 6 
+
+equal te 1 1 1 te 1 1
+equal te 1 2 2 te 2 2
+equal te 1 3 3 te 3 3 
+free te 7 7 te 8 8 te 9 9
+free te 2 1
+
+value 1 te 4 4 te 5 5 te 6 6
+value 1 ly 1 1 ly 2 2 ly 7 7 ly 8 8
+value -1 ly 3 3 ly 9 9
+start .5 all
+out mi sc iter=200 adm=of ns

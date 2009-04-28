@@ -1,0 +1,2490 @@
+
+                                DATE:  4/21/2009
+                                  TIME: 14:45
+
+
+                                L I S R E L  8.51
+
+                                       BY
+
+                         Karl G. J”reskog & Dag S”rbom
+
+
+
+                    This program is published exclusively by
+                    Scientific Software International, Inc.
+                       7383 N. Lincoln Avenue, Suite 100
+                        Lincolnwood, IL 60712, U.S.A. 
+            Phone: (800)247-6113, (847)675-0720, Fax: (847)675-2140
+        Copyright by Scientific Software International, Inc., 1981-2001 
+          Use of this program is subject to the terms specified in the
+                        Universal Copyright Convention.
+                          Website: www.ssicentral.com
+
+ The following lines were read from file E:\Database\ESS experiments\round2\3job\PT\r2jobPT.LS8:
+
+ Analysis of experiment 3 (current job) PORTUGAL with 2 groups SB-MTMM model
+ group A
+  
+ data ng=2 ni=9 no=191 ma=km
+  
+ km
+ 1
+ .202 1
+ .074 -.089 1
+ .636 .155 -.017 1
+ .123 .639 -.141 .156 1
+ -.079 -.268 .600 -.249 -.357 1
+ 0.000 0.000 0.000 0.000 0.000 0.000 1.000
+ 0.000 0.000 0.000 0.000 0.000 0.000 0.000 1.000
+ 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 1.000
+  
+ ME
+ .4398 .5829 .1832 .4642 .6387 .1222 0 0 0
+  
+ SD
+ .29963 .32258 .27707 .27946 .27216 .20569 1 1 1
+  
+ model ny=9 ne=9 nk=6 ly=fu,fi te=sy,fi ps=di,fi be=fu,fi ga=fu,fi ph=sy,fi
+  
+ !selection of variables
+ value 0 ly 7 7 ly 8 8 ly 9 9
+  
+ free te 1 1 te 2 2 te 3 3  te 4 4 te 5 5 te 6 6
+ value 1 te 7 7 te 8 8 te 9 9
+ free te 2 1
+ value 1 ly 1 1 ly 2 2 ly 4 4 ly 5 5
+ value -1 ly 3 3 ly 6 6
+  
+ !validities
+ free ga 1 1 ga 4 1 ga 7 1 ga 2 2 ga 5 2 ga 8 2 ga 3 3 ga 6 3 ga 9 3
+ !equal ga 1 1 ga 2 2 ga 3 3
+ !equal ga 4 1 ga 5 2 ga 6 3
+ equal ga 7 1 ga 8 2 ga 9 3
+  
+ !method factors
+ value 1 ga 1 4 ga 2 4 ga 3 4 ga 4 5 ga 5 5 ga 6 5 ga 7 6 ga 8 6 ga 9 6
+  
+ !cov between traits
+ free ph 2 1 ph 3 1 ph 3 2
+ free  ph 5 5 ph 6 6
+ !equal ph 4 4 ph 5 5 ph 6 6
+  
+ value 1 ph 1 1 ph 2 2 ph 3 3
+ start .5 all
+ path diagram
+ out mi sc iter=200 adm=of ns rs
+
+ Analysis of experiment 3 (current job) PORTUGAL with 2 groups SB-MTMM model    
+
+                           Number of Input Variables  9
+                           Number of Y - Variables    9
+                           Number of X - Variables    0
+                           Number of ETA - Variables  9
+                           Number of KSI - Variables  6
+                           Number of Observations   191
+                           Number of Groups           2
+  
+ analysis group B
+ data ni=9 no=245 ma=km
+  
+ km
+ 1
+ .147 1
+ .140 -.115 1
+ 0.0 0.0 0.0 1
+ 0.0 0.0 0.0 0.0 1
+ 0.0 0.0 0.0 0.0 0.0 1
+ .659 .107 -.066 0.0 0.0 0.0 1
+ .128 .585 -.371 0.0 0.0 0.0 .217 1
+ -.001 -.173 .636 0.0 0.0 0.0 -.109 -.405 1
+  
+ ME
+ .4490 .5224 .2027 0 0 0 .5106 .6396 .2820
+  
+ SD
+ .29377 .34550 .28018 1 1 1 .25116 .26555 .25879
+  
+ model ny=9 ne=9 nk=6 ly=fu,fi te=sy,fi ps=in be=in ga=in ph=in
+  
+ !selection of variables
+ value 0 ly 4 4 ly 5 5 ly 6 6
+  
+ equal te 1 1 1 te 1 1
+ equal te 1 2 2 te 2 2
+ equal te 1 3 3 te 3 3
+ free te 7 7 te 8 8 te 9 9
+ free te 2 1
+  
+ value 1 te 4 4 te 5 5 te 6 6
+ value 1 ly 1 1 ly 2 2 ly 7 7 ly 8 8
+ value -1 ly 3 3 ly 9 9
+ start .5 all
+ out mi sc iter=200 adm=of ns
+
+ analysis group B                                                               
+
+                           Number of Input Variables  9
+                           Number of Y - Variables    9
+                           Number of X - Variables    0
+                           Number of ETA - Variables  9
+                           Number of KSI - Variables  6
+                           Number of Observations   245
+                           Number of Groups           2
+
+ Analysis of experiment 3 (current job) PORTUGAL with 2 groups SB-MTMM model    
+
+         Covariance Matrix       
+
+               VAR 1      VAR 2      VAR 3      VAR 4      VAR 5      VAR 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       1.00
+    VAR 2       0.20       1.00
+    VAR 3       0.07      -0.09       1.00
+    VAR 4       0.64       0.15      -0.02       1.00
+    VAR 5       0.12       0.64      -0.14       0.16       1.00
+    VAR 6      -0.08      -0.27       0.60      -0.25      -0.36       1.00
+    VAR 7        - -        - -        - -        - -        - -        - -
+    VAR 8        - -        - -        - -        - -        - -        - -
+    VAR 9        - -        - -        - -        - -        - -        - -
+
+         Covariance Matrix       
+
+               VAR 7      VAR 8      VAR 9   
+            --------   --------   --------
+    VAR 7       1.00
+    VAR 8        - -       1.00
+    VAR 9        - -        - -       1.00
+
+ analysis group B                                                               
+
+         Covariance Matrix       
+
+               VAR 1      VAR 2      VAR 3      VAR 4      VAR 5      VAR 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       1.00
+    VAR 2       0.15       1.00
+    VAR 3       0.14      -0.12       1.00
+    VAR 4        - -        - -        - -       1.00
+    VAR 5        - -        - -        - -        - -       1.00
+    VAR 6        - -        - -        - -        - -        - -       1.00
+    VAR 7       0.66       0.11      -0.07        - -        - -        - -
+    VAR 8       0.13       0.58      -0.37        - -        - -        - -
+    VAR 9       0.00      -0.17       0.64        - -        - -        - -
+
+         Covariance Matrix       
+
+               VAR 7      VAR 8      VAR 9   
+            --------   --------   --------
+    VAR 7       1.00
+    VAR 8       0.22       1.00
+    VAR 9      -0.11      -0.41       1.00
+
+
+ Analysis of experiment 3 (current job) PORTUGAL with 2 groups SB-MTMM model    
+
+ Parameter Specifications
+
+ GAMMA EQUALS GAMMA IN THE FOLLOWING GROUP
+
+ PHI EQUALS PHI IN THE FOLLOWING GROUP
+
+         THETA-EPS   
+
+               VAR 1      VAR 2      VAR 3      VAR 4      VAR 5      VAR 6
+            --------   --------   --------   --------   --------   --------
+    VAR 1         13
+    VAR 2         14         15
+    VAR 3          0          0         16
+    VAR 4          0          0          0         17
+    VAR 5          0          0          0          0         18
+    VAR 6          0          0          0          0          0         19
+    VAR 7          0          0          0          0          0          0
+    VAR 8          0          0          0          0          0          0
+    VAR 9          0          0          0          0          0          0
+
+         THETA-EPS   
+
+               VAR 7      VAR 8      VAR 9
+            --------   --------   --------
+    VAR 7          0
+    VAR 8          0          0
+    VAR 9          0          0          0
+
+
+ analysis group B                                                               
+
+ Parameter Specifications
+
+         GAMMA       
+
+               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6
+            --------   --------   --------   --------   --------   --------
+    ETA 1          1          0          0          0          0          0
+    ETA 2          0          2          0          0          0          0
+    ETA 3          0          0          3          0          0          0
+    ETA 4          4          0          0          0          0          0
+    ETA 5          0          5          0          0          0          0
+    ETA 6          0          0          6          0          0          0
+    ETA 7          7          0          0          0          0          0
+    ETA 8          0          7          0          0          0          0
+    ETA 9          0          0          7          0          0          0
+
+         PHI         
+
+               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6
+            --------   --------   --------   --------   --------   --------
+    KSI 1          0
+    KSI 2          8          0
+    KSI 3          9         10          0
+    KSI 4          0          0          0          0
+    KSI 5          0          0          0          0         11
+    KSI 6          0          0          0          0          0         12
+
+         THETA-EPS   
+
+               VAR 1      VAR 2      VAR 3      VAR 4      VAR 5      VAR 6
+            --------   --------   --------   --------   --------   --------
+    VAR 1         13
+    VAR 2         20         15
+    VAR 3          0          0         16
+    VAR 4          0          0          0          0
+    VAR 5          0          0          0          0          0
+    VAR 6          0          0          0          0          0          0
+    VAR 7          0          0          0          0          0          0
+    VAR 8          0          0          0          0          0          0
+    VAR 9          0          0          0          0          0          0
+
+         THETA-EPS   
+
+               VAR 7      VAR 8      VAR 9
+            --------   --------   --------
+    VAR 7         21
+    VAR 8          0         22
+    VAR 9          0          0         23
+ 
+
+
+ Analysis of experiment 3 (current job) PORTUGAL with 2 groups SB-MTMM model    
+
+ Number of Iterations =194
+
+ LISREL Estimates (Maximum Likelihood)               
+
+         LAMBDA-Y    
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       1.00        - -        - -        - -        - -        - -
+ 
+    VAR 2        - -       1.00        - -        - -        - -        - -
+ 
+    VAR 3        - -        - -      -1.00        - -        - -        - -
+ 
+    VAR 4        - -        - -        - -       1.00        - -        - -
+ 
+    VAR 5        - -        - -        - -        - -       1.00        - -
+ 
+    VAR 6        - -        - -        - -        - -        - -      -1.00
+ 
+    VAR 7        - -        - -        - -        - -        - -        - -
+ 
+    VAR 8        - -        - -        - -        - -        - -        - -
+ 
+    VAR 9        - -        - -        - -        - -        - -        - -
+ 
+
+         LAMBDA-Y    
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    VAR 1        - -        - -        - -
+ 
+    VAR 2        - -        - -        - -
+ 
+    VAR 3        - -        - -        - -
+ 
+    VAR 4        - -        - -        - -
+ 
+    VAR 5        - -        - -        - -
+ 
+    VAR 6        - -        - -        - -
+ 
+    VAR 7        - -        - -        - -
+ 
+    VAR 8        - -        - -        - -
+ 
+    VAR 9        - -        - -        - -
+ 
+
+ GAMMA EQUALS GAMMA IN THE FOLLOWING GROUP
+
+         Covariance Matrix of ETA and KSI        
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       0.04
+    ETA 2       0.01       0.03
+    ETA 3       0.01       0.01       0.04
+    ETA 4       0.67       0.14       0.15       8.38
+    ETA 5       0.15       0.58       0.14       0.18       7.36
+    ETA 6       0.16       0.15       0.64       0.35       0.33       8.99
+    ETA 7       0.67       0.14       0.15      10.58       2.37       2.54
+    ETA 8       0.16       0.61       0.15       2.49      10.05       2.65
+    ETA 9       0.16       0.15       0.62       2.47       2.44      10.88
+    KSI 1       0.20       0.04       0.04       3.25       0.73       0.78
+    KSI 2       0.05       0.19       0.05       0.77       3.09       0.81
+    KSI 3       0.05       0.05       0.19       0.76       0.75       3.34
+    KSI 4        - -        - -        - -        - -        - -        - -
+    KSI 5        - -        - -        - -      -2.19      -2.19      -2.19
+    KSI 6        - -        - -        - -        - -        - -        - -
+
+         Covariance Matrix of ETA and KSI        
+
+               ETA 7      ETA 8      ETA 9      KSI 1      KSI 2      KSI 3   
+            --------   --------   --------   --------   --------   --------
+    ETA 7       8.31
+    ETA 8       0.22       8.31
+    ETA 9       0.20       0.30       8.31
+    KSI 1       3.25       0.77       0.76       1.00
+    KSI 2       0.77       3.25       0.79       0.24       1.00
+    KSI 3       0.76       0.79       3.25       0.23       0.24       1.00
+    KSI 4        - -        - -        - -        - -        - -        - -
+    KSI 5        - -        - -        - -        - -        - -        - -
+    KSI 6      -2.27      -2.27      -2.27        - -        - -        - -
+
+         Covariance Matrix of ETA and KSI        
+
+               KSI 4      KSI 5      KSI 6   
+            --------   --------   --------
+    KSI 4        - -
+    KSI 5        - -      -2.19
+    KSI 6        - -        - -      -2.27
+
+ PHI EQUALS PHI IN THE FOLLOWING GROUP
+
+         THETA-EPS   
+
+               VAR 1      VAR 2      VAR 3      VAR 4      VAR 5      VAR 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       0.96
+              (0.09)
+               11.08
+ 
+    VAR 2       0.20       0.97
+              (0.05)     (0.08)
+                3.95      11.56
+ 
+    VAR 3        - -        - -       0.96
+                                    (0.08)
+                                     11.62
+ 
+    VAR 4        - -        - -        - -      -7.33
+                                              (12.22)
+                                                -0.60
+ 
+    VAR 5        - -        - -        - -        - -      -6.42
+                                                         (12.09)
+                                                           -0.53
+ 
+    VAR 6        - -        - -        - -        - -        - -      -7.95
+                                                                    (12.22)
+                                                                      -0.65
+ 
+    VAR 7        - -        - -        - -        - -        - -        - -
+ 
+    VAR 8        - -        - -        - -        - -        - -        - -
+ 
+    VAR 9        - -        - -        - -        - -        - -        - -
+ 
+
+         THETA-EPS   
+
+               VAR 7      VAR 8      VAR 9   
+            --------   --------   --------
+    VAR 7       1.00
+ 
+    VAR 8        - -       1.00
+ 
+    VAR 9        - -        - -       1.00
+ 
+
+         Squared Multiple Correlations for Y - Variables         
+
+               VAR 1      VAR 2      VAR 3      VAR 4      VAR 5      VAR 6   
+            --------   --------   --------   --------   --------   --------
+                0.04       0.03       0.04       7.95       7.80       8.64
+
+         Squared Multiple Correlations for Y - Variables         
+
+               VAR 7      VAR 8      VAR 9   
+            --------   --------   --------
+                 - -        - -        - -
+
+
+                         Group Goodness of Fit Statistics
+
+                        Contribution to Chi-Square = 8.38
+                  Percentage Contribution to Chi-Square = 24.45
+ 
+                     Root Mean Square Residual (RMR) = 0.041
+                             Standardized RMR = 0.041
+                        Goodness of Fit Index (GFI) = 0.99
+
+ Analysis of experiment 3 (current job) PORTUGAL with 2 groups SB-MTMM model    
+
+ Modification Indices and Expected Change
+
+         Modification Indices for LAMBDA-Y       
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       0.25       0.18       0.71       0.03       0.04       0.55
+    VAR 2       0.12       3.66       2.50       0.02       2.75       2.03
+    VAR 3       2.49       1.04       1.33       1.76       0.37       0.19
+    VAR 4        - -       0.02       0.26       0.29       0.17       0.13
+    VAR 5       0.21        - -       0.70       0.05       1.43       0.54
+    VAR 6       0.64       0.01        - -       0.46       0.02       0.02
+    VAR 7        - -        - -        - -        - -        - -        - -
+    VAR 8        - -        - -        - -        - -        - -        - -
+    VAR 9        - -        - -        - -        - -        - -        - -
+
+         Modification Indices for LAMBDA-Y       
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    VAR 1       0.25       0.18       0.71
+    VAR 2       0.12       3.66       2.50
+    VAR 3       2.49       1.04       1.33
+    VAR 4        - -       0.02       0.26
+    VAR 5       0.21        - -       0.70
+    VAR 6       0.64       0.01        - -
+    VAR 7        - -        - -        - -
+    VAR 8        - -        - -        - -
+    VAR 9        - -        - -        - -
+
+         Expected Change for LAMBDA-Y    
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1      -0.07      -0.05      -0.08       0.00       0.00       0.00
+    VAR 2       0.04       0.36       0.15       0.00       0.03       0.01
+    VAR 3       0.15       0.11       0.20       0.01       0.01       0.01
+    VAR 4        - -      -0.09       0.46      -0.07      -0.02       0.02
+    VAR 5      -0.32        - -      -0.44      -0.01       0.28      -0.02
+    VAR 6      -0.73       0.04        - -      -0.04       0.01       0.02
+    VAR 7        - -        - -        - -        - -        - -        - -
+    VAR 8        - -        - -        - -        - -        - -        - -
+    VAR 9        - -        - -        - -        - -        - -        - -
+
+         Expected Change for LAMBDA-Y    
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    VAR 1       0.00       0.00       0.00
+    VAR 2       0.00       0.02       0.01
+    VAR 3       0.01       0.01       0.01
+    VAR 4        - -      -0.01       0.03
+    VAR 5      -0.02        - -      -0.03
+    VAR 6      -0.05       0.00        - -
+    VAR 7        - -        - -        - -
+    VAR 8        - -        - -        - -
+    VAR 9        - -        - -        - -
+
+         Standardized Expected Change for LAMBDA-Y       
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1      -0.01      -0.01      -0.02      -0.01       0.00      -0.01
+    VAR 2       0.01       0.07       0.03       0.00       0.08       0.03
+    VAR 3       0.03       0.02       0.04       0.03       0.01       0.02
+    VAR 4        - -      -0.02       0.09      -0.20      -0.06       0.07
+    VAR 5      -0.07        - -      -0.08      -0.03       0.76      -0.07
+    VAR 6      -0.15       0.01        - -      -0.10       0.01       0.07
+    VAR 7        - -        - -        - -        - -        - -        - -
+    VAR 8        - -        - -        - -        - -        - -        - -
+    VAR 9        - -        - -        - -        - -        - -        - -
+
+         Standardized Expected Change for LAMBDA-Y       
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    VAR 1      -0.01      -0.01      -0.01
+    VAR 2       0.01       0.06       0.03
+    VAR 3       0.03       0.02       0.03
+    VAR 4        - -      -0.02       0.08
+    VAR 5      -0.06        - -      -0.07
+    VAR 6      -0.13       0.01        - -
+    VAR 7        - -        - -        - -
+    VAR 8        - -        - -        - -
+    VAR 9        - -        - -        - -
+
+         Completely Standardized Expected Change for LAMBDA-Y    
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1      -0.01      -0.01      -0.01      -0.01       0.00      -0.01
+    VAR 2       0.01       0.07       0.03       0.00       0.08       0.03
+    VAR 3       0.03       0.02       0.04       0.03       0.01       0.02
+    VAR 4        - -      -0.02       0.09      -0.20      -0.06       0.07
+    VAR 5      -0.07        - -      -0.09      -0.03       0.78      -0.07
+    VAR 6      -0.15       0.01        - -      -0.10       0.01       0.07
+    VAR 7        - -        - -        - -        - -        - -        - -
+    VAR 8        - -        - -        - -        - -        - -        - -
+    VAR 9        - -        - -        - -        - -        - -        - -
+
+         Completely Standardized Expected Change for LAMBDA-Y    
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    VAR 1      -0.01      -0.01      -0.01
+    VAR 2       0.01       0.06       0.03
+    VAR 3       0.03       0.02       0.03
+    VAR 4        - -      -0.02       0.08
+    VAR 5      -0.06        - -      -0.08
+    VAR 6      -0.13       0.01        - -
+    VAR 7        - -        - -        - -
+    VAR 8        - -        - -        - -
+    VAR 9        - -        - -        - -
+
+         Modification Indices for BETA           
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       0.25       0.18       0.71       0.03       0.04       0.55
+    ETA 2       0.12       3.66       2.50       0.02       2.75       2.03
+    ETA 3       2.49       1.04       1.33       1.76       0.37       0.19
+    ETA 4        - -       0.02       0.26       0.29       0.17       0.13
+    ETA 5       0.21        - -       0.70       0.05       1.43       0.54
+    ETA 6       0.64       0.01        - -       0.46       0.02       0.02
+    ETA 7        - -        - -        - -        - -        - -        - -
+    ETA 8        - -        - -        - -        - -        - -        - -
+    ETA 9        - -        - -        - -        - -        - -        - -
+
+         Modification Indices for BETA           
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    ETA 1       0.25       0.18       0.71
+    ETA 2       0.12       3.66       2.50
+    ETA 3       2.49       1.04       1.33
+    ETA 4        - -       0.02       0.26
+    ETA 5       0.21        - -       0.70
+    ETA 6       0.64       0.01        - -
+    ETA 7        - -        - -        - -
+    ETA 8        - -        - -        - -
+    ETA 9        - -        - -        - -
+
+         Expected Change for BETA        
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1      -0.07      -0.05      -0.08       0.00       0.00       0.00
+    ETA 2       0.04       0.36       0.15       0.00       0.03       0.01
+    ETA 3      -0.15      -0.11      -0.20      -0.01      -0.01      -0.01
+    ETA 4        - -      -0.09       0.46      -0.07      -0.02       0.02
+    ETA 5      -0.32        - -      -0.44      -0.01       0.28      -0.02
+    ETA 6       0.73      -0.04        - -       0.04      -0.01      -0.02
+    ETA 7        - -        - -        - -        - -        - -        - -
+    ETA 8        - -        - -        - -        - -        - -        - -
+    ETA 9        - -        - -        - -        - -        - -        - -
+
+         Expected Change for BETA        
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    ETA 1       0.00       0.00       0.00
+    ETA 2       0.00       0.02       0.01
+    ETA 3      -0.01      -0.01      -0.01
+    ETA 4        - -      -0.01       0.03
+    ETA 5      -0.02        - -      -0.03
+    ETA 6       0.05       0.00        - -
+    ETA 7        - -        - -        - -
+    ETA 8        - -        - -        - -
+    ETA 9        - -        - -        - -
+
+         Standardized Expected Change for BETA           
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1      -1.68      -1.28      -2.01       0.00       0.00      -0.01
+    ETA 2       0.96      10.40       4.29       0.00       0.06       0.02
+    ETA 3      -3.78      -3.12      -5.52      -0.02      -0.01      -0.01
+    ETA 4        - -      -0.17       0.83      -0.01       0.00       0.00
+    ETA 5      -0.58        - -      -0.85       0.00       0.04       0.00
+    ETA 6       1.20      -0.08        - -       0.00       0.00       0.00
+    ETA 7        - -        - -        - -        - -        - -        - -
+    ETA 8        - -        - -        - -        - -        - -        - -
+    ETA 9        - -        - -        - -        - -        - -        - -
+
+         Standardized Expected Change for BETA           
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    ETA 1      -0.01       0.00      -0.01
+    ETA 2       0.00       0.04       0.02
+    ETA 3      -0.02      -0.01      -0.02
+    ETA 4        - -       0.00       0.00
+    ETA 5       0.00        - -       0.00
+    ETA 6       0.01       0.00        - -
+    ETA 7        - -        - -        - -
+    ETA 8        - -        - -        - -
+    ETA 9        - -        - -        - -
+
+         Modification Indices for GAMMA          
+
+               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       0.25       0.18       0.71        - -       0.74        - -
+    ETA 2       0.12       3.66       2.50        - -       2.57        - -
+    ETA 3       2.49       1.04       1.33        - -       3.10        - -
+    ETA 4        - -       0.02       0.26        - -       0.29        - -
+    ETA 5       0.21        - -       0.70        - -       1.43        - -
+    ETA 6       0.64       0.01        - -        - -       0.02        - -
+    ETA 7        - -        - -        - -        - -        - -        - -
+    ETA 8        - -        - -        - -        - -        - -        - -
+    ETA 9        - -        - -        - -        - -        - -        - -
+
+         Expected Change for GAMMA       
+
+               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       0.00      -0.01      -0.02        - -       0.02        - -
+    ETA 2       0.01       0.26       0.03        - -      -0.04        - -
+    ETA 3      -0.03      -0.02       0.09        - -       0.04        - -
+    ETA 4        - -      -0.02       0.09        - -      -0.07        - -
+    ETA 5      -0.07        - -      -0.08        - -       0.28        - -
+    ETA 6       0.15      -0.01        - -        - -      -0.02        - -
+    ETA 7        - -        - -        - -        - -        - -        - -
+    ETA 8        - -        - -        - -        - -        - -        - -
+    ETA 9        - -        - -        - -        - -        - -        - -
+
+         Standardized Expected Change for GAMMA          
+
+               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       0.00      -0.04      -0.07        - -       0.09        - -
+    ETA 2       0.04       1.39       0.16        - -      -0.19        - -
+    ETA 3      -0.16      -0.11       0.45        - -       0.20        - -
+    ETA 4        - -      -0.01       0.03        - -      -0.02        - -
+    ETA 5      -0.02        - -      -0.03        - -       0.10        - -
+    ETA 6       0.05       0.00        - -        - -      -0.01        - -
+    ETA 7        - -        - -        - -        - -        - -        - -
+    ETA 8        - -        - -        - -        - -        - -        - -
+    ETA 9        - -        - -        - -        - -        - -        - -
+
+         Modification Indices for PHI            
+
+               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6   
+            --------   --------   --------   --------   --------   --------
+    KSI 1       0.02
+    KSI 2       0.08       2.50
+    KSI 3       0.01       0.10       0.13
+    KSI 4       1.06       0.00       0.10       0.29
+    KSI 5       0.05       0.03       0.36       1.08        - -
+    KSI 6        - -        - -        - -        - -        - -        - -
+
+         Expected Change for PHI         
+
+               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6   
+            --------   --------   --------   --------   --------   --------
+    KSI 1      -0.02
+    KSI 2      -0.01       0.34
+    KSI 3       0.00      -0.01      -0.06
+    KSI 4      -0.01       0.00       0.00       0.02
+    KSI 5       0.02      -0.03      -0.06      -0.05        - -
+    KSI 6        - -        - -        - -        - -        - -        - -
+
+         Standardized Expected Change for PHI            
+
+               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6   
+            --------   --------   --------   --------   --------   --------
+    KSI 1      -0.02
+    KSI 2      -0.01       0.34
+    KSI 3       0.00      -0.01      -0.06
+    KSI 4      -0.01       0.00       0.00       0.02
+    KSI 5       0.02      -0.03      -0.06      -0.05        - -
+    KSI 6        - -        - -        - -        - -        - -        - -
+
+         Modification Indices for PSI            
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       0.07
+    ETA 2        - -       1.24
+    ETA 3       0.04       0.28       0.54
+    ETA 4       0.02       0.04       1.64        - -
+    ETA 5       0.03       2.58       0.37       0.02        - -
+    ETA 6       0.51       1.68       0.15       1.43       0.29        - -
+    ETA 7        - -        - -        - -        - -        - -        - -
+    ETA 8        - -        - -        - -        - -        - -        - -
+    ETA 9        - -        - -        - -        - -        - -        - -
+
+         Modification Indices for PSI            
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    ETA 7        - -
+    ETA 8        - -        - -
+    ETA 9        - -        - -        - -
+
+         Expected Change for PSI         
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       0.03
+    ETA 2        - -      -0.12
+    ETA 3       0.01       0.03       0.08
+    ETA 4      -0.01      -0.01      -0.07        - -
+    ETA 5      -0.01       0.19      -0.04      -0.05        - -
+    ETA 6      -0.04       0.07      -0.04       0.61      -0.15        - -
+    ETA 7        - -        - -        - -        - -        - -        - -
+    ETA 8        - -        - -        - -        - -        - -        - -
+    ETA 9        - -        - -        - -        - -        - -        - -
+
+         Expected Change for PSI         
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    ETA 7        - -
+    ETA 8        - -        - -
+    ETA 9        - -        - -        - -
+
+         Standardized Expected Change for PSI            
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       0.64
+    ETA 2        - -      -3.57
+    ETA 3       0.25       0.74       2.13
+    ETA 4      -0.02      -0.02      -0.13        - -
+    ETA 5      -0.02       0.38      -0.07      -0.01        - -
+    ETA 6      -0.06       0.13      -0.07       0.07      -0.02        - -
+    ETA 7        - -        - -        - -        - -        - -        - -
+    ETA 8        - -        - -        - -        - -        - -        - -
+    ETA 9        - -        - -        - -        - -        - -        - -
+
+         Standardized Expected Change for PSI            
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    ETA 7        - -
+    ETA 8        - -        - -
+    ETA 9        - -        - -        - -
+
+         Modification Indices for THETA-EPS      
+
+               VAR 1      VAR 2      VAR 3      VAR 4      VAR 5      VAR 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       0.07
+    VAR 2        - -       1.24
+    VAR 3       0.04       0.28       0.54
+    VAR 4       0.02       0.04       1.64        - -
+    VAR 5       0.03       2.58       0.37       0.02        - -
+    VAR 6       0.51       1.68       0.15       1.43       0.29        - -
+    VAR 7        - -        - -        - -        - -        - -        - -
+    VAR 8        - -        - -        - -        - -        - -        - -
+    VAR 9        - -        - -        - -        - -        - -        - -
+
+         Modification Indices for THETA-EPS      
+
+               VAR 7      VAR 8      VAR 9   
+            --------   --------   --------
+    VAR 7        - -
+    VAR 8        - -        - -
+    VAR 9        - -        - -        - -
+
+         Expected Change for THETA-EPS   
+
+               VAR 1      VAR 2      VAR 3      VAR 4      VAR 5      VAR 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       0.01
+    VAR 2        - -      -0.10
+    VAR 3      -0.01      -0.03       0.03
+    VAR 4      -0.01      -0.01       0.07        - -
+    VAR 5      -0.01       0.19       0.04      -0.05        - -
+    VAR 6       0.04      -0.07      -0.04      -0.61       0.15        - -
+    VAR 7        - -        - -        - -        - -        - -        - -
+    VAR 8        - -        - -        - -        - -        - -        - -
+    VAR 9        - -        - -        - -        - -        - -        - -
+
+         Expected Change for THETA-EPS   
+
+               VAR 7      VAR 8      VAR 9   
+            --------   --------   --------
+    VAR 7        - -
+    VAR 8        - -        - -
+    VAR 9        - -        - -        - -
+
+         Completely Standardized Expected Change for THETA-EPS   
+
+               VAR 1      VAR 2      VAR 3      VAR 4      VAR 5      VAR 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       0.01
+    VAR 2        - -      -0.10
+    VAR 3      -0.01      -0.03       0.03
+    VAR 4      -0.01      -0.01       0.07        - -
+    VAR 5      -0.01       0.20       0.04      -0.05        - -
+    VAR 6       0.04      -0.07      -0.04      -0.58       0.15        - -
+    VAR 7        - -        - -        - -        - -        - -        - -
+    VAR 8        - -        - -        - -        - -        - -        - -
+    VAR 9        - -        - -        - -        - -        - -        - -
+
+         Completely Standardized Expected Change for THETA-EPS   
+
+               VAR 7      VAR 8      VAR 9   
+            --------   --------   --------
+    VAR 7        - -
+    VAR 8        - -        - -
+    VAR 9        - -        - -        - -
+
+ Analysis of experiment 3 (current job) PORTUGAL with 2 groups SB-MTMM model    
+
+ Within Group Standardized Solution           
+
+         LAMBDA-Y    
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       0.20        - -        - -        - -        - -        - -
+    VAR 2        - -       0.19        - -        - -        - -        - -
+    VAR 3        - -        - -      -0.19        - -        - -        - -
+    VAR 4        - -        - -        - -       2.90        - -        - -
+    VAR 5        - -        - -        - -        - -       2.71        - -
+    VAR 6        - -        - -        - -        - -        - -      -3.00
+    VAR 7        - -        - -        - -        - -        - -        - -
+    VAR 8        - -        - -        - -        - -        - -        - -
+    VAR 9        - -        - -        - -        - -        - -        - -
+
+         LAMBDA-Y    
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    VAR 1        - -        - -        - -
+    VAR 2        - -        - -        - -
+    VAR 3        - -        - -        - -
+    VAR 4        - -        - -        - -
+    VAR 5        - -        - -        - -
+    VAR 6        - -        - -        - -
+    VAR 7        - -        - -        - -
+    VAR 8        - -        - -        - -
+    VAR 9        - -        - -        - -
+
+         GAMMA       
+
+               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       1.00        - -        - -       4.88        - -        - -
+    ETA 2        - -       1.00        - -       5.36        - -        - -
+    ETA 3        - -        - -       1.00       5.23        - -        - -
+    ETA 4       1.12        - -        - -        - -       0.35        - -
+    ETA 5        - -       1.14        - -        - -       0.37        - -
+    ETA 6        - -        - -       1.11        - -       0.33        - -
+    ETA 7       1.13        - -        - -        - -        - -       0.35
+    ETA 8        - -       1.13        - -        - -        - -       0.35
+    ETA 9        - -        - -       1.13        - -        - -       0.35
+
+         Correlation Matrix of ETA and KSI       
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       1.00
+    ETA 2       0.24       1.00
+    ETA 3       0.23       0.24       1.00
+    ETA 4       1.12       0.26       0.26       1.00
+    ETA 5       0.27       1.14       0.28       0.02       1.00
+    ETA 6       0.26       0.27       1.11       0.04       0.04       1.00
+    ETA 7       1.13       0.27       0.26       1.27       0.30       0.29
+    ETA 8       0.27       1.13       0.27       0.30       1.29       0.31
+    ETA 9       0.26       0.27       1.13       0.30       0.31       1.26
+    KSI 1       1.00       0.24       0.23       1.12       0.27       0.26
+    KSI 2       0.24       1.00       0.24       0.26       1.14       0.27
+    KSI 3       0.23       0.24       1.00       0.26       0.28       1.11
+    KSI 4        - -        - -        - -        - -        - -        - -
+    KSI 5        - -        - -        - -      -0.76      -0.81      -0.73
+    KSI 6        - -        - -        - -        - -        - -        - -
+
+         Correlation Matrix of ETA and KSI       
+
+               ETA 7      ETA 8      ETA 9      KSI 1      KSI 2      KSI 3   
+            --------   --------   --------   --------   --------   --------
+    ETA 7       1.00
+    ETA 8       0.03       1.00
+    ETA 9       0.02       0.04       1.00
+    KSI 1       1.13       0.27       0.26       1.00
+    KSI 2       0.27       1.13       0.27       0.24       1.00
+    KSI 3       0.26       0.27       1.13       0.23       0.24       1.00
+    KSI 4        - -        - -        - -        - -        - -        - -
+    KSI 5        - -        - -        - -        - -        - -        - -
+    KSI 6      -0.79      -0.79      -0.79        - -        - -        - -
+
+         Correlation Matrix of ETA and KSI       
+
+               KSI 4      KSI 5      KSI 6   
+            --------   --------   --------
+    KSI 4        - -
+    KSI 5        - -      -2.19
+    KSI 6        - -        - -      -2.27
+
+ Analysis of experiment 3 (current job) PORTUGAL with 2 groups SB-MTMM model    
+
+ Within Group Completely Standardized Solution
+
+         LAMBDA-Y    
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       0.20        - -        - -        - -        - -        - -
+    VAR 2        - -       0.19        - -        - -        - -        - -
+    VAR 3        - -        - -      -0.19        - -        - -        - -
+    VAR 4        - -        - -        - -       2.82        - -        - -
+    VAR 5        - -        - -        - -        - -       2.79        - -
+    VAR 6        - -        - -        - -        - -        - -      -2.94
+    VAR 7        - -        - -        - -        - -        - -        - -
+    VAR 8        - -        - -        - -        - -        - -        - -
+    VAR 9        - -        - -        - -        - -        - -        - -
+
+         LAMBDA-Y    
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    VAR 1        - -        - -        - -
+    VAR 2        - -        - -        - -
+    VAR 3        - -        - -        - -
+    VAR 4        - -        - -        - -
+    VAR 5        - -        - -        - -
+    VAR 6        - -        - -        - -
+    VAR 7        - -        - -        - -
+    VAR 8        - -        - -        - -
+    VAR 9        - -        - -        - -
+
+         GAMMA       
+
+               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       1.00        - -        - -       4.88        - -        - -
+    ETA 2        - -       1.00        - -       5.36        - -        - -
+    ETA 3        - -        - -       1.00       5.23        - -        - -
+    ETA 4       1.12        - -        - -        - -       0.35        - -
+    ETA 5        - -       1.14        - -        - -       0.37        - -
+    ETA 6        - -        - -       1.11        - -       0.33        - -
+    ETA 7       1.13        - -        - -        - -        - -       0.35
+    ETA 8        - -       1.13        - -        - -        - -       0.35
+    ETA 9        - -        - -       1.13        - -        - -       0.35
+
+         Correlation Matrix of ETA and KSI       
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       1.00
+    ETA 2       0.24       1.00
+    ETA 3       0.23       0.24       1.00
+    ETA 4       1.12       0.26       0.26       1.00
+    ETA 5       0.27       1.14       0.28       0.02       1.00
+    ETA 6       0.26       0.27       1.11       0.04       0.04       1.00
+    ETA 7       1.13       0.27       0.26       1.27       0.30       0.29
+    ETA 8       0.27       1.13       0.27       0.30       1.29       0.31
+    ETA 9       0.26       0.27       1.13       0.30       0.31       1.26
+    KSI 1       1.00       0.24       0.23       1.12       0.27       0.26
+    KSI 2       0.24       1.00       0.24       0.26       1.14       0.27
+    KSI 3       0.23       0.24       1.00       0.26       0.28       1.11
+    KSI 4        - -        - -        - -        - -        - -        - -
+    KSI 5        - -        - -        - -      -0.76      -0.81      -0.73
+    KSI 6        - -        - -        - -        - -        - -        - -
+
+         Correlation Matrix of ETA and KSI       
+
+               ETA 7      ETA 8      ETA 9      KSI 1      KSI 2      KSI 3   
+            --------   --------   --------   --------   --------   --------
+    ETA 7       1.00
+    ETA 8       0.03       1.00
+    ETA 9       0.02       0.04       1.00
+    KSI 1       1.13       0.27       0.26       1.00
+    KSI 2       0.27       1.13       0.27       0.24       1.00
+    KSI 3       0.26       0.27       1.13       0.23       0.24       1.00
+    KSI 4        - -        - -        - -        - -        - -        - -
+    KSI 5        - -        - -        - -        - -        - -        - -
+    KSI 6      -0.79      -0.79      -0.79        - -        - -        - -
+
+         Correlation Matrix of ETA and KSI       
+
+               KSI 4      KSI 5      KSI 6   
+            --------   --------   --------
+    KSI 4        - -
+    KSI 5        - -      -2.19
+    KSI 6        - -        - -      -2.27
+
+         THETA-EPS   
+
+               VAR 1      VAR 2      VAR 3      VAR 4      VAR 5      VAR 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       0.96
+    VAR 2       0.20       0.97
+    VAR 3        - -        - -       0.96
+    VAR 4        - -        - -        - -      -6.95
+    VAR 5        - -        - -        - -        - -      -6.80
+    VAR 6        - -        - -        - -        - -        - -      -7.64
+    VAR 7        - -        - -        - -        - -        - -        - -
+    VAR 8        - -        - -        - -        - -        - -        - -
+    VAR 9        - -        - -        - -        - -        - -        - -
+
+         THETA-EPS   
+
+               VAR 7      VAR 8      VAR 9   
+            --------   --------   --------
+    VAR 7       1.00
+    VAR 8        - -       1.00
+    VAR 9        - -        - -       1.00
+
+
+ analysis group B                                                               
+
+ Number of Iterations =194
+
+ LISREL Estimates (Maximum Likelihood)               
+
+         LAMBDA-Y    
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       1.00        - -        - -        - -        - -        - -
+ 
+    VAR 2        - -       1.00        - -        - -        - -        - -
+ 
+    VAR 3        - -        - -      -1.00        - -        - -        - -
+ 
+    VAR 4        - -        - -        - -        - -        - -        - -
+ 
+    VAR 5        - -        - -        - -        - -        - -        - -
+ 
+    VAR 6        - -        - -        - -        - -        - -        - -
+ 
+    VAR 7        - -        - -        - -        - -        - -        - -
+ 
+    VAR 8        - -        - -        - -        - -        - -        - -
+ 
+    VAR 9        - -        - -        - -        - -        - -        - -
+ 
+
+         LAMBDA-Y    
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    VAR 1        - -        - -        - -
+ 
+    VAR 2        - -        - -        - -
+ 
+    VAR 3        - -        - -        - -
+ 
+    VAR 4        - -        - -        - -
+ 
+    VAR 5        - -        - -        - -
+ 
+    VAR 6        - -        - -        - -
+ 
+    VAR 7       1.00        - -        - -
+ 
+    VAR 8        - -       1.00        - -
+ 
+    VAR 9        - -        - -      -1.00
+ 
+
+         GAMMA       
+
+               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       0.20        - -        - -       1.00        - -        - -
+              (0.16)
+                1.31
+ 
+    ETA 2        - -       0.19        - -       1.00        - -        - -
+                         (0.15)
+                           1.27
+ 
+    ETA 3        - -        - -       0.19       1.00        - -        - -
+                                    (0.14)
+                                      1.34
+ 
+    ETA 4       3.25        - -        - -        - -       1.00        - -
+              (2.43)
+                1.34
+ 
+    ETA 5        - -       3.09        - -        - -       1.00        - -
+                         (2.55)
+                           1.21
+ 
+    ETA 6        - -        - -       3.34        - -       1.00        - -
+                                    (2.36)
+                                      1.42
+ 
+    ETA 7       3.25        - -        - -        - -        - -       1.00
+              (2.45)
+                1.33
+ 
+    ETA 8        - -       3.25        - -        - -        - -       1.00
+                         (2.45)
+                           1.33
+ 
+    ETA 9        - -        - -       3.25        - -        - -       1.00
+                                    (2.45)
+                                      1.33
+ 
+
+         Covariance Matrix of ETA and KSI        
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       0.04
+    ETA 2       0.01       0.03
+    ETA 3       0.01       0.01       0.04
+    ETA 4       0.67       0.14       0.15       8.38
+    ETA 5       0.15       0.58       0.14       0.18       7.36
+    ETA 6       0.16       0.15       0.64       0.35       0.33       8.99
+    ETA 7       0.67       0.14       0.15      10.58       2.37       2.54
+    ETA 8       0.16       0.61       0.15       2.49      10.05       2.65
+    ETA 9       0.16       0.15       0.62       2.47       2.44      10.88
+    KSI 1       0.20       0.04       0.04       3.25       0.73       0.78
+    KSI 2       0.05       0.19       0.05       0.77       3.09       0.81
+    KSI 3       0.05       0.05       0.19       0.76       0.75       3.34
+    KSI 4        - -        - -        - -        - -        - -        - -
+    KSI 5        - -        - -        - -      -2.19      -2.19      -2.19
+    KSI 6        - -        - -        - -        - -        - -        - -
+
+         Covariance Matrix of ETA and KSI        
+
+               ETA 7      ETA 8      ETA 9      KSI 1      KSI 2      KSI 3   
+            --------   --------   --------   --------   --------   --------
+    ETA 7       8.31
+    ETA 8       0.22       8.31
+    ETA 9       0.20       0.30       8.31
+    KSI 1       3.25       0.77       0.76       1.00
+    KSI 2       0.77       3.25       0.79       0.24       1.00
+    KSI 3       0.76       0.79       3.25       0.23       0.24       1.00
+    KSI 4        - -        - -        - -        - -        - -        - -
+    KSI 5        - -        - -        - -        - -        - -        - -
+    KSI 6      -2.27      -2.27      -2.27        - -        - -        - -
+
+         Covariance Matrix of ETA and KSI        
+
+               KSI 4      KSI 5      KSI 6   
+            --------   --------   --------
+    KSI 4        - -
+    KSI 5        - -      -2.19
+    KSI 6        - -        - -      -2.27
+
+         PHI         
+
+               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6   
+            --------   --------   --------   --------   --------   --------
+    KSI 1       1.00
+ 
+    KSI 2       0.24       1.00
+              (0.03)
+                7.38
+ 
+    KSI 3       0.23       0.24       1.00
+              (0.03)     (0.04)
+                7.55       6.39
+ 
+    KSI 4        - -        - -        - -        - -
+ 
+    KSI 5        - -        - -        - -        - -      -2.19
+                                                          (3.62)
+                                                           -0.60
+ 
+    KSI 6        - -        - -        - -        - -        - -      -2.27
+                                                                     (3.66)
+                                                                      -0.62
+ 
+
+         Squared Multiple Correlations for Structural Equations  
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+                1.00       1.00       1.00       1.00       1.00       1.00
+
+         Squared Multiple Correlations for Structural Equations  
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+                1.00       1.00       1.00
+
+         Squared Multiple Correlations for Reduced Form          
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+                1.00       1.00       1.00       1.00       1.00       1.00
+
+         Squared Multiple Correlations for Reduced Form          
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+                1.00       1.00       1.00
+
+         THETA-EPS   
+
+               VAR 1      VAR 2      VAR 3      VAR 4      VAR 5      VAR 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       0.96
+              (0.09)
+               11.08
+ 
+    VAR 2       0.17       0.97
+              (0.05)     (0.08)
+                3.73      11.56
+ 
+    VAR 3        - -        - -       0.96
+                                    (0.08)
+                                     11.62
+ 
+    VAR 4        - -        - -        - -       1.00
+ 
+    VAR 5        - -        - -        - -        - -       1.00
+ 
+    VAR 6        - -        - -        - -        - -        - -       1.00
+ 
+    VAR 7        - -        - -        - -        - -        - -        - -
+ 
+    VAR 8        - -        - -        - -        - -        - -        - -
+ 
+    VAR 9        - -        - -        - -        - -        - -        - -
+ 
+
+         THETA-EPS   
+
+               VAR 7      VAR 8      VAR 9   
+            --------   --------   --------
+    VAR 7      -7.31
+             (12.32)
+               -0.59
+ 
+    VAR 8        - -      -7.33
+                        (12.34)
+                          -0.59
+ 
+    VAR 9        - -        - -      -7.30
+                                   (12.31)
+                                     -0.59
+ 
+
+         Squared Multiple Correlations for Y - Variables         
+
+               VAR 1      VAR 2      VAR 3      VAR 4      VAR 5      VAR 6   
+            --------   --------   --------   --------   --------   --------
+                0.04       0.03       0.04        - -        - -        - -
+
+         Squared Multiple Correlations for Y - Variables         
+
+               VAR 7      VAR 8      VAR 9   
+            --------   --------   --------
+                8.29       8.48       8.24
+
+
+                        Global Goodness of Fit Statistics
+
+                             Degrees of Freedom = 67
+                Minimum Fit Function Chi-Square = 34.26 (P = 1.00)
+        Normal Theory Weighted Least Squares Chi-Square = 32.08 (P = 1.00)
+                  Estimated Non-centrality Parameter (NCP) = 0.0
+               90 Percent Confidence Interval for NCP = (0.0 ; 0.0)
+ 
+                        Minimum Fit Function Value = 0.079
+                 Population Discrepancy Function Value (F0) = 0.0
+               90 Percent Confidence Interval for F0 = (0.0 ; 0.0)
+              Root Mean Square Error of Approximation (RMSEA) = 0.0
+              90 Percent Confidence Interval for RMSEA = (0.0 ; 0.0)
+               P-Value for Test of Close Fit (RMSEA < 0.05) = 1.00
+ 
+                  Expected Cross-Validation Index (ECVI) = 0.26
+             90 Percent Confidence Interval for ECVI = (0.26 ; 0.26)
+                         ECVI for Saturated Model = 0.21
+                        ECVI for Independence Model = 1.87
+ 
+      Chi-Square for Independence Model with 72 Degrees of Freedom = 794.17
+                            Independence AIC = 830.17
+                                Model AIC = 78.08
+                              Saturated AIC = 180.00
+                            Independence CAIC = 921.57
+                               Model CAIC = 194.87
+                             Saturated CAIC = 636.99
+ 
+                          Normed Fit Index (NFI) = 0.96
+                        Non-Normed Fit Index (NNFI) = 1.05
+                     Parsimony Normed Fit Index (PNFI) = 0.89
+                        Comparative Fit Index (CFI) = 1.00
+                        Incremental Fit Index (IFI) = 1.05
+                         Relative Fit Index (RFI) = 0.95
+ 
+                            Critical N (CN) = 1227.73
+ 
+
+
+                         Group Goodness of Fit Statistics
+
+                        Contribution to Chi-Square = 25.88
+                  Percentage Contribution to Chi-Square = 75.55
+ 
+                     Root Mean Square Residual (RMR) = 0.055
+                             Standardized RMR = 0.055
+                        Goodness of Fit Index (GFI) = 0.98
+
+ analysis group B                                                               
+
+         Fitted Covariance Matrix
+
+               VAR 1      VAR 2      VAR 3      VAR 4      VAR 5      VAR 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       1.01
+    VAR 2       0.18       1.00
+    VAR 3      -0.01      -0.01       1.00
+    VAR 4        - -        - -        - -       1.00
+    VAR 5        - -        - -        - -        - -       1.00
+    VAR 6        - -        - -        - -        - -        - -       1.00
+    VAR 7       0.67       0.14      -0.15        - -        - -        - -
+    VAR 8       0.16       0.61      -0.15        - -        - -        - -
+    VAR 9      -0.16      -0.15       0.62        - -        - -        - -
+
+         Fitted Covariance Matrix
+
+               VAR 7      VAR 8      VAR 9   
+            --------   --------   --------
+    VAR 7       1.00
+    VAR 8       0.22       0.98
+    VAR 9      -0.20      -0.30       1.01
+
+         Fitted Residuals
+
+               VAR 1      VAR 2      VAR 3      VAR 4      VAR 5      VAR 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1      -0.01
+    VAR 2      -0.03       0.00
+    VAR 3       0.15      -0.11       0.00
+    VAR 4        - -        - -        - -        - -
+    VAR 5        - -        - -        - -        - -        - -
+    VAR 6        - -        - -        - -        - -        - -        - -
+    VAR 7      -0.01      -0.04       0.08        - -        - -        - -
+    VAR 8      -0.03      -0.02      -0.22        - -        - -        - -
+    VAR 9       0.15      -0.03       0.01        - -        - -        - -
+
+         Fitted Residuals
+
+               VAR 7      VAR 8      VAR 9   
+            --------   --------   --------
+    VAR 7       0.00
+    VAR 8       0.00       0.02
+    VAR 9       0.09      -0.10      -0.01
+
+ Summary Statistics for Fitted Residuals
+
+ Smallest Fitted Residual =   -0.22
+   Median Fitted Residual =    0.00
+  Largest Fitted Residual =    0.15
+
+ Stemleaf Plot
+
+ - 2|2 
+ - 1| 
+ - 1|10 
+ - 0| 
+ - 0|433321110000000000000000000000000000 
+   0|12 
+   0|89 
+   1| 
+   1|55
+
+         Standardized Residuals  
+
+               VAR 1      VAR 2      VAR 3      VAR 4      VAR 5      VAR 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1      -0.10
+    VAR 2      -0.65      -0.01
+    VAR 3       2.38      -1.70      -0.01
+    VAR 4        - -        - -        - -        - -
+    VAR 5        - -        - -        - -        - -        - -
+    VAR 6        - -        - -        - -        - -        - -        - -
+    VAR 7      -0.14      -0.60       1.31        - -        - -        - -
+    VAR 8      -0.49      -0.49      -3.76        - -        - -        - -
+    VAR 9       2.57      -0.44       0.29        - -        - -        - -
+
+         Standardized Residuals  
+
+               VAR 7      VAR 8      VAR 9   
+            --------   --------   --------
+    VAR 7      -0.06
+    VAR 8      -0.06       0.51
+    VAR 9       2.03      -2.55      -0.19
+
+ Summary Statistics for Standardized Residuals
+
+ Smallest Standardized Residual =   -3.76
+   Median Standardized Residual =    0.00
+  Largest Standardized Residual =    2.57
+
+ Stemleaf Plot
+
+ - 3|8 
+ - 2|5 
+ - 1|7 
+ - 0|765542111100000000000000000000000000 
+   0|35 
+   1|3 
+   2|046
+ Largest Negative Standardized Residuals
+ Residual for    VAR 8 and    VAR 3  -3.76
+
+ analysis group B                                                               
+
+                         Qplot of Standardized Residuals
+
+  3.5..........................................................................
+     .                                                                       ..
+     .                                                                      . .
+     .                                                                    .   .
+     .                                                                  .     .
+     .                                                                 .      .
+     .                                                               .        .
+     .                                                             .          .
+     .                                                            .           .
+     .                                                          .             .
+     .                                                        .               .
+     .                                                       .                .
+     .                                                     .        x         .
+     .                                                   .                    .
+     .                                                  .         x           .
+ N   .                                                .                       .
+ o   .                                              .          x              .
+ r   .                                             .   x                      .
+ m   .                                         x .                            .
+ a   .                                   x   x .                              .
+ l   .                                   x    .                               .
+     .                                   x  .                                 .
+ Q   .                                  xx.                                   .
+ u   .                                  x.                                    .
+ a   .                                 x                                      .
+ n   .                               x                                        .
+ t   .                              *                                         .
+ i   .                            .x                                          .
+ l   .                          .  x                                          .
+ e   .                  x      .                                              .
+ s   .                       .                                                .
+     .         x           .                                                  .
+     .                    .                                                   .
+     x                  .                                                     .
+     .                .                                                       .
+     .               .                                                        .
+     .             .                                                          .
+     .           .                                                            .
+     .          .                                                             .
+     .        .                                                               .
+     .      .                                                                 .
+     .     .                                                                  .
+     .   .                                                                    .
+     . .                                                                      .
+ -3.5..........................................................................
+   -3.5                                                                      3.5
+                             Standardized Residuals
+
+ analysis group B                                                               
+
+ Modification Indices and Expected Change
+
+         Modification Indices for LAMBDA-Y       
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       0.25       0.11       1.44       0.25       0.11       1.44
+    VAR 2       1.35       3.66       0.51       1.35       3.66       0.51
+    VAR 3       0.28      13.98       1.33       0.28      13.98       1.33
+    VAR 4        - -        - -        - -        - -        - -        - -
+    VAR 5        - -        - -        - -        - -        - -        - -
+    VAR 6        - -        - -        - -        - -        - -        - -
+    VAR 7       1.37       0.04       0.48       1.37       0.04       0.48
+    VAR 8       0.67       0.00       0.27       0.67       0.00       0.27
+    VAR 9       0.15       0.85       1.79       0.15       0.85       1.79
+
+         Modification Indices for LAMBDA-Y       
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    VAR 1       0.61       0.23       1.91
+    VAR 2       0.75       1.45       0.15
+    VAR 3       0.07      13.15       0.13
+    VAR 4        - -        - -        - -
+    VAR 5        - -        - -        - -
+    VAR 6        - -        - -        - -
+    VAR 7       0.25       0.00       0.35
+    VAR 8       0.90       0.28       0.49
+    VAR 9       0.07       1.02       1.17
+
+         Expected Change for LAMBDA-Y    
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       0.07       0.03      -0.10       0.00       0.00      -0.01
+    VAR 2      -0.11      -0.36      -0.06      -0.01      -0.02       0.00
+    VAR 3      -0.05      -0.34      -0.20       0.00      -0.02      -0.01
+    VAR 4        - -        - -        - -        - -        - -        - -
+    VAR 5        - -        - -        - -        - -        - -        - -
+    VAR 6        - -        - -        - -        - -        - -        - -
+    VAR 7       2.13       0.12       0.47       0.13       0.01       0.03
+    VAR 8       0.58       0.03       0.26       0.04       0.00       0.01
+    VAR 9       0.34       0.45       2.95       0.02       0.03       0.17
+
+         Expected Change for LAMBDA-Y    
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    VAR 1       0.01       0.00      -0.01
+    VAR 2      -0.01      -0.01       0.00
+    VAR 3       0.00      -0.02       0.00
+    VAR 4        - -        - -        - -
+    VAR 5        - -        - -        - -
+    VAR 6        - -        - -        - -
+    VAR 7       0.06       0.00       0.03
+    VAR 8       0.04       0.07       0.02
+    VAR 9       0.01       0.03       0.14
+
+         Standardized Expected Change for LAMBDA-Y       
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       0.01       0.01      -0.02       0.01       0.01      -0.02
+    VAR 2      -0.02      -0.07      -0.01      -0.02      -0.06      -0.01
+    VAR 3      -0.01      -0.06      -0.04      -0.01      -0.06      -0.03
+    VAR 4        - -        - -        - -        - -        - -        - -
+    VAR 5        - -        - -        - -        - -        - -        - -
+    VAR 6        - -        - -        - -        - -        - -        - -
+    VAR 7       0.44       0.02       0.09       0.39       0.02       0.08
+    VAR 8       0.12       0.01       0.05       0.11       0.00       0.04
+    VAR 9       0.07       0.08       0.56       0.06       0.07       0.51
+
+         Standardized Expected Change for LAMBDA-Y       
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    VAR 1       0.03       0.01      -0.02
+    VAR 2      -0.02      -0.04      -0.01
+    VAR 3       0.00      -0.07       0.01
+    VAR 4        - -        - -        - -
+    VAR 5        - -        - -        - -
+    VAR 6        - -        - -        - -
+    VAR 7       0.17       0.00       0.09
+    VAR 8       0.12       0.20       0.07
+    VAR 9       0.04       0.10       0.41
+
+         Completely Standardized Expected Change for LAMBDA-Y    
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       0.01       0.01      -0.02       0.01       0.01      -0.02
+    VAR 2      -0.02      -0.07      -0.01      -0.02      -0.06      -0.01
+    VAR 3      -0.01      -0.06      -0.04      -0.01      -0.06      -0.03
+    VAR 4        - -        - -        - -        - -        - -        - -
+    VAR 5        - -        - -        - -        - -        - -        - -
+    VAR 6        - -        - -        - -        - -        - -        - -
+    VAR 7       0.44       0.02       0.09       0.39       0.02       0.08
+    VAR 8       0.12       0.01       0.05       0.11       0.01       0.04
+    VAR 9       0.07       0.08       0.56       0.06       0.07       0.50
+
+         Completely Standardized Expected Change for LAMBDA-Y    
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    VAR 1       0.03       0.01      -0.02
+    VAR 2      -0.02      -0.04      -0.01
+    VAR 3       0.00      -0.07       0.01
+    VAR 4        - -        - -        - -
+    VAR 5        - -        - -        - -
+    VAR 6        - -        - -        - -
+    VAR 7       0.17       0.00       0.09
+    VAR 8       0.12       0.20       0.07
+    VAR 9       0.04       0.10       0.41
+
+         Modification Indices for BETA           
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       0.25       0.11       1.44       0.25       0.11       1.44
+    ETA 2       1.35       3.66       0.51       1.35       3.66       0.51
+    ETA 3       0.28      13.98       1.33       0.28      13.98       1.33
+    ETA 4        - -        - -        - -        - -        - -        - -
+    ETA 5        - -        - -        - -        - -        - -        - -
+    ETA 6        - -        - -        - -        - -        - -        - -
+    ETA 7       1.37       0.04       0.48       1.37       0.04       0.48
+    ETA 8       0.67       0.00       0.27       0.67       0.00       0.27
+    ETA 9       0.15       0.85       1.79       0.15       0.85       1.79
+
+         Modification Indices for BETA           
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    ETA 1       0.61       0.23       1.91
+    ETA 2       0.75       1.45       0.15
+    ETA 3       0.07      13.15       0.13
+    ETA 4        - -        - -        - -
+    ETA 5        - -        - -        - -
+    ETA 6        - -        - -        - -
+    ETA 7       0.25       0.00       0.35
+    ETA 8       0.90       0.28       0.49
+    ETA 9       0.07       1.02       1.17
+
+         Expected Change for BETA        
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       0.07       0.03      -0.10       0.00       0.00      -0.01
+    ETA 2      -0.11      -0.36      -0.06      -0.01      -0.02       0.00
+    ETA 3       0.05       0.34       0.20       0.00       0.02       0.01
+    ETA 4        - -        - -        - -        - -        - -        - -
+    ETA 5        - -        - -        - -        - -        - -        - -
+    ETA 6        - -        - -        - -        - -        - -        - -
+    ETA 7       2.13       0.12       0.47       0.13       0.01       0.03
+    ETA 8       0.58       0.03       0.26       0.04       0.00       0.01
+    ETA 9      -0.34      -0.45      -2.95      -0.02      -0.03      -0.17
+
+         Expected Change for BETA        
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    ETA 1       0.01       0.00      -0.01
+    ETA 2      -0.01      -0.01       0.00
+    ETA 3       0.00       0.02       0.00
+    ETA 4        - -        - -        - -
+    ETA 5        - -        - -        - -
+    ETA 6        - -        - -        - -
+    ETA 7       0.06       0.00       0.03
+    ETA 8       0.04       0.07       0.02
+    ETA 9      -0.01      -0.03      -0.14
+
+         Standardized Expected Change for BETA           
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       1.68       0.82      -2.66       0.01       0.00      -0.01
+    ETA 2      -2.78     -10.40      -1.73      -0.01      -0.04      -0.01
+    ETA 3       1.15       9.48       5.52       0.01       0.04       0.02
+    ETA 4        - -        - -        - -        - -        - -        - -
+    ETA 5        - -        - -        - -        - -        - -        - -
+    ETA 6        - -        - -        - -        - -        - -        - -
+    ETA 7       3.61       0.22       0.86       0.02       0.00       0.00
+    ETA 8       0.98       0.06       0.47       0.00       0.00       0.00
+    ETA 9      -0.58      -0.83      -5.35       0.00       0.00      -0.02
+
+         Standardized Expected Change for BETA           
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    ETA 1       0.02       0.01      -0.01
+    ETA 2      -0.01      -0.03       0.00
+    ETA 3       0.00       0.04      -0.01
+    ETA 4        - -        - -        - -
+    ETA 5        - -        - -        - -
+    ETA 6        - -        - -        - -
+    ETA 7       0.01       0.00       0.00
+    ETA 8       0.00       0.01       0.00
+    ETA 9       0.00       0.00      -0.02
+
+         Modification Indices for GAMMA          
+
+               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       0.23       0.11       1.44        - -        - -       0.06
+    ETA 2       1.35       2.18       0.51        - -        - -       2.58
+    ETA 3       0.28      13.98       1.00        - -        - -       8.34
+    ETA 4        - -        - -        - -        - -        - -        - -
+    ETA 5        - -        - -        - -        - -        - -        - -
+    ETA 6        - -        - -        - -        - -        - -        - -
+    ETA 7       0.75       0.04       0.48        - -        - -       0.46
+    ETA 8       0.67       0.00       0.27        - -        - -       0.68
+    ETA 9       0.15       0.85       0.60        - -        - -       0.11
+
+         Expected Change for GAMMA       
+
+               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       0.01       0.01      -0.02        - -        - -       0.00
+    ETA 2      -0.02      -0.03      -0.01        - -        - -       0.03
+    ETA 3       0.01       0.06       0.02        - -        - -      -0.06
+    ETA 4        - -        - -        - -        - -        - -        - -
+    ETA 5        - -        - -        - -        - -        - -        - -
+    ETA 6        - -        - -        - -        - -        - -        - -
+    ETA 7       0.24       0.02       0.09        - -        - -      -0.08
+    ETA 8       0.12       0.00       0.05        - -        - -       0.17
+    ETA 9      -0.07      -0.08      -0.19        - -        - -       0.05
+
+         Standardized Expected Change for GAMMA          
+
+               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       0.05       0.03      -0.10        - -        - -       0.02
+    ETA 2      -0.12      -0.14      -0.06        - -        - -       0.18
+    ETA 3       0.05       0.33       0.12        - -        - -      -0.31
+    ETA 4        - -        - -        - -        - -        - -        - -
+    ETA 5        - -        - -        - -        - -        - -        - -
+    ETA 6        - -        - -        - -        - -        - -        - -
+    ETA 7       0.08       0.01       0.03        - -        - -      -0.03
+    ETA 8       0.04       0.00       0.02        - -        - -       0.06
+    ETA 9      -0.02      -0.03      -0.06        - -        - -       0.02
+
+         Modification Indices for PHI            
+
+               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6   
+            --------   --------   --------   --------   --------   --------
+    KSI 1       0.69
+    KSI 2       0.00       1.32
+    KSI 3       0.00       0.01       0.21
+    KSI 4       0.17       6.06       2.06       1.01
+    KSI 5        - -        - -        - -        - -        - -
+    KSI 6       0.51       3.69       1.12       1.11        - -        - -
+
+         Expected Change for PHI         
+
+               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6   
+            --------   --------   --------   --------   --------   --------
+    KSI 1       0.11
+    KSI 2       0.00      -0.18
+    KSI 3       0.00       0.00      -0.07
+    KSI 4       0.00       0.03      -0.02      -0.04
+    KSI 5        - -        - -        - -        - -        - -
+    KSI 6       0.07      -0.31       0.13       0.05        - -        - -
+
+         Standardized Expected Change for PHI            
+
+               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6   
+            --------   --------   --------   --------   --------   --------
+    KSI 1       0.11
+    KSI 2       0.00      -0.18
+    KSI 3       0.00       0.00      -0.07
+    KSI 4       0.00       0.03      -0.02      -0.04
+    KSI 5        - -        - -        - -        - -        - -
+    KSI 6       0.07      -0.31       0.13       0.05        - -        - -
+
+         Modification Indices for PSI            
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       0.07
+    ETA 2        - -       1.24
+    ETA 3       1.98       0.00       0.54
+    ETA 4        - -        - -        - -        - -
+    ETA 5        - -        - -        - -        - -        - -
+    ETA 6        - -        - -        - -        - -        - -        - -
+    ETA 7       0.67       0.72       0.04        - -        - -        - -
+    ETA 8       0.30       1.38      12.31        - -        - -        - -
+    ETA 9       1.52       0.12       0.17        - -        - -        - -
+
+         Modification Indices for PSI            
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    ETA 7        - -
+    ETA 8       0.11        - -
+    ETA 9       0.68       0.46        - -
+
+         Expected Change for PSI         
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1      -0.03
+    ETA 2        - -       0.12
+    ETA 3      -0.07       0.00      -0.08
+    ETA 4        - -        - -        - -        - -
+    ETA 5        - -        - -        - -        - -        - -
+    ETA 6        - -        - -        - -        - -        - -        - -
+    ETA 7       0.07      -0.05      -0.01        - -        - -        - -
+    ETA 8       0.03      -0.11       0.17        - -        - -        - -
+    ETA 9      -0.06      -0.02      -0.04        - -        - -        - -
+
+         Expected Change for PSI         
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    ETA 7        - -
+    ETA 8       0.12        - -
+    ETA 9       0.40      -0.17        - -
+
+         Standardized Expected Change for PSI            
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1      -0.64
+    ETA 2        - -       3.57
+    ETA 3      -1.68       0.06      -2.13
+    ETA 4        - -        - -        - -        - -
+    ETA 5        - -        - -        - -        - -        - -
+    ETA 6        - -        - -        - -        - -        - -        - -
+    ETA 7       0.12      -0.09      -0.02        - -        - -        - -
+    ETA 8       0.05      -0.20       0.32        - -        - -        - -
+    ETA 9      -0.10      -0.03      -0.07        - -        - -        - -
+
+         Standardized Expected Change for PSI            
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    ETA 7        - -
+    ETA 8       0.01        - -
+    ETA 9       0.05      -0.02        - -
+
+         Modification Indices for THETA-EPS      
+
+               VAR 1      VAR 2      VAR 3      VAR 4      VAR 5      VAR 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       0.04
+    VAR 2        - -       0.55
+    VAR 3       1.98       0.00       0.27
+    VAR 4        - -        - -        - -        - -
+    VAR 5        - -        - -        - -        - -        - -
+    VAR 6        - -        - -        - -        - -        - -        - -
+    VAR 7       0.67       0.72       0.04        - -        - -        - -
+    VAR 8       0.30       1.38      12.31        - -        - -        - -
+    VAR 9       1.52       0.12       0.17        - -        - -        - -
+
+         Modification Indices for THETA-EPS      
+
+               VAR 7      VAR 8      VAR 9   
+            --------   --------   --------
+    VAR 7        - -
+    VAR 8       0.11        - -
+    VAR 9       0.68       0.46        - -
+
+         Expected Change for THETA-EPS   
+
+               VAR 1      VAR 2      VAR 3      VAR 4      VAR 5      VAR 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1      -0.02
+    VAR 2        - -       0.06
+    VAR 3       0.07       0.00      -0.04
+    VAR 4        - -        - -        - -        - -
+    VAR 5        - -        - -        - -        - -        - -
+    VAR 6        - -        - -        - -        - -        - -        - -
+    VAR 7       0.07      -0.05       0.01        - -        - -        - -
+    VAR 8       0.03      -0.11      -0.17        - -        - -        - -
+    VAR 9       0.06       0.02      -0.04        - -        - -        - -
+
+         Expected Change for THETA-EPS   
+
+               VAR 7      VAR 8      VAR 9   
+            --------   --------   --------
+    VAR 7        - -
+    VAR 8       0.12        - -
+    VAR 9      -0.40       0.17        - -
+
+         Completely Standardized Expected Change for THETA-EPS   
+
+               VAR 1      VAR 2      VAR 3      VAR 4      VAR 5      VAR 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1      -0.02
+    VAR 2        - -       0.06
+    VAR 3       0.07       0.00      -0.04
+    VAR 4        - -        - -        - -        - -
+    VAR 5        - -        - -        - -        - -        - -
+    VAR 6        - -        - -        - -        - -        - -        - -
+    VAR 7       0.07      -0.05       0.01        - -        - -        - -
+    VAR 8       0.03      -0.11      -0.18        - -        - -        - -
+    VAR 9       0.06       0.02      -0.04        - -        - -        - -
+
+         Completely Standardized Expected Change for THETA-EPS   
+
+               VAR 7      VAR 8      VAR 9   
+            --------   --------   --------
+    VAR 7        - -
+    VAR 8       0.12        - -
+    VAR 9      -0.39       0.17        - -
+
+ Max. Mod. Index is   13.98 for Element ( 3, 2) of LAMBDA-Y in Group  2
+
+ analysis group B                                                               
+
+ Within Group Standardized Solution           
+
+         LAMBDA-Y    
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       0.20        - -        - -        - -        - -        - -
+    VAR 2        - -       0.19        - -        - -        - -        - -
+    VAR 3        - -        - -      -0.19        - -        - -        - -
+    VAR 4        - -        - -        - -        - -        - -        - -
+    VAR 5        - -        - -        - -        - -        - -        - -
+    VAR 6        - -        - -        - -        - -        - -        - -
+    VAR 7        - -        - -        - -        - -        - -        - -
+    VAR 8        - -        - -        - -        - -        - -        - -
+    VAR 9        - -        - -        - -        - -        - -        - -
+
+         LAMBDA-Y    
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    VAR 1        - -        - -        - -
+    VAR 2        - -        - -        - -
+    VAR 3        - -        - -        - -
+    VAR 4        - -        - -        - -
+    VAR 5        - -        - -        - -
+    VAR 6        - -        - -        - -
+    VAR 7       2.88        - -        - -
+    VAR 8        - -       2.88        - -
+    VAR 9        - -        - -      -2.88
+
+         GAMMA       
+
+               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       1.00        - -        - -       4.88        - -        - -
+    ETA 2        - -       1.00        - -       5.36        - -        - -
+    ETA 3        - -        - -       1.00       5.23        - -        - -
+    ETA 4       1.12        - -        - -        - -       0.35        - -
+    ETA 5        - -       1.14        - -        - -       0.37        - -
+    ETA 6        - -        - -       1.11        - -       0.33        - -
+    ETA 7       1.13        - -        - -        - -        - -       0.35
+    ETA 8        - -       1.13        - -        - -        - -       0.35
+    ETA 9        - -        - -       1.13        - -        - -       0.35
+
+         Correlation Matrix of ETA and KSI       
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       1.00
+    ETA 2       0.24       1.00
+    ETA 3       0.23       0.24       1.00
+    ETA 4       1.12       0.26       0.26       1.00
+    ETA 5       0.27       1.14       0.28       0.02       1.00
+    ETA 6       0.26       0.27       1.11       0.04       0.04       1.00
+    ETA 7       1.13       0.27       0.26       1.27       0.30       0.29
+    ETA 8       0.27       1.13       0.27       0.30       1.29       0.31
+    ETA 9       0.26       0.27       1.13       0.30       0.31       1.26
+    KSI 1       1.00       0.24       0.23       1.12       0.27       0.26
+    KSI 2       0.24       1.00       0.24       0.26       1.14       0.27
+    KSI 3       0.23       0.24       1.00       0.26       0.28       1.11
+    KSI 4        - -        - -        - -        - -        - -        - -
+    KSI 5        - -        - -        - -      -0.76      -0.81      -0.73
+    KSI 6        - -        - -        - -        - -        - -        - -
+
+         Correlation Matrix of ETA and KSI       
+
+               ETA 7      ETA 8      ETA 9      KSI 1      KSI 2      KSI 3   
+            --------   --------   --------   --------   --------   --------
+    ETA 7       1.00
+    ETA 8       0.03       1.00
+    ETA 9       0.02       0.04       1.00
+    KSI 1       1.13       0.27       0.26       1.00
+    KSI 2       0.27       1.13       0.27       0.24       1.00
+    KSI 3       0.26       0.27       1.13       0.23       0.24       1.00
+    KSI 4        - -        - -        - -        - -        - -        - -
+    KSI 5        - -        - -        - -        - -        - -        - -
+    KSI 6      -0.79      -0.79      -0.79        - -        - -        - -
+
+         Correlation Matrix of ETA and KSI       
+
+               KSI 4      KSI 5      KSI 6   
+            --------   --------   --------
+    KSI 4        - -
+    KSI 5        - -      -2.19
+    KSI 6        - -        - -      -2.27
+
+ analysis group B                                                               
+
+ Within Group Completely Standardized Solution
+
+         LAMBDA-Y    
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       0.20        - -        - -        - -        - -        - -
+    VAR 2        - -       0.19        - -        - -        - -        - -
+    VAR 3        - -        - -      -0.19        - -        - -        - -
+    VAR 4        - -        - -        - -        - -        - -        - -
+    VAR 5        - -        - -        - -        - -        - -        - -
+    VAR 6        - -        - -        - -        - -        - -        - -
+    VAR 7        - -        - -        - -        - -        - -        - -
+    VAR 8        - -        - -        - -        - -        - -        - -
+    VAR 9        - -        - -        - -        - -        - -        - -
+
+         LAMBDA-Y    
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    VAR 1        - -        - -        - -
+    VAR 2        - -        - -        - -
+    VAR 3        - -        - -        - -
+    VAR 4        - -        - -        - -
+    VAR 5        - -        - -        - -
+    VAR 6        - -        - -        - -
+    VAR 7       2.88        - -        - -
+    VAR 8        - -       2.91        - -
+    VAR 9        - -        - -      -2.87
+
+         GAMMA       
+
+               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       1.00        - -        - -       4.88        - -        - -
+    ETA 2        - -       1.00        - -       5.36        - -        - -
+    ETA 3        - -        - -       1.00       5.23        - -        - -
+    ETA 4       1.12        - -        - -        - -       0.35        - -
+    ETA 5        - -       1.14        - -        - -       0.37        - -
+    ETA 6        - -        - -       1.11        - -       0.33        - -
+    ETA 7       1.13        - -        - -        - -        - -       0.35
+    ETA 8        - -       1.13        - -        - -        - -       0.35
+    ETA 9        - -        - -       1.13        - -        - -       0.35
+
+         Correlation Matrix of ETA and KSI       
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       1.00
+    ETA 2       0.24       1.00
+    ETA 3       0.23       0.24       1.00
+    ETA 4       1.12       0.26       0.26       1.00
+    ETA 5       0.27       1.14       0.28       0.02       1.00
+    ETA 6       0.26       0.27       1.11       0.04       0.04       1.00
+    ETA 7       1.13       0.27       0.26       1.27       0.30       0.29
+    ETA 8       0.27       1.13       0.27       0.30       1.29       0.31
+    ETA 9       0.26       0.27       1.13       0.30       0.31       1.26
+    KSI 1       1.00       0.24       0.23       1.12       0.27       0.26
+    KSI 2       0.24       1.00       0.24       0.26       1.14       0.27
+    KSI 3       0.23       0.24       1.00       0.26       0.28       1.11
+    KSI 4        - -        - -        - -        - -        - -        - -
+    KSI 5        - -        - -        - -      -0.76      -0.81      -0.73
+    KSI 6        - -        - -        - -        - -        - -        - -
+
+         Correlation Matrix of ETA and KSI       
+
+               ETA 7      ETA 8      ETA 9      KSI 1      KSI 2      KSI 3   
+            --------   --------   --------   --------   --------   --------
+    ETA 7       1.00
+    ETA 8       0.03       1.00
+    ETA 9       0.02       0.04       1.00
+    KSI 1       1.13       0.27       0.26       1.00
+    KSI 2       0.27       1.13       0.27       0.24       1.00
+    KSI 3       0.26       0.27       1.13       0.23       0.24       1.00
+    KSI 4        - -        - -        - -        - -        - -        - -
+    KSI 5        - -        - -        - -        - -        - -        - -
+    KSI 6      -0.79      -0.79      -0.79        - -        - -        - -
+
+         Correlation Matrix of ETA and KSI       
+
+               KSI 4      KSI 5      KSI 6   
+            --------   --------   --------
+    KSI 4        - -
+    KSI 5        - -      -2.19
+    KSI 6        - -        - -      -2.27
+
+         THETA-EPS   
+
+               VAR 1      VAR 2      VAR 3      VAR 4      VAR 5      VAR 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       0.96
+    VAR 2       0.17       0.97
+    VAR 3        - -        - -       0.96
+    VAR 4        - -        - -        - -       1.00
+    VAR 5        - -        - -        - -        - -       1.00
+    VAR 6        - -        - -        - -        - -        - -       1.00
+    VAR 7        - -        - -        - -        - -        - -        - -
+    VAR 8        - -        - -        - -        - -        - -        - -
+    VAR 9        - -        - -        - -        - -        - -        - -
+
+         THETA-EPS   
+
+               VAR 7      VAR 8      VAR 9   
+            --------   --------   --------
+    VAR 7      -7.29
+    VAR 8        - -      -7.48
+    VAR 9        - -        - -      -7.24
+
+ Analysis of experiment 3 (current job) PORTUGAL with 2 groups SB-MTMM model    
+
+ Common Metric Standardized Solution           
+
+         LAMBDA-Y    
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       0.20        - -        - -        - -        - -        - -
+    VAR 2        - -       0.19        - -        - -        - -        - -
+    VAR 3        - -        - -      -0.19        - -        - -        - -
+    VAR 4        - -        - -        - -       2.90        - -        - -
+    VAR 5        - -        - -        - -        - -       2.71        - -
+    VAR 6        - -        - -        - -        - -        - -      -3.00
+    VAR 7        - -        - -        - -        - -        - -        - -
+    VAR 8        - -        - -        - -        - -        - -        - -
+    VAR 9        - -        - -        - -        - -        - -        - -
+
+         LAMBDA-Y    
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    VAR 1        - -        - -        - -
+    VAR 2        - -        - -        - -
+    VAR 3        - -        - -        - -
+    VAR 4        - -        - -        - -
+    VAR 5        - -        - -        - -
+    VAR 6        - -        - -        - -
+    VAR 7        - -        - -        - -
+    VAR 8        - -        - -        - -
+    VAR 9        - -        - -        - -
+
+         GAMMA       
+
+               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       1.00        - -        - -       4.88        - -        - -
+    ETA 2        - -       1.00        - -       5.36        - -        - -
+    ETA 3        - -        - -       1.00       5.23        - -        - -
+    ETA 4       1.12        - -        - -        - -       0.35        - -
+    ETA 5        - -       1.14        - -        - -       0.37        - -
+    ETA 6        - -        - -       1.11        - -       0.33        - -
+    ETA 7       1.13        - -        - -        - -        - -       0.35
+    ETA 8        - -       1.13        - -        - -        - -       0.35
+    ETA 9        - -        - -       1.13        - -        - -       0.35
+
+         Covariance Matrix of ETA and KSI        
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       1.00
+    ETA 2       0.24       1.00
+    ETA 3       0.23       0.24       1.00
+    ETA 4       1.12       0.26       0.26       1.00
+    ETA 5       0.27       1.14       0.28       0.02       1.00
+    ETA 6       0.26       0.27       1.11       0.04       0.04       1.00
+    ETA 7       1.13       0.27       0.26       1.27       0.30       0.29
+    ETA 8       0.27       1.13       0.27       0.30       1.29       0.31
+    ETA 9       0.26       0.27       1.13       0.30       0.31       1.26
+    KSI 1       1.00       0.24       0.23       1.12       0.27       0.26
+    KSI 2       0.24       1.00       0.24       0.26       1.14       0.27
+    KSI 3       0.23       0.24       1.00       0.26       0.28       1.11
+    KSI 4        - -        - -        - -        - -        - -        - -
+    KSI 5        - -        - -        - -      -0.76      -0.81      -0.73
+    KSI 6        - -        - -        - -        - -        - -        - -
+
+         Covariance Matrix of ETA and KSI        
+
+               ETA 7      ETA 8      ETA 9      KSI 1      KSI 2      KSI 3   
+            --------   --------   --------   --------   --------   --------
+    ETA 7       1.00
+    ETA 8       0.03       1.00
+    ETA 9       0.02       0.04       1.00
+    KSI 1       1.13       0.27       0.26       1.00
+    KSI 2       0.27       1.13       0.27       0.24       1.00
+    KSI 3       0.26       0.27       1.13       0.23       0.24       1.00
+    KSI 4        - -        - -        - -        - -        - -        - -
+    KSI 5        - -        - -        - -        - -        - -        - -
+    KSI 6      -0.79      -0.79      -0.79        - -        - -        - -
+
+         Covariance Matrix of ETA and KSI        
+
+               KSI 4      KSI 5      KSI 6   
+            --------   --------   --------
+    KSI 4        - -
+    KSI 5        - -      -2.19
+    KSI 6        - -        - -      -2.27
+
+ Analysis of experiment 3 (current job) PORTUGAL with 2 groups SB-MTMM model    
+
+ Common Metric Completely Standardized Solution
+
+         LAMBDA-Y    
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       0.20        - -        - -        - -        - -        - -
+    VAR 2        - -       0.19        - -        - -        - -        - -
+    VAR 3        - -        - -      -0.19        - -        - -        - -
+    VAR 4        - -        - -        - -       2.86        - -        - -
+    VAR 5        - -        - -        - -        - -       2.75        - -
+    VAR 6        - -        - -        - -        - -        - -      -2.97
+    VAR 7        - -        - -        - -        - -        - -        - -
+    VAR 8        - -        - -        - -        - -        - -        - -
+    VAR 9        - -        - -        - -        - -        - -        - -
+
+         LAMBDA-Y    
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    VAR 1        - -        - -        - -
+    VAR 2        - -        - -        - -
+    VAR 3        - -        - -        - -
+    VAR 4        - -        - -        - -
+    VAR 5        - -        - -        - -
+    VAR 6        - -        - -        - -
+    VAR 7        - -        - -        - -
+    VAR 8        - -        - -        - -
+    VAR 9        - -        - -        - -
+
+         GAMMA       
+
+               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       1.00        - -        - -       4.88        - -        - -
+    ETA 2        - -       1.00        - -       5.36        - -        - -
+    ETA 3        - -        - -       1.00       5.23        - -        - -
+    ETA 4       1.12        - -        - -        - -       0.35        - -
+    ETA 5        - -       1.14        - -        - -       0.37        - -
+    ETA 6        - -        - -       1.11        - -       0.33        - -
+    ETA 7       1.13        - -        - -        - -        - -       0.35
+    ETA 8        - -       1.13        - -        - -        - -       0.35
+    ETA 9        - -        - -       1.13        - -        - -       0.35
+
+         Covariance Matrix of ETA and KSI        
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       1.00
+    ETA 2       0.24       1.00
+    ETA 3       0.23       0.24       1.00
+    ETA 4       1.12       0.26       0.26       1.00
+    ETA 5       0.27       1.14       0.28       0.02       1.00
+    ETA 6       0.26       0.27       1.11       0.04       0.04       1.00
+    ETA 7       1.13       0.27       0.26       1.27       0.30       0.29
+    ETA 8       0.27       1.13       0.27       0.30       1.29       0.31
+    ETA 9       0.26       0.27       1.13       0.30       0.31       1.26
+    KSI 1       1.00       0.24       0.23       1.12       0.27       0.26
+    KSI 2       0.24       1.00       0.24       0.26       1.14       0.27
+    KSI 3       0.23       0.24       1.00       0.26       0.28       1.11
+    KSI 4        - -        - -        - -        - -        - -        - -
+    KSI 5        - -        - -        - -      -0.76      -0.81      -0.73
+    KSI 6        - -        - -        - -        - -        - -        - -
+
+         Covariance Matrix of ETA and KSI        
+
+               ETA 7      ETA 8      ETA 9      KSI 1      KSI 2      KSI 3   
+            --------   --------   --------   --------   --------   --------
+    ETA 7       1.00
+    ETA 8       0.03       1.00
+    ETA 9       0.02       0.04       1.00
+    KSI 1       1.13       0.27       0.26       1.00
+    KSI 2       0.27       1.13       0.27       0.24       1.00
+    KSI 3       0.26       0.27       1.13       0.23       0.24       1.00
+    KSI 4        - -        - -        - -        - -        - -        - -
+    KSI 5        - -        - -        - -        - -        - -        - -
+    KSI 6      -0.79      -0.79      -0.79        - -        - -        - -
+
+         Covariance Matrix of ETA and KSI        
+
+               KSI 4      KSI 5      KSI 6   
+            --------   --------   --------
+    KSI 4        - -
+    KSI 5        - -      -2.19
+    KSI 6        - -        - -      -2.27
+
+         THETA-EPS   
+
+               VAR 1      VAR 2      VAR 3      VAR 4      VAR 5      VAR 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       0.96
+    VAR 2       0.20       0.97
+    VAR 3        - -        - -       0.96
+    VAR 4        - -        - -        - -      -7.16
+    VAR 5        - -        - -        - -        - -      -6.58
+    VAR 6        - -        - -        - -        - -        - -      -7.81
+    VAR 7        - -        - -        - -        - -        - -        - -
+    VAR 8        - -        - -        - -        - -        - -        - -
+    VAR 9        - -        - -        - -        - -        - -        - -
+
+         THETA-EPS   
+
+               VAR 7      VAR 8      VAR 9   
+            --------   --------   --------
+    VAR 7       1.00
+    VAR 8        - -       1.01
+    VAR 9        - -        - -       1.00
+
+ analysis group B                                                               
+
+ Common Metric Standardized Solution           
+
+         LAMBDA-Y    
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       0.20        - -        - -        - -        - -        - -
+    VAR 2        - -       0.19        - -        - -        - -        - -
+    VAR 3        - -        - -      -0.19        - -        - -        - -
+    VAR 4        - -        - -        - -        - -        - -        - -
+    VAR 5        - -        - -        - -        - -        - -        - -
+    VAR 6        - -        - -        - -        - -        - -        - -
+    VAR 7        - -        - -        - -        - -        - -        - -
+    VAR 8        - -        - -        - -        - -        - -        - -
+    VAR 9        - -        - -        - -        - -        - -        - -
+
+         LAMBDA-Y    
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    VAR 1        - -        - -        - -
+    VAR 2        - -        - -        - -
+    VAR 3        - -        - -        - -
+    VAR 4        - -        - -        - -
+    VAR 5        - -        - -        - -
+    VAR 6        - -        - -        - -
+    VAR 7       2.88        - -        - -
+    VAR 8        - -       2.88        - -
+    VAR 9        - -        - -      -2.88
+
+         GAMMA       
+
+               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       1.00        - -        - -       4.88        - -        - -
+    ETA 2        - -       1.00        - -       5.36        - -        - -
+    ETA 3        - -        - -       1.00       5.23        - -        - -
+    ETA 4       1.12        - -        - -        - -       0.35        - -
+    ETA 5        - -       1.14        - -        - -       0.37        - -
+    ETA 6        - -        - -       1.11        - -       0.33        - -
+    ETA 7       1.13        - -        - -        - -        - -       0.35
+    ETA 8        - -       1.13        - -        - -        - -       0.35
+    ETA 9        - -        - -       1.13        - -        - -       0.35
+
+         Covariance Matrix of ETA and KSI        
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       1.00
+    ETA 2       0.24       1.00
+    ETA 3       0.23       0.24       1.00
+    ETA 4       1.12       0.26       0.26       1.00
+    ETA 5       0.27       1.14       0.28       0.02       1.00
+    ETA 6       0.26       0.27       1.11       0.04       0.04       1.00
+    ETA 7       1.13       0.27       0.26       1.27       0.30       0.29
+    ETA 8       0.27       1.13       0.27       0.30       1.29       0.31
+    ETA 9       0.26       0.27       1.13       0.30       0.31       1.26
+    KSI 1       1.00       0.24       0.23       1.12       0.27       0.26
+    KSI 2       0.24       1.00       0.24       0.26       1.14       0.27
+    KSI 3       0.23       0.24       1.00       0.26       0.28       1.11
+    KSI 4        - -        - -        - -        - -        - -        - -
+    KSI 5        - -        - -        - -      -0.76      -0.81      -0.73
+    KSI 6        - -        - -        - -        - -        - -        - -
+
+         Covariance Matrix of ETA and KSI        
+
+               ETA 7      ETA 8      ETA 9      KSI 1      KSI 2      KSI 3   
+            --------   --------   --------   --------   --------   --------
+    ETA 7       1.00
+    ETA 8       0.03       1.00
+    ETA 9       0.02       0.04       1.00
+    KSI 1       1.13       0.27       0.26       1.00
+    KSI 2       0.27       1.13       0.27       0.24       1.00
+    KSI 3       0.26       0.27       1.13       0.23       0.24       1.00
+    KSI 4        - -        - -        - -        - -        - -        - -
+    KSI 5        - -        - -        - -        - -        - -        - -
+    KSI 6      -0.79      -0.79      -0.79        - -        - -        - -
+
+         Covariance Matrix of ETA and KSI        
+
+               KSI 4      KSI 5      KSI 6   
+            --------   --------   --------
+    KSI 4        - -
+    KSI 5        - -      -2.19
+    KSI 6        - -        - -      -2.27
+
+ analysis group B                                                               
+
+ Common Metric Completely Standardized Solution
+
+         LAMBDA-Y    
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       0.20        - -        - -        - -        - -        - -
+    VAR 2        - -       0.19        - -        - -        - -        - -
+    VAR 3        - -        - -      -0.19        - -        - -        - -
+    VAR 4        - -        - -        - -        - -        - -        - -
+    VAR 5        - -        - -        - -        - -        - -        - -
+    VAR 6        - -        - -        - -        - -        - -        - -
+    VAR 7        - -        - -        - -        - -        - -        - -
+    VAR 8        - -        - -        - -        - -        - -        - -
+    VAR 9        - -        - -        - -        - -        - -        - -
+
+         LAMBDA-Y    
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    VAR 1        - -        - -        - -
+    VAR 2        - -        - -        - -
+    VAR 3        - -        - -        - -
+    VAR 4        - -        - -        - -
+    VAR 5        - -        - -        - -
+    VAR 6        - -        - -        - -
+    VAR 7       2.88        - -        - -
+    VAR 8        - -       2.90        - -
+    VAR 9        - -        - -      -2.88
+
+         GAMMA       
+
+               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       1.00        - -        - -       4.88        - -        - -
+    ETA 2        - -       1.00        - -       5.36        - -        - -
+    ETA 3        - -        - -       1.00       5.23        - -        - -
+    ETA 4       1.12        - -        - -        - -       0.35        - -
+    ETA 5        - -       1.14        - -        - -       0.37        - -
+    ETA 6        - -        - -       1.11        - -       0.33        - -
+    ETA 7       1.13        - -        - -        - -        - -       0.35
+    ETA 8        - -       1.13        - -        - -        - -       0.35
+    ETA 9        - -        - -       1.13        - -        - -       0.35
+
+         Covariance Matrix of ETA and KSI        
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    ETA 1       1.00
+    ETA 2       0.24       1.00
+    ETA 3       0.23       0.24       1.00
+    ETA 4       1.12       0.26       0.26       1.00
+    ETA 5       0.27       1.14       0.28       0.02       1.00
+    ETA 6       0.26       0.27       1.11       0.04       0.04       1.00
+    ETA 7       1.13       0.27       0.26       1.27       0.30       0.29
+    ETA 8       0.27       1.13       0.27       0.30       1.29       0.31
+    ETA 9       0.26       0.27       1.13       0.30       0.31       1.26
+    KSI 1       1.00       0.24       0.23       1.12       0.27       0.26
+    KSI 2       0.24       1.00       0.24       0.26       1.14       0.27
+    KSI 3       0.23       0.24       1.00       0.26       0.28       1.11
+    KSI 4        - -        - -        - -        - -        - -        - -
+    KSI 5        - -        - -        - -      -0.76      -0.81      -0.73
+    KSI 6        - -        - -        - -        - -        - -        - -
+
+         Covariance Matrix of ETA and KSI        
+
+               ETA 7      ETA 8      ETA 9      KSI 1      KSI 2      KSI 3   
+            --------   --------   --------   --------   --------   --------
+    ETA 7       1.00
+    ETA 8       0.03       1.00
+    ETA 9       0.02       0.04       1.00
+    KSI 1       1.13       0.27       0.26       1.00
+    KSI 2       0.27       1.13       0.27       0.24       1.00
+    KSI 3       0.26       0.27       1.13       0.23       0.24       1.00
+    KSI 4        - -        - -        - -        - -        - -        - -
+    KSI 5        - -        - -        - -        - -        - -        - -
+    KSI 6      -0.79      -0.79      -0.79        - -        - -        - -
+
+         Covariance Matrix of ETA and KSI        
+
+               KSI 4      KSI 5      KSI 6   
+            --------   --------   --------
+    KSI 4        - -
+    KSI 5        - -      -2.19
+    KSI 6        - -        - -      -2.27
+
+         THETA-EPS   
+
+               VAR 1      VAR 2      VAR 3      VAR 4      VAR 5      VAR 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1       0.96
+    VAR 2       0.17       0.97
+    VAR 3        - -        - -       0.96
+    VAR 4        - -        - -        - -       0.98
+    VAR 5        - -        - -        - -        - -       1.03
+    VAR 6        - -        - -        - -        - -        - -       0.98
+    VAR 7        - -        - -        - -        - -        - -        - -
+    VAR 8        - -        - -        - -        - -        - -        - -
+    VAR 9        - -        - -        - -        - -        - -        - -
+
+         THETA-EPS   
+
+               VAR 7      VAR 8      VAR 9   
+            --------   --------   --------
+    VAR 7      -7.30
+    VAR 8        - -      -7.41
+    VAR 9        - -        - -      -7.27
+
+                           Time used:    0.156 Seconds
