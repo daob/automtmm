@@ -1,6 +1,6 @@
 
-                                DATE:  4/21/2009
-                                  TIME: 14:45
+                                DATE:  4/29/2009
+                                  TIME: 12:08
 
 
                                 L I S R E L  8.51
@@ -21,7 +21,7 @@
                         Universal Copyright Convention.
                           Website: www.ssicentral.com
 
- The following lines were read from file E:\Database\ESS experiments\round2\3job\PT\r2jobPT.LS8:
+ The following lines were read from file Z:\home\daob\work\automtmm\tests\ess-round2\r2jobPT.LS8:
 
  Analysis of experiment 3 (current job) PORTUGAL with 2 groups SB-MTMM model
  group A
@@ -2487,4 +2487,4 @@
     VAR 8        - -      -7.41
     VAR 9        - -        - -      -7.27
 
-                           Time used:    0.156 Seconds
+                           Time used:    0.120 Seconds

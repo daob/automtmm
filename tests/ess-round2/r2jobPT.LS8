@@ -48,7 +48,7 @@ free  ph 5 5 ph 6 6
 value 1 ph 1 1 ph 2 2 ph 3 3 
 start .5 all
 path diagram
-out mi sc iter=200 adm=of ns rs
+OU BE=BE.out AL=AL.out GA=GA.out PH=PH.out PS=PS.out KA=KA.out TX=TX.out TY=TY.out TD=TD.out TE=TE.out LX=LX.out LY=LY.out mi sc iter=200 adm=of ns rs
 
 analysis group B
 data ni=9 no=245 ma=km
@@ -85,4 +85,4 @@ value 1 te 4 4 te 5 5 te 6 6
 value 1 ly 1 1 ly 2 2 ly 7 7 ly 8 8
 value -1 ly 3 3 ly 9 9
 start .5 all
-out mi sc iter=200 adm=of ns
+OU BE=BE.out AL=AL.out GA=GA.out PH=PH.out PS=PS.out KA=KA.out TX=TX.out TY=TY.out TD=TD.out TE=TE.out LX=LX.out LY=LY.out mi sc iter=200 adm=of ns
