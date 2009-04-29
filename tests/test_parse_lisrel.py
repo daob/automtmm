@@ -5,22 +5,20 @@ import unittest
 
 base_path = '/home/daob/work/automtmm'
 sys.path.append(base_path)
-import parse_lisrel
+from parse_lisrel import LisrelInput
 
 
 class TestParseFunctions(unittest.TestCase):
 
     def setUp(self):
-        test_file = open(os.path.join(base_path, 
-                         'tests/ess-round2/r2jobPT.LS8'), 'rb')
-        self.test_input = test_file.read()
-        test_file.close()
+        self.test_input = LisrelInput(os.path.join(base_path, 
+                            'tests/ess-round2/r2jobPT.LS8'))
 
     def test_get_ngroups(self):
-        self.assertEqual(parse_lisrel.get_ngroups(self.test_input), 2)
+        self.assertEqual(self.test_input.get_ngroups(), 2)
 
     def test_get_dimensions(self):
-        dim = parse_lisrel.get_dimensions(self.test_input)
+        dim = self.test_input.get_dimensions()
         self.assertEqual(dim[0]['NX'], 0)
         self.assertEqual(dim[0]['NY'], 9)
         self.assertEqual(dim[0]['NK'], 6)
@@ -31,7 +29,7 @@ class TestParseFunctions(unittest.TestCase):
         self.assertEqual(dim[1]['NE'], 9)
 
     def test_get_matrix_forms(self):
-        forms = parse_lisrel.get_matrix_forms(self.test_input)
+        forms = self.test_input.get_matrix_forms()
         self.assertEqual(len(forms), 2)
         self.assertEqual(forms[0]['LY'], {'Form':'FU', 'Free':'FI'})
         self.assertEqual(forms[0]['TE'], {'Form':'SY', 'Free':'FI'})
