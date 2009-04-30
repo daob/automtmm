@@ -138,7 +138,10 @@ class TestInputPT(unittest.TestCase):
         [ 0.     ,  3.2535 ,  0.     ,  0.     ,  0.     ,  1.     ],
         [ 0.     ,  0.     ,  3.2535 ,  0.     ,  0.     ,  1.     ]])
         assert_mats_equal(mats['GA'][1], ga_2, self)
-        print mats
+        print "TE group 1 is:"
+        print mats['TE'][0]
+        print "TE group 2 is:"
+        print mats['TE'][1]
         
 def assert_mats_equal(mat1, mat2, by_obj):
     """Convenience function to assert that two matrices or arrays have the same

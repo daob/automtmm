@@ -168,17 +168,34 @@ class LisrelInput:
                     matlen = order[0] * order[1]
                     arr_group = np.array(numbers[ igrp*matlen : 
                             (igrp*matlen) + matlen ])
+                    # LISREL changes matrices specified as FULL to 
+                    # DIAGONAL automatically if possible:
                     if len(numbers)/ngroups != matlen and \
                             len(numbers)/ngroups == order[0]:
-                    # LISREL changes matrices specified as FULL to 
-                    # DIAGONAL automatically if possible
                         gmat = np.diag(numbers[igrp*order[0] : 
                                 (igrp*order[0]) + order[0]])
                     else:                       
                         gmat = np.matrix(np.reshape(arr_group, 
                                     (order[1], order[0])))
                     mat.append(gmat)
-                
+            
+            elif matforms[matname]['Form'] == 'SY': 
+                for igrp in range(ngroups):
+                    nrows, ncols = self.get_matrix_shape(matname, igrp)
+                    offset = igrp * nrows*(nrows + 1)/2
+                    print "ncols for %s: %d" % (matname,ncols)
+                    print numbers
+                    symat = []
+                    start_prev = 0
+                    for row in range(nrows):
+                        start = row + start_prev
+                        start += offset
+                        tmp = numbers[ start:start+row+1 ]
+                        tmp.extend([0] * (ncols - row - 1))
+                        symat.append(tmp)
+                        start_prev = start
+#symat = symmetrize_matrix(np.matrix(symat))
+                    mat.append(symat)
             else: 
                 mat = '?'
                 
@@ -190,3 +207,10 @@ class LisrelInput:
         """argument: path to symmetric matrix output"""
         pass
 
+def symmetrize_matrix(mat):
+    """mat is a NumPy.matrix or .array. Copies the lower diagonal elements
+       to the upper diagonal elements."""
+    for i in range(mat.shape[0]):
+        for j in range(mat.shape[1]):
+            mat[i, j] = mat[j, i]
+    return mat
