@@ -2,6 +2,7 @@
 import sys
 import os
 import unittest
+import numpy as np
 
 base_path = '/home/daob/work/automtmm'
 sys.path.append(base_path)
@@ -68,7 +69,7 @@ class TestInputPT(unittest.TestCase):
         self.assertEqual(dim[0]['NK'], 6)
         self.assertEqual(dim[0]['NE'], 9)
         self.assertEqual(dim[1]['NX'], 0)
-        self.assertEqual(dim[1]['NY'], 91)
+        self.assertEqual(dim[1]['NY'], 9)
         self.assertEqual(dim[1]['NK'], 6)
         self.assertEqual(dim[1]['NE'], 9)
 
@@ -108,9 +109,48 @@ class TestInputPT(unittest.TestCase):
         new_input = LisrelInput(self.path)
         self.assert_(self.input_writes_output(new_input))
 
+    def test_get_matrices(self):
+        mats = self.test_input.get_matrices(path = 'temp')
+        ly_1 = np.diag([1.,1.,-1.,1.,1.,-1.,0.,0.,0.])
+        assert_mats_equal(mats['LY'][0], ly_1, self)
+        ly_2 = np.diag([1.,1.,-1.,0.,0.,0.,1.,1.,-1.])
+        assert_mats_equal(mats['LY'][1], ly_2, self)
+
+        ga_1 = np.matrix([[ 
+          0.20472,  0.     ,  0.     ,  1.     ,  0.     ,  0.     ],
+        [ 0.     ,  0.18653,  0.     ,  1.     ,  0.     ,  0.     ],
+        [ 0.     ,  0.     ,  0.19128,  1.     ,  0.     ,  0.     ],
+        [ 3.2513 ,  0.     ,  0.     ,  0.     ,  1.     ,  0.     ],
+        [ 0.     ,  3.0898 ,  0.     ,  0.     ,  1.     ,  0.     ],
+        [ 0.     ,  0.     ,  3.3435 ,  0.     ,  1.     ,  0.     ],
+        [ 3.2535 ,  0.     ,  0.     ,  0.     ,  0.     ,  1.     ],
+        [ 0.     ,  3.2535 ,  0.     ,  0.     ,  0.     ,  1.     ],
+        [ 0.     ,  0.     ,  3.2535 ,  0.     ,  0.     ,  1.     ]])
+        assert_mats_equal(mats['GA'][0], ga_1, self)
+
+        ga_2 = np.matrix([[ 0.20472,  0.     ,  0.     ,  1.     ,  0.     ,  0.     ],
+        [ 0.     ,  0.18653,  0.     ,  1.     ,  0.     ,  0.     ],
+        [ 0.     ,  0.     ,  0.19128,  1.     ,  0.     ,  0.     ],
+        [ 3.2513 ,  0.     ,  0.     ,  0.     ,  1.     ,  0.     ],
+        [ 0.     ,  3.0898 ,  0.     ,  0.     ,  1.     ,  0.     ],
+        [ 0.     ,  0.     ,  3.3435 ,  0.     ,  1.     ,  0.     ],
+        [ 3.2535 ,  0.     ,  0.     ,  0.     ,  0.     ,  1.     ],
+        [ 0.     ,  3.2535 ,  0.     ,  0.     ,  0.     ,  1.     ],
+        [ 0.     ,  0.     ,  3.2535 ,  0.     ,  0.     ,  1.     ]])
+        assert_mats_equal(mats['GA'][1], ga_2, self)
+        print mats
+        
+def assert_mats_equal(mat1, mat2, by_obj):
+    """Convenience function to assert that two matrices or arrays have the same
+       dimensions and all elements are approximately equal (within machine tolerance)."""
+    by_obj.assertEqual(mat1.shape, mat2.shape)
+    for i in range(mat1.shape[0]):
+        for j in range(mat1.shape[1]):
+            by_obj.assertAlmostEqual(mat2[i, j], mat1[i, j])
+
 if __name__ == '__main__':
     suite_PT = unittest.TestLoader().loadTestsFromTestCase(TestInputPT)
     suite_GB = unittest.TestLoader().loadTestsFromTestCase(TestInputGB)
     suite = unittest.TestSuite([suite_PT, suite_GB])
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    unittest.TextTestRunner(verbosity=8).run(suite)
 

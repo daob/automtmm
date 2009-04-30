@@ -1,7 +1,9 @@
 """Classes to deal with LISREL input and output files."""
 #!/usr/bin/python
+import os
 import re
 from copy import deepcopy
+import numpy as np
 
 
 class LisrelInput:
@@ -18,7 +20,8 @@ class LisrelInput:
         else:
             self.input_text = text
         self.re_flags = re.MULTILINE | re.IGNORECASE 
-        self.mats = { 'LY': {'Form':'FU', 'Free':'FI'},
+        self.mats = { 
+             'LY': {'Form':'FU', 'Free':'FI'},
              'LX': {'Form':'FU', 'Free':'FI'}, 
              'TE': {'Form':'DI', 'Free':'FR'}, 
              'TD': {'Form':'DI', 'Free':'FR'}, 
@@ -26,10 +29,10 @@ class LisrelInput:
              'GA': {'Form':'FU', 'Free':'FR'}, 
              'PH': {'Form':'SY', 'Free':'FR'}, 
              'PS': {'Form':'DI', 'Free':'FR'}, 
-             'TY': {'Form':'DI', 'Free':'FI'}, 
-             'TX': {'Form':'DI', 'Free':'FI'}, 
-             'KA': {'Form':'DI', 'Free':'FI'}, 
-             'AL': {'Form':'DI', 'Free':'FI'} }
+             'TY': {'Form':'VE', 'Free':'FI'},
+             'TX': {'Form':'VE', 'Free':'FI'}, 
+             'KA': {'Form':'VE', 'Free':'FI'}, 
+             'AL': {'Form':'VE', 'Free':'FI'} }
 
 
     def get_matrix_forms(self):
@@ -83,10 +86,11 @@ class LisrelInput:
                     dims[igroup][key] = int(find[igroup])
         return(dims)
 
-    def get_modified_input(self):
+    def get_modified_input(self, extras = ' MI AD=OFF IT=200 NS'):
         """Modifies input to write matrix results to files. Returns string."""
         outstr = ' '.join(["%s=%s.out"%(key, key) for key in self.mats.keys()])
-        reg_out = re.compile(r'^[ ]*OU([A-Z0-9=.\'"]+)', self.re_flags)
+        outstr += ' PV=PV.out SV=SV.out' + extras
+        reg_out = re.compile(r'^[ ]*(OU[A-Z0-9=. \'"]+)', self.re_flags)
         return(reg_out.sub(r'OU ' + outstr, self.input_text))
 
     def write_to_file(self, new_text, path = ''):
@@ -101,3 +105,88 @@ class LisrelInput:
         w_file = open(path, 'w')
         w_file.write(new_text)
         w_file.close()
+
+    def get_matrix_shape(self, matname, groupnum):
+        """Returns the shape of a given LISREL matrix <matname> 
+            in group <groupnum>."""
+        dim = self.get_dimensions()
+        dim = dim[groupnum]
+
+        matorderdict = \
+        {'LY': (dim['NY'], dim['NE']),
+         'LX': (dim['NX'], dim['NE']),
+         'TE': (dim['NY'], dim['NY']),
+         'TD': (dim['NX'], dim['NX']),
+         'BE': (dim['NE'], dim['NE']),
+         'GA': (dim['NK'], dim['NE']),
+         'PH': (dim['NK'], dim['NK']),
+         'PS': (dim['NE'], dim['NE']),
+         'TY': (dim['NY'], 0),
+         'TX': (dim['NX'], 0),
+         'KA': (dim['NE'], 0),
+         'AL': (dim['NK'], 0),
+        }
+        return(matorderdict[matname])
+
+    def lisrel_science_to_other(self, string):
+        '''Finds numbers of the form 0.12D-04 and converts them to a list of
+           Python floats.
+           
+           LISREL Scientific notation is different from the regular one. 
+           Normally an e or E is used to mean 'multiplied by 10 to the power
+           of...'. LISREL uses a D, confusing Python and R.'''
+        numbers = re.compile(r'([0-9.DE\-\\+]+)', self.re_flags)
+        numbers = [float(num.replace('D','e')) for 
+                        num in numbers.findall(string) ]
+        return(numbers)
+
+    def get_matrices(self, path = ''):
+        """Read matrices from output files <MAT>.out, taking into account 
+           the form of the matrix. Returns dict of <ngroups> list of 
+           NumPy.matrices read from the files."""
+        if path == '':
+            path = self.path
+        mats = deepcopy(self.mats)
+        matforms = self.get_matrix_forms()[0]
+        ngroups = self.get_ngroups()
+
+        for matname in self.mats.keys():
+            matf = file(os.path.join(path, matname+'.out'), 'rb')
+            mat_s = matf.read()
+            numbers = self.lisrel_science_to_other(mat_s)
+            mat = []
+            if matforms[matname]['Form'] == 'DI': # or vec
+                for igrp in range(ngroups):
+                    order = self.get_matrix_shape(matname, igrp)[0]
+                    mat.append(np.diag(numbers[ igrp*order : 
+                                (igrp*order) + order ]))
+
+            elif matforms[matname]['Form'] == 'FU': 
+                                    
+                for igrp in range(ngroups):
+                    order = self.get_matrix_shape(matname, igrp)
+                    matlen = order[0] * order[1]
+                    arr_group = np.array(numbers[ igrp*matlen : 
+                            (igrp*matlen) + matlen ])
+                    if len(numbers)/ngroups != matlen and \
+                            len(numbers)/ngroups == order[0]:
+                    # LISREL changes matrices specified as FULL to 
+                    # DIAGONAL automatically if possible
+                        gmat = np.diag(numbers[igrp*order[0] : 
+                                (igrp*order[0]) + order[0]])
+                    else:                       
+                        gmat = np.matrix(np.reshape(arr_group, 
+                                    (order[1], order[0])))
+                    mat.append(gmat)
+                
+            else: 
+                mat = '?'
+                
+            mats[matname] = mat
+            matf.close()
+        return(mats)
+
+    def lisrel_symmat_to_mm(self, path):
+        """argument: path to symmetric matrix output"""
+        pass
+
