@@ -8,6 +8,14 @@ base_path = '/home/daob/work/automtmm'
 sys.path.append(base_path)
 from parse_lisrel import LisrelInput
 
+def assert_mats_equal(mat1, mat2, by_obj):
+    """Convenience function to assert that two matrices or arrays have the same
+       dimensions and all elements are approximately equal (within machine tolerance)."""
+    by_obj.assertEqual(mat1.shape, mat2.shape)
+    for i in range(mat1.shape[0]):
+        for j in range(mat1.shape[1]):
+            by_obj.assertAlmostEqual(mat2[i, j], mat1[i, j])
+
 
 class TestInputGB(unittest.TestCase):
 
@@ -139,26 +147,27 @@ class TestInputPT(unittest.TestCase):
         [ 0.     ,  0.     ,  3.2535 ,  0.     ,  0.     ,  1.     ]])
         assert_mats_equal(mats['GA'][1], ga_2, self)
 
-        te_1 = np.matrix([[ 0.9644   0.20402  0.       0.       0.       0.       0.       0.       0.     ]
-         [ 0.20402  0.96592  0.       0.       0.       0.       0.       0.       0.     ] 
-         [ 0.       0.       0.96424  0.       0.       0.       0.       0.       0.     ]
-         [ 0.       0.       0.      -7.3297   0.       0.       0.       0.       0.     ]
-     [ 0.       0.       0.       0.      -6.4164   0.       0.       0.       0.     ]
-     [ 0.       0.       0.       0.       0.      -7.9517   0.       0.       0.     ]
-     [ 0.       0.       0.       0.       0.       0.       1.       0.       0.     ]
-     [ 0.       0.       0.       0.       0.       0.       0.       1.       0.     ]
-     [ 0.       0.       0.       0.       0.       0.       0.       0.       1.     ]]        )
-        te_2 = np.matrix([[ 0.9644   0.1683   0.       0.       0.       0.       0.       0.       0.     ]
-     [ 0.1683   0.96592  0.       0.       0.       0.       0.       0.       0.     ]
-     [ 0.       0.       0.96424  0.       0.       0.       0.       0.       0.     ]
-     [ 0.       0.       0.       1.       0.       0.       0.       0.       0.     ]
-     [ 0.       0.       0.       0.       1.       0.       0.       0.       0.     ]
-     [ 0.       0.       0.       0.       0.       1.       0.       0.       0.     ]
-     [ 0.       0.       0.       0.       0.       0.      -7.3089   0.       0.     ]
-     [ 0.       0.       0.       0.       0.       0.       0.      -7.3312       0.     ]
-     [ 0.       0.       0.       0.       0.       0.       0.       0.      -7.3028 ]])
-        assert_mats_equal(mats['TE'][0], ga_1, self)
-        assert_mats_equal(mats['TE'][1], ga_2, self)
+        te_1 = np.matrix([[ 0.9644, 0.20402, 0., 0., 0., 0., 0., 0., 0., ],
+         [ 0.20402, 0.96592, 0., 0., 0., 0., 0., 0., 0., ], 
+         [ 0., 0., 0.96424, 0., 0., 0., 0., 0., 0., ],
+         [ 0., 0., 0., -7.3297, 0., 0., 0., 0., 0., ],
+     [ 0., 0., 0., 0., -6.4164, 0., 0., 0., 0., ],
+     [ 0., 0., 0., 0., 0., -7.9517, 0., 0., 0., ],
+     [ 0., 0., 0., 0., 0., 0., 1., 0., 0., ],
+     [ 0., 0., 0., 0., 0., 0., 0., 1., 0., ],
+     [ 0., 0., 0., 0., 0., 0., 0., 0., 1., ]]        )
+        te_2 = np.matrix([[ 0.9644, 0.1683, 0., 0., 0., 0., 0., 0., 0., ],
+     [ 0.1683, 0.96592, 0., 0., 0., 0., 0., 0., 0., ],
+     [ 0., 0., 0.96424, 0., 0., 0., 0., 0., 0., ],
+     [ 0., 0., 0., 1., 0., 0., 0., 0., 0., ],
+     [ 0., 0., 0., 0., 1., 0., 0., 0., 0., ],
+     [ 0., 0., 0., 0., 0., 1., 0., 0., 0., ],
+     [ 0., 0., 0., 0., 0., 0., -7.3089, 0., 0., ],
+     [ 0., 0., 0., 0., 0., 0., 0., -7.3312, 0., ],
+     [ 0., 0., 0., 0., 0., 0., 0., 0., -7.3028, ]])
+        assert_mats_equal(mats['TE'][0], te_1, self)
+        assert_mats_equal(mats['TE'][1], te_2, self)
+
 
 
 if __name__ == '__main__':

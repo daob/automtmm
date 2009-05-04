@@ -183,8 +183,6 @@ class LisrelInput:
                 for igrp in range(ngroups):
                     nrows, ncols = self.get_matrix_shape(matname, igrp)
                     offset = igrp * nrows*(nrows + 1)/2
-                    print "ncols for %s: %d" % (matname,ncols)
-                    print numbers
                     symat = []
                     start_prev = offset
                     for row in range(nrows):
