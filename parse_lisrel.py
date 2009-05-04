@@ -1,7 +1,6 @@
 """Classes to deal with LISREL input and output files."""
 #!/usr/bin/python
-import os
-import re
+import os, sys, re, subprocess
 from copy import deepcopy
 import numpy as np
 
@@ -87,11 +86,18 @@ class LisrelInput:
         return(dims)
 
     def get_modified_input(self, extras = ' MI AD=OFF IT=200 NS SC'):
-        """Modifies input to write matrix results to files. Returns string."""
+        """Modifies input to write matrix results to files, and converts relative
+           paths in LISREL input to absolute paths. Returns string."""
         outstr = ' '.join(["%s=%s.out"%(key, key) for key in self.mats.keys()])
         outstr += ' PV=PV.out SV=SV.out' + extras
         reg_out = re.compile(r'^[ ]*(OU[A-Z0-9=. \'"]+)', self.re_flags)
-        return(reg_out.sub(r'OU ' + outstr, self.input_text))
+        reg_inp = re.compile(r'file[ ]*=[ ]*([^ \r/\n\t$]+)[ \t\r\n$]', self.re_flags)
+        modded = reg_out.sub(r'OU ' + outstr, self.input_text)
+        modded = reg_inp.sub(r"file = %s%s\1" % 
+                                ( os.path.abspath(os.path.dirname(self.path)),
+                                  os.sep), 
+                             modded)
+        return(modded)
 
     def write_to_file(self, new_text, path = ''):
         """Write the input text to a file. Overwrites the original 
@@ -151,7 +157,6 @@ class LisrelInput:
         ngroups = self.get_ngroups()
 
         for matname in self.mats.keys():
-            print "MATRIX: %s" % matname
             matf = file(os.path.join(path, matname+'.out'), 'rb')
             mat_s = matf.read()
             numbers = self.lisrel_science_to_other(mat_s)
@@ -168,7 +173,6 @@ class LisrelInput:
             elif matforms[matname]['Form'] == 'FU': 
                                     
                 for igrp in range(ngroups):
-                    print "GROUP: %d" % igrp
                     order = self.get_matrix_shape(matname, igrp)
                     matlen = order[0] * order[1]
                     arr_group = np.matrix(numbers[ igrp*matlen : 
@@ -187,16 +191,19 @@ class LisrelInput:
             elif matforms[matname]['Form'] == 'SY': 
                 for igrp in range(ngroups):
                     nrows, ncols = self.get_matrix_shape(matname, igrp)
-                    offset = igrp * nrows*(nrows + 1)/2
-                    symat = []
-                    start_prev = offset
-                    for row in range(nrows):
-                        start = row + start_prev
-                        tmp = numbers[ start:start+row+1 ]
-                        tmp.extend([0.0] * (ncols - row - 1))
-                        symat.append(tmp)
-                        start_prev = start
-                    symat = symmetrize_matrix(np.matrix(symat))
+                    if len(numbers)/ngroups != matlen and len(numbers)/ngroups == nrows:
+                        symat = np.diag(numbers[igrp*nrows : (igrp*nrows) + nrows])
+                    else:    
+                        offset = igrp * nrows*(nrows + 1)/2
+                        symat = []
+                        start_prev = offset
+                        for row in range(nrows):
+                            start = row + start_prev
+                            tmp = numbers[ start:start+row+1 ]
+                            tmp.extend([0.0] * (ncols - row - 1))
+                            symat.append(tmp)
+                            start_prev = start
+                        symat = symmetrize_matrix(np.matrix(symat))
                     mat.append(symat)
 
             elif matforms[matname]['Form'] == 'VE': # vectors
@@ -221,6 +228,7 @@ class LisrelInput:
                     
             mats[matname] = mat
             matf.close()
+
         return(mats)
     
     def standardize_matrices(self):
@@ -246,7 +254,26 @@ class LisrelInput:
 
             smats.append({'GA': ga_s, 'LY': ly_s})
 
-        return(smats) # no action so far
+        return(smats) 
+
+    def run_lisrel(self, temp_path = ''):
+        """Run LISREL executable on the input file. The output is written to temp_path.
+           Raises an exception if the exit code of the LISREL executable is not 0."""
+        if temp_path == '': # default temp dir is same as self.path
+            temp_path = os.path.abspath(os.path.dirname(self.path)) 
+        if os.name == 'posix': # Linux/BSD/Mac OS X/Cygwin
+            exstr = 'wine Lisrel85.exe'
+        elif os.name == 'nt': # Windows
+            exstr = os.path.join(os.getenv('ProgramFiles', 'C:\\Program Files'), 
+                    'Lisrel85.exe')
+        cmd =[exstr, os.path.abspath(self.path),  'OUT']  
+        curdir = os.getcwd()
+        os.chdir(temp_path)
+        retval = os.system(" ".join(cmd))
+        os.chdir(curdir)
+
+        if not retval == 0:
+            raise Exception("LISREL stopped with an error.")
 
 def symmetrize_matrix(mat):
     """mat is a NumPy.matrix or .array. Copies the lower diagonal elements

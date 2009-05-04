@@ -20,8 +20,32 @@ def assert_mats_equal(mat1, mat2, by_obj):
 class TestInputGB(unittest.TestCase):
 
     def setUp(self):
-        self.test_input = LisrelInput(os.path.join(base_path, 
-                            'tests/ess-round3/GB/IMSMETN/r3imsmetnGB.LS8'))
+        self.path = os.path.join(base_path, 
+                        'tests/ess-round3/GB/IMSMETN/r3imsmetnGB.LS8')
+        self.test_input = LisrelInput(self.path)
+
+    def input_writes_output(self, input_obj):
+        import re
+        str = input_obj.get_modified_input()
+        reg = re.compile(r'OU[^\n\r$]+PH[ ]*=[ ]*[A-Z]+\.[A-Z]', 
+                input_obj.re_flags)
+        return(len(reg.findall(str)) > 0)
+
+    def test_get_modified_input(self):
+        self.assert_(self.input_writes_output(self.test_input))
+
+    def test_write_to_file(self):
+        str = self.test_input.get_modified_input()
+        self.test_input.write_to_file(str)
+        orig_str = self.test_input.input_text
+        f = open(self.path + '.backup')
+        self.assertEqual(f.read(), orig_str)
+        f.close()
+        new_input = LisrelInput(self.path)
+        self.assert_(self.input_writes_output(new_input))
+
+    def test_run_lisrel(self):
+        self.test_input.run_lisrel(os.path.join(base_path, 'temp'))
 
     def test_get_ngroups(self):
         self.assertEqual(self.test_input.get_ngroups(), 3)
@@ -60,8 +84,12 @@ class TestInputGB(unittest.TestCase):
         self.assertEqual(forms[2]['PH'], {'Form':'SY', 'Free':'IN'})
 
     def test_standardize(self):
+        print "GREAT BRITAIN"
         m = self.test_input.standardize_matrices()
-        print m
+        for i in range(3):
+            for k,v in m[i].iteritems():
+                print "GROUP %d, MATRIX %s:" %(i+1, k)
+                print m[i][k]
 
 
 class TestInputPT(unittest.TestCase):
@@ -70,6 +98,29 @@ class TestInputPT(unittest.TestCase):
         self.path = os.path.join(base_path, 
                             'tests/ess-round2/r2jobPT.LS8')
         self.test_input = LisrelInput(self.path)
+
+    def input_writes_output(self, input_obj):
+        import re
+        str = input_obj.get_modified_input()
+        reg = re.compile(r'OU[^\n\r$]+PH[ ]*=[ ]*[A-Z]+\.[A-Z]', 
+                input_obj.re_flags)
+        return(len(reg.findall(str)) > 0)
+
+    def test_get_modified_input(self):
+        self.assert_(self.input_writes_output(self.test_input))
+
+    def test_write_to_file(self):
+        str = self.test_input.get_modified_input()
+        self.test_input.write_to_file(str)
+        orig_str = self.test_input.input_text
+        f = open(self.path + '.backup')
+        self.assertEqual(f.read(), orig_str)
+        f.close()
+        new_input = LisrelInput(self.path)
+        self.assert_(self.input_writes_output(new_input))
+
+    def test_run_lisrel(self):
+        self.test_input.run_lisrel(os.path.join(base_path, 'temp'))
 
     def test_get_ngroups(self):
         self.assertEqual(self.test_input.get_ngroups(), 2)
@@ -100,26 +151,6 @@ class TestInputPT(unittest.TestCase):
         self.assertEqual(forms[1]['BE'], {'Form':'FU', 'Free':'IN'})
         self.assertEqual(forms[1]['GA'], {'Form':'FU', 'Free':'IN'})
         self.assertEqual(forms[1]['PH'], {'Form':'SY', 'Free':'IN'})
-
-    def input_writes_output(self, input_obj):
-        import re
-        str = input_obj.get_modified_input()
-        reg = re.compile(r'OU[^\n\r$]+PH[ ]*=[ ]*[A-Z]+\.[A-Z]', 
-                input_obj.re_flags)
-        return(len(reg.findall(str)) > 0)
-    
-    def test_get_modified_input(self):
-        self.assert_(self.input_writes_output(self.test_input))
-
-    def test_write_to_file(self):
-        str = self.test_input.get_modified_input()
-        self.test_input.write_to_file(str)
-        orig_str = self.test_input.input_text
-        f = open(self.path + '.backup')
-        self.assertEqual(f.read(), orig_str)
-        f.close()
-        new_input = LisrelInput(self.path)
-        self.assert_(self.input_writes_output(new_input))
 
     def test_get_matrices(self):
         mats = self.test_input.get_matrices(path = 'temp')
@@ -173,8 +204,12 @@ class TestInputPT(unittest.TestCase):
         assert_mats_equal(mats['TE'][1], te_2, self)
 
     def test_standardize(self):
+        print "PORTUGAL"
         m = self.test_input.standardize_matrices()
-        print m
+        for i in range(2):
+            for k,v in m[i].iteritems():
+                print "GROUP %d, MATRIX %s:" %(i+1, k)
+                print m[i][k]
 
 if __name__ == '__main__':
     suite_PT = unittest.TestLoader().loadTestsFromTestCase(TestInputPT)
