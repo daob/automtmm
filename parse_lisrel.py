@@ -186,15 +186,14 @@ class LisrelInput:
                     print "ncols for %s: %d" % (matname,ncols)
                     print numbers
                     symat = []
-                    start_prev = 0
+                    start_prev = offset
                     for row in range(nrows):
                         start = row + start_prev
-                        start += offset
                         tmp = numbers[ start:start+row+1 ]
-                        tmp.extend([0] * (ncols - row - 1))
+                        tmp.extend([0.0] * (ncols - row - 1))
                         symat.append(tmp)
                         start_prev = start
-#symat = symmetrize_matrix(np.matrix(symat))
+                    symat = symmetrize_matrix(np.matrix(symat))
                     mat.append(symat)
             else: 
                 mat = '?'
