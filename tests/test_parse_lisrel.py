@@ -59,6 +59,10 @@ class TestInputGB(unittest.TestCase):
         self.assertEqual(forms[2]['GA'], {'Form':'FU', 'Free':'IN'})
         self.assertEqual(forms[2]['PH'], {'Form':'SY', 'Free':'IN'})
 
+    def test_standardize(self):
+        m = self.test_input.standardize_matrices()
+        print m
+
 
 class TestInputPT(unittest.TestCase):
 
@@ -168,6 +172,9 @@ class TestInputPT(unittest.TestCase):
         assert_mats_equal(mats['TE'][0], te_1, self)
         assert_mats_equal(mats['TE'][1], te_2, self)
 
+    def test_standardize(self):
+        m = self.test_input.standardize_matrices()
+        print m
 
 if __name__ == '__main__':
     suite_PT = unittest.TestLoader().loadTestsFromTestCase(TestInputPT)

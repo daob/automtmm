@@ -86,7 +86,7 @@ class LisrelInput:
                     dims[igroup][key] = int(find[igroup])
         return(dims)
 
-    def get_modified_input(self, extras = ' MI AD=OFF IT=200 NS'):
+    def get_modified_input(self, extras = ' MI AD=OFF IT=200 NS SC'):
         """Modifies input to write matrix results to files. Returns string."""
         outstr = ' '.join(["%s=%s.out"%(key, key) for key in self.mats.keys()])
         outstr += ' PV=PV.out SV=SV.out' + extras
@@ -151,26 +151,27 @@ class LisrelInput:
         ngroups = self.get_ngroups()
 
         for matname in self.mats.keys():
+            print "MATRIX: %s" % matname
             matf = file(os.path.join(path, matname+'.out'), 'rb')
             mat_s = matf.read()
             numbers = self.lisrel_science_to_other(mat_s)
             if len(numbers) == 0: # fill it with zeroes
-                print "ja"
                 shape = self.get_matrix_shape(matname, 0)
                 numbers = [0.0] * (shape[0] * shape[1] * ngroups)
             mat = []
             if matforms[matname]['Form'] == 'DI': # or vec
                 for igrp in range(ngroups):
                     order = self.get_matrix_shape(matname, igrp)[0]
-                    mat.append(np.diag(numbers[ igrp*order : 
-                                (igrp*order) + order ]))
+                    mat.append(np.matrix(np.diag(numbers[ igrp*order : 
+                                (igrp*order) + order ])))
 
             elif matforms[matname]['Form'] == 'FU': 
                                     
                 for igrp in range(ngroups):
+                    print "GROUP: %d" % igrp
                     order = self.get_matrix_shape(matname, igrp)
                     matlen = order[0] * order[1]
-                    arr_group = np.array(numbers[ igrp*matlen : 
+                    arr_group = np.matrix(numbers[ igrp*matlen : 
                             (igrp*matlen) + matlen ])
                     # LISREL changes matrices specified as FULL to 
                     # DIAGONAL automatically if possible:
@@ -181,7 +182,7 @@ class LisrelInput:
                     else:                       
                         gmat = np.matrix(np.reshape(arr_group, 
                                     (order[1], order[0])))
-                    mat.append(gmat)
+                    mat.append(np.matrix(gmat))
             
             elif matforms[matname]['Form'] == 'SY': 
                 for igrp in range(ngroups):
@@ -221,10 +222,31 @@ class LisrelInput:
             mats[matname] = mat
             matf.close()
         return(mats)
+    
+    def standardize_matrices(self):
+        """Returns the same kind of list as get_matrices, but
+           standardizes some of them. See Bollen 1989:350-1. """
+        mats = self.get_matrices(path = 'temp')
+        smats = []
+        for igrp in range(self.get_ngroups()):
+            be = mats['BE'][igrp]
+            ly = mats['LY'][igrp]
+            te = mats['TE'][igrp]
+            ga = mats['GA'][igrp]
+            ph = mats['PH'][igrp]
+            ps = mats['PS'][igrp]
 
-    def lisrel_symmat_to_mm(self, path):
-        """argument: path to symmetric matrix output"""
-        pass
+            bi = (np.diag([1.]*be.shape[0]) - be).I
+            Eee = bi * (ga*ph*ga.T + ps) * bi.T
+            Eyy = ly * Eee * ly.T + te
+            C = np.matrix(np.sqrt(np.diag(np.diag(Eee))))
+        
+            ga_s = C.I * ga * np.sqrt(np.diag(np.diag(ph)))
+            ly_s = np.sqrt(np.diag(1/np.diag(Eyy))) * ly * C
+
+            smats.append({'GA': ga_s, 'LY': ly_s})
+
+        return(smats) # no action so far
 
 def symmetrize_matrix(mat):
     """mat is a NumPy.matrix or .array. Copies the lower diagonal elements
