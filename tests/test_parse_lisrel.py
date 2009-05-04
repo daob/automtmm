@@ -169,7 +169,6 @@ class TestInputPT(unittest.TestCase):
         assert_mats_equal(mats['TE'][1], te_2, self)
 
 
-
 if __name__ == '__main__':
     suite_PT = unittest.TestLoader().loadTestsFromTestCase(TestInputPT)
     suite_GB = unittest.TestLoader().loadTestsFromTestCase(TestInputGB)

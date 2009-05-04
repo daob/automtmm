@@ -121,10 +121,10 @@ class LisrelInput:
          'GA': (dim['NK'], dim['NE']),
          'PH': (dim['NK'], dim['NK']),
          'PS': (dim['NE'], dim['NE']),
-         'TY': (dim['NY'], 0),
-         'TX': (dim['NX'], 0),
-         'KA': (dim['NE'], 0),
-         'AL': (dim['NK'], 0),
+         'TY': (dim['NY'], 1),
+         'TX': (dim['NX'], 1),
+         'KA': (dim['NE'], 1),
+         'AL': (dim['NK'], 1),
         }
         return(matorderdict[matname])
 
@@ -154,6 +154,10 @@ class LisrelInput:
             matf = file(os.path.join(path, matname+'.out'), 'rb')
             mat_s = matf.read()
             numbers = self.lisrel_science_to_other(mat_s)
+            if len(numbers) == 0: # fill it with zeroes
+                print "ja"
+                shape = self.get_matrix_shape(matname, 0)
+                numbers = [0.0] * (shape[0] * shape[1] * ngroups)
             mat = []
             if matforms[matname]['Form'] == 'DI': # or vec
                 for igrp in range(ngroups):
@@ -193,9 +197,27 @@ class LisrelInput:
                         start_prev = start
                     symat = symmetrize_matrix(np.matrix(symat))
                     mat.append(symat)
-            else: 
-                mat = '?'
+
+            elif matforms[matname]['Form'] == 'VE': # vectors
+                shape = self.get_matrix_shape(matname, igrp)
+                veclen = sum(shape) - 1
+
+                for igrp in range(ngroups):
+                    vec = np.matrix(numbers[igrp*veclen : (igrp+1) * veclen])
+                    vec.shape = shape
+                    mat.append(vec)
                 
+            elif matforms[matname]['Form'] == 'ZE': # zero matrix
+                nrows, ncols = self.get_matrix_shape(matname, igrp)
+                zemat = np.matrix([0.0] * (nrows * ncols))
+                zemat.shape = (nrows, ncols)
+                for igrp in range(ngroups):
+                    mat.append(zemat)
+                
+            else: # Unknown type
+                for igrp in range(ngroups):
+                    mat.append('Unknown LISREL matrix type')
+                    
             mats[matname] = mat
             matf.close()
         return(mats)
