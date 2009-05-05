@@ -157,6 +157,7 @@ class LisrelInput:
         ngroups = self.get_ngroups()
 
         for matname in self.mats.keys():
+            sys.stderr.write('Reading matrix %s...' % matname)
             matf = file(os.path.join(path, matname+'.out'), 'rb')
             mat_s = matf.read()
             numbers = self.lisrel_science_to_other(mat_s)
@@ -165,12 +166,14 @@ class LisrelInput:
                 numbers = [0.0] * (shape[0] * shape[1] * ngroups)
             mat = []
             if matforms[matname]['Form'] == 'DI': # or vec
+                sys.stderr.write('%s is a DIagonal matrix.\n' % matname)
                 for igrp in range(ngroups):
                     order = self.get_matrix_shape(matname, igrp)[0]
                     mat.append(np.matrix(np.diag(numbers[ igrp*order : 
                                 (igrp*order) + order ])))
 
             elif matforms[matname]['Form'] == 'FU': 
+                sys.stderr.write('%s is a FUll matrix.\n' % matname)
                                     
                 for igrp in range(ngroups):
                     order = self.get_matrix_shape(matname, igrp)
@@ -189,6 +192,7 @@ class LisrelInput:
                     mat.append(np.matrix(gmat))
             
             elif matforms[matname]['Form'] == 'SY': 
+                sys.stderr.write('%s is a SYmmetric matrix.\n' % matname)
                 for igrp in range(ngroups):
                     nrows, ncols = self.get_matrix_shape(matname, igrp)
                     if len(numbers)/ngroups != matlen and len(numbers)/ngroups == nrows:
@@ -207,6 +211,7 @@ class LisrelInput:
                     mat.append(symat)
 
             elif matforms[matname]['Form'] == 'VE': # vectors
+                sys.stderr.write('%s is a VEctor.\n' % matname)
                 shape = self.get_matrix_shape(matname, igrp)
                 veclen = sum(shape) - 1
 
@@ -216,6 +221,7 @@ class LisrelInput:
                     mat.append(vec)
                 
             elif matforms[matname]['Form'] == 'ZE': # zero matrix
+                sys.stderr.write('%s is a ZEroed matrix.\n' % matname)
                 nrows, ncols = self.get_matrix_shape(matname, igrp)
                 zemat = np.matrix([0.0] * (nrows * ncols))
                 zemat.shape = (nrows, ncols)
@@ -223,6 +229,7 @@ class LisrelInput:
                     mat.append(zemat)
                 
             else: # Unknown type
+                sys.stderr.write('%s has an unknown type!\n' % matname)
                 for igrp in range(ngroups):
                     mat.append('Unknown LISREL matrix type')
                     
@@ -231,12 +238,17 @@ class LisrelInput:
 
         return(mats)
     
-    def standardize_matrices(self):
+    def standardize_matrices(self, path = ''):
         """Returns the same kind of list as get_matrices, but
            standardizes some of them. See Bollen 1989:350-1. """
-        mats = self.get_matrices(path = 'temp')
+        sys.stderr.write('Calculating standardized matrices for %s...\n'%
+                os.path.basename(self.path))
+        if path == '':
+            path = 'temp'
+        mats = self.get_matrices(path = path)
         smats = []
         for igrp in range(self.get_ngroups()):
+            sys.stderr.write('Getting matrices for group %d (igrp=%d)\n'%(igrp+1,igrp))
             be = mats['BE'][igrp]
             ly = mats['LY'][igrp]
             te = mats['TE'][igrp]
@@ -266,7 +278,9 @@ class LisrelInput:
         elif os.name == 'nt': # Windows
             exstr = os.path.join(os.getenv('ProgramFiles', 'C:\\Program Files'), 
                     'Lisrel85.exe')
+        sys.stderr.write('Running LISREL for %s,'%os.path.basename(self.path))
         cmd =[exstr, os.path.abspath(self.path),  'OUT']  
+        sys.stderr.write('Command is "%s".\n' % ' '.join(cmd))
         curdir = os.getcwd()
         os.chdir(temp_path)
         retval = os.system(" ".join(cmd))
@@ -274,6 +288,9 @@ class LisrelInput:
 
         if not retval == 0:
             raise Exception("LISREL stopped with an error.")
+        else:
+            sys.stderr.write('LISREL terminated normally.\n')
+            
 
 def symmetrize_matrix(mat):
     """mat is a NumPy.matrix or .array. Copies the lower diagonal elements

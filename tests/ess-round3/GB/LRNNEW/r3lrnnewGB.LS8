@@ -1,7 +1,7 @@
 Analysis of GB round 3 lrnnew group 1
 Data ng=3  ni=12 no=844 ma=km
-cm file=sb-group-1.cov
-mean file=sb-group-1.mean
+cm file = /home/daob/work/automtmm/tests/ess-round3/GB/LRNNEW/sb-group-1.cov
+mean file = /home/daob/work/automtmm/tests/ess-round3/GB/LRNNEW/sb-group-1.mean
 
 model ny=12 ne=12 nk=7  ly=fu,fi te=sy,fi ps=sy,fi be=fu,fi ga=fu,fi ph=sy,fi
 value 1 ly 1 1 ly 2 2 ly 3 3 ly 4 4 ly 5 5 ly 6 6
@@ -33,12 +33,12 @@ fr ga 6 5 ga 9 6 ga 12 7
 
 start .5 all
   
-out mi iter= 200 adm=off sc
+OU BE=BE.out AL=AL.out GA=GA.out PH=PH.out PS=PS.out KA=KA.out TX=TX.out TY=TY.out TD=TD.out TE=TE.out LX=LX.out LY=LY.out PV=PV.out SV=SV.out MI AD=OFF IT=200 NS SC
 
 Analysis of group 2 
 Data  ni=12 no=762 ma=km
-cm file=sb-group-2.cov
-mean file=sb-group-2.mean
+cm file = /home/daob/work/automtmm/tests/ess-round3/GB/LRNNEW/sb-group-2.cov
+mean file = /home/daob/work/automtmm/tests/ess-round3/GB/LRNNEW/sb-group-2.mean
  
 model ny=12 ne=12 nk=7 ly=fu,fi te=sy,fi ps=in be=in ga=in ph=in
 
@@ -54,13 +54,13 @@ value 1 te 4 4 te 5 5 te 6 6 te 10 10 te 11 11 te 12 12
 
 value 0 ly 4 4 ly 5 5 ly 6 6 ly 10 10 ly 11 11 ly 12 12 
 
-out iter= 200 adm=off sc 
+OU BE=BE.out AL=AL.out GA=GA.out PH=PH.out PS=PS.out KA=KA.out TX=TX.out TY=TY.out TD=TD.out TE=TE.out LX=LX.out LY=LY.out PV=PV.out SV=SV.out MI AD=OFF IT=200 NS SC
 
 
 Analysis of group 3
 Data ni=12 no=783 ma=km
-cm file=sb-group-3.cov
-mean file=sb-group-3.mean
+cm file = /home/daob/work/automtmm/tests/ess-round3/GB/LRNNEW/sb-group-3.cov
+mean file = /home/daob/work/automtmm/tests/ess-round3/GB/LRNNEW/sb-group-3.mean
  
 model ny=12 ne=12 nk=7 ly=fu,fi te=sy,fi ps=in be=in ga=in ph=in
 
@@ -81,7 +81,7 @@ value 0 ly 4 4 ly 5 5 ly 6 6 ly 7 7 ly 8 8 ly 9 9
 
 !pd for path diagram
 pd
-out mi iter= 200 adm=off sc 
+OU BE=BE.out AL=AL.out GA=GA.out PH=PH.out PS=PS.out KA=KA.out TX=TX.out TY=TY.out TD=TD.out TE=TE.out LX=LX.out LY=LY.out PV=PV.out SV=SV.out MI AD=OFF IT=200 NS SC
 
 
 
