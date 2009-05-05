@@ -23,6 +23,7 @@ class TestInputGB(unittest.TestCase):
         self.path = os.path.join(base_path, 
                         'tests/ess-round3/GB/IMSMETN/r3imsmetnGB.LS8')
         self.test_input = LisrelInput(self.path)
+        self.run_lisrel()
 
     def input_writes_output(self, input_obj):
         import re
@@ -44,7 +45,7 @@ class TestInputGB(unittest.TestCase):
         new_input = LisrelInput(self.path)
         self.assert_(self.input_writes_output(new_input))
 
-    def test_run_lisrel(self):
+    def run_lisrel(self):
         self.test_input.run_lisrel(os.path.join(base_path, 'temp'))
 
     def test_get_ngroups(self):
@@ -98,6 +99,7 @@ class TestInputPT(unittest.TestCase):
         self.path = os.path.join(base_path, 
                             'tests/ess-round2/r2jobPT.LS8')
         self.test_input = LisrelInput(self.path)
+        self.run_lisrel()
 
     def input_writes_output(self, input_obj):
         import re
@@ -119,7 +121,7 @@ class TestInputPT(unittest.TestCase):
         new_input = LisrelInput(self.path)
         self.assert_(self.input_writes_output(new_input))
 
-    def test_run_lisrel(self):
+    def run_lisrel(self):
         self.test_input.run_lisrel(os.path.join(base_path, 'temp'))
 
     def test_get_ngroups(self):

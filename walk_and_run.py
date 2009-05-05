@@ -20,14 +20,6 @@ def solution_obtained(outpath):
     return True
 
 
-def delete_hidden_dirs(dirlist):
-    """Utility function to remove elements from a list of strings that start
-       with a dot. These are hidden directories on *nix and windows."""
-    is_hidden = map(lambda x: x.startswith('.'), dirlist)
-    for entry in enumerate(is_hidden).next():
-        if is_hidden[entry]:       
-            del dirlist[entry]
-
 def walk_and_run(top_dir, tempdir=''):
     """recurse through directory structure, looking for .LS8 files.
        Each .LS8 file is run.
