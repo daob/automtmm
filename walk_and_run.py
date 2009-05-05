@@ -111,9 +111,10 @@ def retrieve_mtmm(matrix, **kwargs):
 group: %d\n\texperiment: %s\n\tcountry: %s\n\tstudy: %s\n\n" % \
         (dirpath,filename,group_num,experiment,country,study))
     
-    nrows = matrix.shape[0]
+    #nrows = matrix.shape[0]
     input_path = os.path.join(dirpath, filename)
-    for irow in range(nrows):
+    rows = range(3); rows.extend(map(lambda x: x+group_num*3, range(3)))
+    for irow in rows: # loop only over variables that were observed in this group
         if kwargs['matname'] == 'GA':
             val, met = matrix[[irow, irow],[irow%3, (irow + 3)/3 + 2]].tolist()[0]
             if entry_exists(input_path, experiment, country, study, irow):
