@@ -1,7 +1,11 @@
 #!/usr/bin/python
 import os, tempfile, sys, re
+import MySQLdb
 from parse_lisrel import LisrelInput
 
+import numpy as np
+
+epstol = np.finfo(float).eps
 
 def solution_obtained(outpath):
     """Checks whether the output file contains errors or non-convergence messages."""
@@ -20,7 +24,115 @@ def solution_obtained(outpath):
     return True
 
 
-def walk_and_run(top_dir, tempdir=''):
+def default_action(matrix, **kwargs):
+    "By default the standardized matrices encountered by walk_and_run are just printed"
+    print matrix
+
+
+def save_estimates(input_path, experiment, country, study, val, rel, met, varnum, 
+        update_or_insert = 'insert'):
+    """Writes one row of estimates data to the database. Returns True if all is well,
+        False if an exception occurs (an exception is not thrown directly to ensure
+        that the database connection is closed)."""
+    try:
+        conn = MySQLdb.connect (host = "localhost",
+                               user = "automtmm",
+                               passwd = "automtmm",
+                               db = "automtmm")
+    except MySQLdb.Error, e:
+        sys.stderr.write( "MySQL error %d: %s\n" % (e.args[0], e.args[1]))
+        return False
+    cursor = conn.cursor()
+    try:
+        if update_or_insert == 'insert':
+            sql = """INSERT INTO estimates (input_path, experiment, country, 
+                    study, validity_coef, reliability_coef, method_coef, var_num )
+                    VALUES
+                        ('%s', '%s', '%s', '%s', %2.16f, %2.16f, %2.16f, %d)
+                    """ % (input_path, experiment, country, study, val, rel, met, varnum) 
+        elif update_or_insert == 'update':
+            sql = """UPDATE estimates SET reliability_coef=%2.16f
+                     WHERE
+                        input_path='%s' and experiment='%s' and country='%s' and 
+                        study='%s' and var_num=%d
+                    """ % (rel, input_path, experiment, country, study, varnum) 
+            
+        sys.stderr.write(sql + "\n")
+        cursor.execute(sql)
+        conn.commit()
+        
+    except MySQLdb.Error, e:
+        sys.stderr.write( "MySQL error %d: %s\n" % (e.args[0], e.args[1]))
+        return False
+    finally:
+        conn.close()
+    return True
+
+def entry_exists(input_path, experiment, country, study, varnum):
+    """Checks whether the entry with the given characteristics 
+       is already in the database."""
+    try:
+        conn = MySQLdb.connect (host = "localhost",
+                               user = "automtmm",
+                               passwd = "automtmm",
+                               db = "automtmm")
+    except MySQLdb.Error, e:
+        sys.stderr.write( "MySQL error %d: %s\n" % (e.args[0], e.args[1]))
+        return False
+    cursor = conn.cursor()
+    try:
+        sql = """SELECT * FROM estimates WHERE
+                        input_path='%s' and experiment='%s' and country='%s' and 
+                        study='%s' and var_num=%d
+                    """ % (input_path, experiment, country, study, varnum) 
+        sys.stderr.write(sql + "\n")
+        cursor.execute(sql)
+        if cursor.fetchone():
+            return True
+    except MySQLdb.Error, e:
+        sys.stderr.write( "MySQL error %d: %s\n" % (e.args[0], e.args[1]))
+    finally:
+        conn.close()
+    return False
+
+                    
+def retrieve_mtmm(matrix, **kwargs):
+    """An 'action' that collects the reliabilities, validities, and method effects
+       and writes them to one data file."""
+    group_num = kwargs['group_num']
+    dirpath = kwargs['dirpath']
+    filename = kwargs['filename']
+    path = os.path.splitext(dirpath)[0].split(os.sep)[-3:]
+    experiment = path[-1]
+    country = path[-2]
+    study = path[-3]
+    print(matrix)
+    sys.stderr.write("Called retrieve_mtmm:\n\tdirpath: %s\n\tfilename: %s\n\t\
+group: %d\n\texperiment: %s\n\tcountry: %s\n\tstudy: %s\n\n" % \
+        (dirpath,filename,group_num,experiment,country,study))
+    
+    nrows = matrix.shape[0]
+    input_path = os.path.join(dirpath, filename)
+    for irow in range(nrows):
+        if kwargs['matname'] == 'GA':
+            val, met = matrix[[irow, irow],[irow%3, (irow + 3)/3 + 2]].tolist()[0]
+            if entry_exists(input_path, experiment, country, study, irow):
+                res = save_estimates(input_path, 
+                    experiment, country, study, val, -9.0, met, irow, 'update')
+            else:
+                res = save_estimates(input_path, 
+                    experiment, country, study, val, -9.0, met, irow, 'insert')
+        if kwargs['matname'] == 'LY':
+            rel = matrix[irow, irow]
+            if entry_exists(input_path, experiment, country, study, irow):
+                res = save_estimates(os.path.join(dirpath, filename), 
+                    experiment, country, study, -9.0, rel, -9.0, irow, 'update')
+            else:
+                res = save_estimates(os.path.join(dirpath, filename), 
+                    experiment, country, study, -9.0, rel, -9.0, irow, 'insert')
+
+
+def walk_and_run(top_dir, tempdir='', action=default_action):
     """recurse through directory structure, looking for .LS8 files.
        Each .LS8 file is run.
        """
@@ -28,6 +140,7 @@ def walk_and_run(top_dir, tempdir=''):
         tempdir = tempfile.mkdtemp()
     sys.stderr.write( "Temporary directory will be %s.\n" % 
             os.path.abspath(tempdir) )
+    top_dir = os.path.abspath(top_dir)
 
     for dirpath, dirnames, filenames in os.walk(top_dir):
         sys.stderr.write( "Searching %s...\n" % dirpath )
@@ -46,9 +159,10 @@ def walk_and_run(top_dir, tempdir=''):
                     smats = lisfile.standardize_matrices()
                     for igrp in range(len(smats)):
                         for matname, stanmat in smats[igrp].iteritems():
-                            print "INPUT %s, GROUP %d, MATRIX %s:" % \
-                                    (filename, igrp+1, matname)
-                            print stanmat
+                            sys.stderr.write( "INPUT %s, GROUP %d, MATRIX %s:" % \
+                                    (filename, igrp+1, matname))
+                            action(stanmat, matname=matname, group_num = igrp+1,
+                                    filename=filename, dirpath=dirpath)
                 else:
                     print "No solution could be obtained, skipping...\n"
 
