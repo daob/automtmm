@@ -161,7 +161,7 @@ def walk_and_run(top_dir, tempdir='', action=default_action):
                     print "LISREL encountered an error, skipping...\n"
                     break
                 finally:
-                    if os.exists(lisfile.path + '.backup'):
+                    if os.path.exists(lisfile.path + '.backup'):
                         os.remove(lisfile.path)
                         os.rename(lisfile.path + '.backup', lisfile.path)
                     else:
