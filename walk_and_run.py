@@ -6,6 +6,8 @@ from parse_lisrel import LisrelInput
 import numpy as np
 
 epstol = np.finfo(float).eps
+sys.stderr = file('logfile', 'w')
+
 
 def solution_obtained(outpath):
     """Checks whether the output file contains errors or non-convergence messages."""
@@ -13,6 +15,8 @@ def solution_obtained(outpath):
     outstr = outfile.read()
     outfile.close()
     if re.search(r'W_A_R_N_I_N_G: The solution has not converged',
+                            outstr, re.MULTILINE) or \
+                 re.search(r'W_A_R_N_I_N_G: Serious problems were encountered',
                             outstr, re.MULTILINE):
         sys.stderr.write('No convergence!\n')
         return False
@@ -106,7 +110,6 @@ def retrieve_mtmm(matrix, **kwargs):
     experiment = path[-1]
     country = path[-2]
     study = path[-3]
-    print(matrix)
     sys.stderr.write("Called retrieve_mtmm:\n\tdirpath: %s\n\tfilename: %s\n\t\
 group: %d\n\texperiment: %s\n\tcountry: %s\n\tstudy: %s\n\n" % \
         (dirpath,filename,group_num,experiment,country,study))
@@ -142,6 +145,7 @@ def walk_and_run(top_dir, tempdir='', action=default_action):
     sys.stderr.write( "Temporary directory will be %s.\n" % 
             os.path.abspath(tempdir) )
     top_dir = os.path.abspath(top_dir)
+    not_converged = file('not_converged', 'w')
 
     for dirpath, dirnames, filenames in os.walk(top_dir):
         sys.stderr.write( "Searching %s...\n" % dirpath )
@@ -156,6 +160,12 @@ def walk_and_run(top_dir, tempdir='', action=default_action):
                 except:
                     print "LISREL encountered an error, skipping...\n"
                     break
+                finally:
+                    if os.exists(lisfile.path + '.backup'):
+                        os.remove(lisfile.path)
+                        os.rename(lisfile.path + '.backup', lisfile.path)
+                    else:
+                        sys.stderr.write('WARNING: Could not restore backup LS8 file.\n')
                 if solution_obtained(os.path.join(tempdir, 'OUT')):
                     smats = lisfile.standardize_matrices()
                     for igrp in range(len(smats)):
@@ -166,5 +176,6 @@ def walk_and_run(top_dir, tempdir='', action=default_action):
                                     filename=filename, dirpath=dirpath)
                 else:
                     print "No solution could be obtained, skipping...\n"
+                    not_converged.write(os.path.join(dirpath, filename) + "\n")
 
-
+    not_converged.close()

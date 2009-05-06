@@ -1,6 +1,6 @@
 """Classes to deal with LISREL input and output files."""
 #!/usr/bin/python
-import os, sys, re, subprocess
+import os, sys, re
 from copy import deepcopy
 import numpy as np
 
@@ -85,14 +85,16 @@ class LisrelInput:
                     dims[igroup][key] = int(find[igroup])
         return(dims)
 
-    def get_modified_input(self, extras = ' MI AD=OFF IT=200 NS SC'):
-        """Modifies input to write matrix results to files, and converts relative
-           paths in LISREL input to absolute paths. Returns string."""
-        outstr = ' '.join(["%s=%s.out"%(key, key) for key in self.mats.keys()])
-        outstr += ' PV=PV.out SV=SV.out' + extras
-        reg_out = re.compile(r'^[ ]*(OU[A-Z0-9=. \'"]+)', self.re_flags)
-        reg_inp = re.compile(r'file[ ]*=[ ]*([^ \r/\n\t$]+)[ \t\r\n$]', self.re_flags)
-        modded = reg_out.sub(r'OU ' + outstr, self.input_text)
+    def get_modified_input(self):
+        """Modifies input to write matrix results to files, and converts 
+           relative paths in LISREL input to absolute paths. Returns string."""
+        outstr = ' PV=PV.out SV=SV.out ' 
+        outstr += ' '.join(["%s=%s.out"%(key, key) for key in self.mats.keys()])
+        reg_out = re.compile(r'^[ ]*(OU[A-Z0-9=. \'"]+)(?![!]ins)', 
+                self.re_flags)
+        reg_inp = re.compile(r'file[ ]*=[ ]*([^ \r/\n\t$]+)[ \t\r\n$]', 
+                self.re_flags)
+        modded = reg_out.sub(r'\1 ' + outstr, self.input_text)
         modded = reg_inp.sub(r"file = %s%s\1" % 
                                 ( os.path.abspath(os.path.dirname(self.path)),
                                   os.sep), 
@@ -195,8 +197,9 @@ class LisrelInput:
                 sys.stderr.write('%s is a SYmmetric matrix.\n' % matname)
                 for igrp in range(ngroups):
                     nrows, ncols = self.get_matrix_shape(matname, igrp)
-                    if len(numbers)/ngroups != matlen and len(numbers)/ngroups == nrows:
-                        symat = np.diag(numbers[igrp*nrows : (igrp*nrows) + nrows])
+                    if len(numbers)/ngroups != matlen and \
+                                               len(numbers)/ngroups == nrows:
+                        symat = np.diag(numbers[igrp*nrows:(igrp*nrows)+nrows])
                     else:    
                         offset = igrp * nrows*(nrows + 1)/2
                         symat = []
@@ -248,12 +251,14 @@ class LisrelInput:
         mats = self.get_matrices(path = path)
         smats = []
         for igrp in range(self.get_ngroups()):
-            sys.stderr.write('Getting matrices for group %d (igrp=%d)\n'%(igrp+1,igrp))
+            sys.stderr.write('Getting matrices for group %d (igrp=%d)\n'%
+                    (igrp+1,igrp))
             be = mats['BE'][igrp]
             ly = mats['LY'][igrp]
             te = mats['TE'][igrp]
             ga = mats['GA'][igrp]
             ph = mats['PH'][igrp]
+            nullify_diagonal(ph)
             ps = mats['PS'][igrp]
 
             bi = (np.diag([1.]*be.shape[0]) - be).I
@@ -261,7 +266,13 @@ class LisrelInput:
             Eyy = ly * Eee * ly.T + te
             C = np.matrix(np.sqrt(np.diag(np.diag(Eee))))
         
-            ga_s = C.I * ga * np.sqrt(np.diag(np.diag(ph)))
+            try:
+                ga_s = C.I * ga * np.sqrt(np.diag(np.diag(ph)))
+            except np.linalg.LinAlgError, e:
+                sys.stderr.write(str(C) + "\n")
+                sys.stderr.write("Error calculating inverse: %s\n" % str(e))
+                ga_s = np.matrix([])
+
             ly_s = np.sqrt(np.diag(1/np.diag(Eyy))) * ly * C
 
             smats.append({'GA': ga_s, 'LY': ly_s})
@@ -269,17 +280,18 @@ class LisrelInput:
         return(smats) 
 
     def run_lisrel(self, temp_path = ''):
-        """Run LISREL executable on the input file. The output is written to temp_path.
-           Raises an exception if the exit code of the LISREL executable is not 0."""
+        """Run LISREL executable on the input file. The output is written to 
+           temp_path. Raises an exception if the exit code of the LISREL
+           executable is not 0."""
         if temp_path == '': # default temp dir is same as self.path
             temp_path = os.path.abspath(os.path.dirname(self.path)) 
         if os.name == 'posix': # Linux/BSD/Mac OS X/Cygwin
             exstr = 'wine Lisrel85.exe'
         elif os.name == 'nt': # Windows
-            exstr = os.path.join(os.getenv('ProgramFiles', 'C:\\Program Files'), 
-                    'Lisrel85.exe')
+            exstr = os.path.join(os.getenv('ProgramFiles', 'C:\\Program Files'),
+                        'Lisrel85.exe')
         sys.stderr.write('Running LISREL for %s,'%os.path.basename(self.path))
-        cmd =[exstr, os.path.abspath(self.path),  'OUT']  
+        cmd = [exstr, os.path.abspath(self.path),  'OUT']  
         sys.stderr.write('Command is "%s".\n' % ' '.join(cmd))
         curdir = os.getcwd()
         os.chdir(temp_path)
@@ -299,3 +311,17 @@ def symmetrize_matrix(mat):
         for j in range(mat.shape[1]):
             mat[i, j] = mat[j, i]
     return mat
+
+def nullify_diagonal(mat):
+    """Replaces negative numbers on the diagonal by 0.0.
+       
+       Sometimes variances of latent variables that are locally unidentified
+       have been left free. These variances can become negative, making it
+       impossible to take the sqrt(). One solution provided here is to set these
+       variances to zero."""
+    if mat.shape[0] != mat.shape[1]:
+        raise Exception('Only square matrices can have the diagonal examined.')
+    for i in range(mat.shape[0]):
+        if mat[i, i] < 1e-12:
+            mat[i, i] = 0.0
+            sys.stderr.write('Replaced one negative number on diagonal by 0.\n')
