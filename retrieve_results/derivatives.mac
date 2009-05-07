@@ -1,0 +1,115 @@
+ga_full : matrix(
+ [ga11,ga12,ga13,ga14,ga15,ga16], 
+ [ga21,ga22,ga23,ga24,ga25,ga26], 
+ [ga31,ga32,ga33,ga34,ga35,ga36], 
+ [ga41,ga42,ga43,ga44,ga45,ga46], 
+ [ga51,ga52,ga53,ga54,ga55,ga56], 
+ [ga61,ga62,ga63,ga64,ga65,ga66], 
+ [ga71,ga72,ga73,ga74,ga75,ga76], 
+ [ga81,ga82,ga83,ga84,ga85,ga86], 
+ [ga91,ga92,ga93,ga94,ga95,ga96]
+);
+
+ga_9 : matrix(
+ [ga11,0000,0000,ga14,0000,0000], 
+ [0000,ga22,0000,ga24,0000,0000], 
+ [0000,0000,ga33,ga34,0000,0000], 
+ [ga41,0000,0000,0000,ga45,0000], 
+ [0000,ga52,0000,0000,ga55,0000], 
+ [0000,0000,ga63,0000,ga65,0000], 
+ [ga71,0000,0000,0000,0000,ga76], 
+ [0000,ga82,0000,0000,0000,ga86], 
+ [0000,0000,ga93,0000,0000,ga96]
+ );
+
+ga : matrix(
+ [ga11,0000,0000,ga14,0000,0000,0000], 
+ [0000,ga22,0000,ga24,0000,0000,0000], 
+ [0000,0000,ga33,ga34,0000,0000,0000], 
+ [ga41,0000,0000,0000,ga45,0000,0000], 
+ [0000,ga52,0000,0000,ga55,0000,0000], 
+ [0000,0000,ga63,0000,ga65,0000,0000], 
+ [ga71,0000,0000,0000,0000,ga76,0000], 
+ [0000,ga82,0000,0000,0000,ga86,0000], 
+ [0000,0000,ga93,0000,0000,ga96,0000],
+ [ga101,0000,0000,0000,0000,0000,ga107], 
+ [0000,ga112,0000,0000,0000,0000,ga117], 
+ [0000,0000,ga123,0000,0000,0000,ga127]
+);
+
+ph_6 : matrix(
+    [ph11,ph21,ph31,0,0,0],
+    [ph21,ph22,ph32,0,0,0],
+    [ph31,ph32,ph33,0,0,0],
+    [0,0,0,ph44,0,0],
+    [0,0,0,0,ph55,0],
+    [0,0,0,0,0,ph66]
+);
+
+ph : matrix(
+    [ph11,ph21,ph31,0,0,0,0],
+    [ph21,ph22,ph32,0,0,0,0],
+    [ph31,ph32,ph33,0,0,0,0],
+    [0,0,0,ph44,0,0,0],
+    [0,0,0,0,ph55,0,0],
+    [0,0,0,0,0,ph66,0],
+    [0,0,0,0,0,0,ph77]
+);
+
+Eee : ga . ph. transpose(ga);
+
+v_eta : diagmatrix(12, 1);
+v_eta[1,1] :    Eee[1,1];
+v_eta[2,2] :    Eee[2,2];
+v_eta[3,3] :    Eee[3,3];
+v_eta[4,4] :    Eee[4,4];
+v_eta[6,6] :    Eee[6,6];
+v_eta[7,7] :    Eee[7,7];
+v_eta[8,8] :    Eee[8,8];
+v_eta[9,9] :    Eee[9,9];
+v_eta[10,10] :  Eee[10,10];
+v_eta[11,11] :  Eee[11,11];
+v_eta[12,12] :  Eee[12,12];
+
+v_eta : matrixmap(sqrt, v_eta);
+
+v_ksi : matrix(
+    [ph11,0,0,0,0,0,0],
+    [0,ph22,0,0,0,0,0],
+    [0,0,ph33,0,0,0,0],
+    [0,0,0,ph44,0,0,0],
+    [0,0,0,0,ph55,0,0],
+    [0,0,0,0,0,ph66,0],
+    [0,0,0,0,0,0,ph77]
+);
+v_ksi : matrixmap(sqrt, v_ksi);
+
+ga_s : invert(v_eta) . ga . v_ksi;
+
+
+scoefs : [ ga_s[1,1], ga_s[2,2], ga_s[3,3],
+          ga_s[4,1], ga_s[5,2], ga_s[6,3],
+          ga_s[7,1], ga_s[8,2], ga_s[9,3],
+          ga_s[10,1], ga_s[11,2], ga_s[12,3],
+
+    ga_s[1,4], ga_s[2,4], ga_s[3,4],
+    ga_s[4,5], ga_s[5,5], ga_s[6,5],
+    ga_s[7,6], ga_s[8,6], ga_s[9,6],
+    ga_s[10,7], ga_s[11,7], ga_s[12,7]
+  ];
+
+df(p) := diff(scoefs, p);
+params : matrix([ph11,ph22,ph33,ph44,ph55,ph66,ph77,ph21,ph23,ph31,
+          ga11,ga14,ga22,ga24,ga33,ga34,ga41,ga45,ga52,ga55,ga63,ga65,ga71,ga76,ga82,ga86,ga93,ga96,ga101,ga107,ga112,ga117,ga123,ga127
+]);
+
+M : matrixmap(df, params);
+
+file_output_append : false;
+write_data([-9],  "/home/daob/work/automtmm/derivmatrix.txt", comma);
+file_output_append : true;
+for i: 1 unless i > length(M[1]) do
+    (write_data(M[1,i], "/home/daob/work/automtmm/derivmatrix.txt", comma),
+     write_data([-9],  "/home/daob/work/automtmm/derivmatrix.txt", comma)
+    );
+

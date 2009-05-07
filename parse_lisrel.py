@@ -4,6 +4,9 @@ import os, sys, re
 from copy import deepcopy
 import numpy as np
 
+sys.path.append('/home/daob/work/automtmm/retrieve_results')
+import read_maxima
+
 
 class LisrelInput:
     """Functions to get information about number of groups and matrix form
@@ -32,7 +35,10 @@ class LisrelInput:
              'TX': {'Form':'VE', 'Free':'FI'}, 
              'KA': {'Form':'VE', 'Free':'FI'}, 
              'AL': {'Form':'VE', 'Free':'FI'} }
-
+        self.long_names = {'GAMMA':'GA', 'LAMBDA-Y':'LY',
+            'THETA-EPS':'TE','THETA-DELTA':'TE','PHI':'PH',
+            'PSI':'PS','BETA':'BE','PHI':'PH'
+        }
 
     def get_matrix_forms(self):
         """Retrieve 'form' (full, symmetrix, zero, diagonal, ... 
@@ -88,7 +94,7 @@ class LisrelInput:
     def get_modified_input(self):
         """Modifies input to write matrix results to files, and converts 
            relative paths in LISREL input to absolute paths. Returns string."""
-        outstr = ' PV=PV.out SV=SV.out ' 
+        outstr = ' PV=PV.out EC=EC.out ' 
         outstr += ' '.join(["%s=%s.out"%(key, key) for key in self.mats.keys()])
         reg_out = re.compile(r'^[ ]*(OU[A-Z0-9=. \'"]+)(?![!]ins)', 
                 self.re_flags)
@@ -186,6 +192,7 @@ class LisrelInput:
                     # DIAGONAL automatically if possible:
                     if len(numbers)/ngroups != matlen and \
                             len(numbers)/ngroups == order[0]:
+                        matforms[matname]['Form'] = 'DI' # change it to DI
                         gmat = np.diag(numbers[igrp*order[0] : 
                                 (igrp*order[0]) + order[0]])
                     else:                       
@@ -199,6 +206,7 @@ class LisrelInput:
                     nrows, ncols = self.get_matrix_shape(matname, igrp)
                     if len(numbers)/ngroups != matlen and \
                                                len(numbers)/ngroups == nrows:
+                        matforms[matname]['Form'] = 'DI' # change it to DI
                         symat = np.diag(numbers[igrp*nrows:(igrp*nrows)+nrows])
                     else:    
                         offset = igrp * nrows*(nrows + 1)/2
@@ -238,7 +246,8 @@ class LisrelInput:
                     
             mats[matname] = mat
             matf.close()
-
+            # cache forms including adjustments made automatically by LISREL
+            self.matforms = matforms 
         return(mats)
     
     def standardize_matrices(self, path = ''):
@@ -302,7 +311,128 @@ class LisrelInput:
             raise Exception("LISREL stopped with an error.")
         else:
             sys.stderr.write('LISREL terminated normally.\n')
-            
+
+
+    def get_free_params(self, outpath=''):
+        """Retrieve the free parameters of the model from the output path."""
+        if not outpath: # assume the output is in same folder with same name
+            outpath = os.path.splitext(self.path)[0] + '.OUT'
+        if not os.path.exists(outpath):
+            raise Exception('Please specify a LISREL output file.')
+        
+        in_specs = False # are we in the parameter specification part?
+        in_mat = False # Are we reading a matrix
+        which_mat = '' # name of the matrix
+        try:
+            matforms = self.matforms
+        except AttributeError:
+            matforms = self.get_matrix_forms()[0]
+        igroup = 0 # group counter
+        iline = 1 # line counter
+
+        parspec = re.compile(r'^[ ]*Parameter Specifications[ \n\r]*$')
+        end = re.compile(r'LISREL Estimates \(Maximum Likelihood\)[ \n\r]*$')
+        matrix = re.compile(r"""^[ ]*(?P<matname>GAMMA|PHI|BETA|LAMBDA-Y|PSI|
+                                       LAMBDA-X|THETA-EPS|THETA-DELTA
+                                     )[ \n\r]*$""", re.VERBOSE)
+        numbers = re.compile(r' [ ]+([0-9]+)')
+        row_num = re.compile(r'^[ ]*(KSI|ETA|VAR) (?P<rownum>[0-9]+)')
+
+        free_params = [] # ngroups size list of free params
+
+        outfile = file(outpath)
+        for line in outfile:
+            if parspec.search(line):
+                in_specs = True
+                igroup += 1
+                free_params.append({})
+                which_mat = '' # reset
+                sys.stderr.write('Found specs at line %d. Group num is %d.\n' %
+                        (iline, igroup))
+            if in_specs:
+                if end.search(line):
+                    sys.stderr.write('Specs stopped at line %d\n' % iline)
+                    break # stop reading output
+
+                mat_match = matrix.search(line)
+                if mat_match:
+                    if mat_match.group('matname') != which_mat:
+                        which_mat = mat_match.group('matname')
+                        short_name = self.long_names[which_mat]
+                        mat_form = matforms[short_name]['Form']
+                        mat_shape = self.get_matrix_shape(short_name, igroup-1)
+                        cur_row = 0
+                        col_start = 0
+                        sys.stderr.write('Found matrix %s (%s) at line %d.\
+                                \tThe matrix is %s.\n' % 
+                                (which_mat, short_name, iline, mat_form))
+                    else:
+                        col_start += 6
+
+                pnums = numbers.findall(line)
+                if pnums:
+                    rowmatch = row_num.search(line)
+                    pnums = [int(x) for x in pnums]
+                    if rowmatch: # FU or SY
+                        cur_row = int(rowmatch.group(2))
+                        for col, num in enumerate(pnums):
+                            if num > 0:
+                                value = "%s %d %d" % (short_name.lower(), 
+                                        cur_row, col + 1 + col_start)
+                                free_params[igroup-1][num] = value
+                    else: # DI
+                        for col, num in enumerate(pnums):
+                            if num > 0:
+                                cur_row = col + 1 + col_start
+                                value = "%s %d %d" % (short_name.lower(), 
+                                        cur_row, cur_row)
+                                free_params[igroup-1][num] = value
+                    if pnums:
+                        sys.stderr.write('Found pnums: %s\n'%str(pnums))
+
+            iline += 1
+        sys.stderr.write('Read first %d lines from %s.\n' % (iline, outpath))
+
+        return free_params
+
+    def get_derivs(self, groupnum = 2):
+        "Calculate the variance-covariance matrix of the standardized estimates"
+        free_params = self.get_free_params('temp/OUT')[groupnum]
+        derivs = read_maxima.get_derivs('retrieve_results/derivmatrix.txt')
+        D = []
+        failed_keys = []
+        written_keys = []
+        for param in free_params.values():
+            try:
+                D.append(derivs[read_maxima.paramdict[param.lower()]])
+                written_keys.append(param.lower())
+            except KeyError:
+                failed_keys.append(param.lower())
+        sys.stderr.write("Failed keys: %s\n" % str(failed_keys))
+        sys.stderr.write("Written keys (in order): %s\n" % str(written_keys))
+        nparams = len(D)
+        D = np.matrix(D)
+        D.shape = (nparams, len(read_maxima.scoefdict.keys()))
+        return(written_keys, D)
+
+    def get_varcov_params(self, matname='EC', path='temp'):
+        """read in the EC (Vcov matrix of the parameters)."""
+        matf = file(os.path.join(path, matname+'.out'), 'rb')
+        numbers = self.lisrel_science_to_other(matf.read())
+        matf.close()
+
+        nrows = nrows_symm(len(numbers))
+
+        symat = []
+        for row in range(nrows):
+            tmp = numbers[ row:2*row+1 ]
+            tmp.extend([0.0] * (nrows - row - 1))
+            symat.append(tmp)
+        symat = symmetrize_matrix(np.matrix(symat))
+
+        return(symat)
+
+
 
 def symmetrize_matrix(mat):
     """mat is a NumPy.matrix or .array. Copies the lower diagonal elements
@@ -325,3 +455,10 @@ def nullify_diagonal(mat):
         if mat[i, i] < 1e-12:
             mat[i, i] = 0.0
             sys.stderr.write('Replaced one negative number on diagonal by 0.\n')
+
+def nrows_symm(n):
+    """Calculate number of rows a symmetric matrix must have had if 
+       len(vech(matrix)) equals n"""
+    from math import sqrt
+    return int((sqrt(8*n + 1) - 1) / 2)
+
