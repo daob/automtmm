@@ -444,36 +444,38 @@ class LisrelInput:
             standardized estimate can be looked up in the
             dictionary read_maxima.scoefdict.
            """
+        # Provide math functions
+        from math import log, exp, sqrt
+
         # Varcov matrix of the parameters
         Vcov = self.get_varcov_params(path = path) 
         # key, value dict of free parameters and their parameter number
         free_params = self.get_free_params(os.path.join(path, 'OUT'))[groupnum]
         # derivative matrix and list of relevant parameters for group
         derivkeys, D = self.get_derivs(groupnum)
-        # select only relevant parameters for this group from V
-        
+        # select only relevant parameters for this group from Vcov
         paramnums = []
         for paramname in derivkeys:
-            try: # create a list of relevant parameter numbers as they are in V
-                paramname.append(free_params.keys()\
+            try: # create a list of relevant parameter numbers as they are in Vcov
+                paramnums.append(free_params.keys()\
                         [free_params.values().index(paramname)] - 1)
             except ValueError:
                 pass # some relevant params are not parameters of the model
         # select only the submatrix of Vcov
         # yielded by slicing out rows and columns not in paramnums
-        V = Vcov[paramnums,].T[paramnums].T 
+        V = Vcov[paramnums,].T[paramnums,].T 
 
         # matrix estimates
         mats = self.get_matrices(path = path)
 
         # put matrices in scope
-        be = mats['BE'][igrp]
-        ly = mats['LY'][igrp]
-        te = mats['TE'][igrp]
-        ga = mats['GA'][igrp]
-        ph = mats['PH'][igrp]
+        be = mats['BE'][groupnum]
+        ly = mats['LY'][groupnum]
+        te = mats['TE'][groupnum]
+        ga = mats['GA'][groupnum]
+        ph = mats['PH'][groupnum]
         nullify_diagonal(ph)
-        ps = mats['PS'][igrp]
+        ps = mats['PS'][groupnum]
 
         # prepare a matrix to hold the evaluated derivs
         D_e = np.matrix([0.0]*(D.shape[0]*D.shape[1]))
@@ -485,6 +487,7 @@ class LisrelInput:
         Vs = D_e.T * V * D_e
 
         return(Vs)
+
 
 def symmetrize_matrix(mat):
     """mat is a NumPy.matrix or .array. Copies the lower diagonal elements

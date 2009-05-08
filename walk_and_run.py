@@ -4,6 +4,7 @@ import MySQLdb
 from parse_lisrel import LisrelInput
 
 import numpy as np
+from scipy import io
 
 epstol = np.finfo(float).eps
 sys.stderr = file('logfile', 'w')
@@ -174,6 +175,17 @@ def walk_and_run(top_dir, tempdir='', action=default_action):
                                     (filename, igrp+1, matname))
                             action(stanmat, matname=matname, group_num = igrp+1,
                                     filename=filename, dirpath=dirpath)
+                            # try to write the variance matrix of 
+                            #   the standardized estimates
+                            try:
+                                vmat = lisfile.get_var_standardized(path = tempdir,
+                                        groupnum = igrp)
+                                vfile = open( os.path.join(dirpath, 
+                                        'vcov_standardized_g%d.txt' % igrp), 'w')
+                                io.write_array(vfile, vmat, separator='\t',
+                                    linesep='\n', precision=10,)
+                            except:
+                               sys.stderr.write('ERROR writing or getting vcov matrix of standardized estimates for group %d. Error: %s\n' % (igrp, str(e.args)))
                 else:
                     print "No solution could be obtained, skipping...\n"
                     not_converged.write(os.path.join(dirpath, filename) + "\n")
