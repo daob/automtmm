@@ -30,7 +30,7 @@ fr ph 5 5 ph 6 6 ph 7 7
 
 start .5 all
   
-out mi iter= 200 adm=off sc  PV=PV.out SV=SV.out BE=BE.out AL=AL.out GA=GA.out PH=PH.out PS=PS.out KA=KA.out TX=TX.out TY=TY.out TD=TD.out TE=TE.out LX=LX.out LY=LY.out
+out mi iter= 200 adm=off sc  PV=PV.out SV=SV.out BE=BE.out AL=AL.out GA=GA.out PH=PH.out PS=PS.out KA=KA.out TX=TX.out TY=TY.out TD=TD.out TE=TE.out LX=LX.out LY=LY.out  PV=PV.out EC=EC.out BE=BE.out AL=AL.out GA=GA.out PH=PH.out PS=PS.out KA=KA.out TX=TX.out TY=TY.out TD=TD.out TE=TE.out LX=LX.out LY=LY.out
 
 Analysis of group 2 
 Data  ni=12 no=762 ma=km
@@ -51,7 +51,7 @@ value 1 te 4 4 te 5 5 te 6 6 te 10 10 te 11 11 te 12 12
 
 value 0 ly 4 4 ly 5 5 ly 6 6 ly 10 10 ly 11 11 ly 12 12 
 
-out iter= 200 adm=off sc   PV=PV.out SV=SV.out BE=BE.out AL=AL.out GA=GA.out PH=PH.out PS=PS.out KA=KA.out TX=TX.out TY=TY.out TD=TD.out TE=TE.out LX=LX.out LY=LY.out
+out iter= 200 adm=off sc   PV=PV.out SV=SV.out BE=BE.out AL=AL.out GA=GA.out PH=PH.out PS=PS.out KA=KA.out TX=TX.out TY=TY.out TD=TD.out TE=TE.out LX=LX.out LY=LY.out  PV=PV.out EC=EC.out BE=BE.out AL=AL.out GA=GA.out PH=PH.out PS=PS.out KA=KA.out TX=TX.out TY=TY.out TD=TD.out TE=TE.out LX=LX.out LY=LY.out
 
 
 Analysis of group 3
@@ -78,7 +78,7 @@ value 0 ly 4 4 ly 5 5 ly 6 6 ly 7 7 ly 8 8 ly 9 9
 
 !pd for path diagram
 pd
-out mi iter= 200 adm=off sc   PV=PV.out SV=SV.out BE=BE.out AL=AL.out GA=GA.out PH=PH.out PS=PS.out KA=KA.out TX=TX.out TY=TY.out TD=TD.out TE=TE.out LX=LX.out LY=LY.out
+out mi iter= 200 adm=off sc   PV=PV.out SV=SV.out BE=BE.out AL=AL.out GA=GA.out PH=PH.out PS=PS.out KA=KA.out TX=TX.out TY=TY.out TD=TD.out TE=TE.out LX=LX.out LY=LY.out  PV=PV.out EC=EC.out BE=BE.out AL=AL.out GA=GA.out PH=PH.out PS=PS.out KA=KA.out TX=TX.out TY=TY.out TD=TD.out TE=TE.out LX=LX.out LY=LY.out
 
 
 

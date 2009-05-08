@@ -250,13 +250,11 @@ class LisrelInput:
             self.matforms = matforms 
         return(mats)
     
-    def standardize_matrices(self, path = ''):
+    def standardize_matrices(self, path = 'temp'):
         """Returns the same kind of list as get_matrices, but
            standardizes some of them. See Bollen 1989:350-1. """
         sys.stderr.write('Calculating standardized matrices for %s...\n'%
                 os.path.basename(self.path))
-        if path == '':
-            path = 'temp'
         mats = self.get_matrices(path = path)
         smats = []
         for igrp in range(self.get_ngroups()):
@@ -424,15 +422,69 @@ class LisrelInput:
         nrows = nrows_symm(len(numbers))
 
         symat = []
+        start_prev = 0
         for row in range(nrows):
-            tmp = numbers[ row:2*row+1 ]
+            start = row + start_prev
+            tmp = numbers[ start:start+row+1 ]
             tmp.extend([0.0] * (nrows - row - 1))
             symat.append(tmp)
+            start_prev = start
+
         symat = symmetrize_matrix(np.matrix(symat))
 
         return(symat)
 
+    def get_var_standardized(self, groupnum = 2, path='temp'):
+        """Calculate the analytical variance-covariance matrix of the 
+           standardized estimates via the Delta method for group groupnum.
+           
+           Note that groupnum is 0 indexed, so 2 means LISREL group 3.
+           Returns a symmetric matrix of variances and covariances between the
+            various standardized estimates. Which rows/columns refer to which 
+            standardized estimate can be looked up in the
+            dictionary read_maxima.scoefdict.
+           """
+        # Varcov matrix of the parameters
+        Vcov = self.get_varcov_params(path = path) 
+        # key, value dict of free parameters and their parameter number
+        free_params = self.get_free_params(os.path.join(path, 'OUT'))[groupnum]
+        # derivative matrix and list of relevant parameters for group
+        derivkeys, D = self.get_derivs(groupnum)
+        # select only relevant parameters for this group from V
+        
+        paramnums = []
+        for paramname in derivkeys:
+            try: # create a list of relevant parameter numbers as they are in V
+                paramname.append(free_params.keys()\
+                        [free_params.values().index(paramname)] - 1)
+            except ValueError:
+                pass # some relevant params are not parameters of the model
+        # select only the submatrix of Vcov
+        # yielded by slicing out rows and columns not in paramnums
+        V = Vcov[paramnums,].T[paramnums].T 
 
+        # matrix estimates
+        mats = self.get_matrices(path = path)
+
+        # put matrices in scope
+        be = mats['BE'][igrp]
+        ly = mats['LY'][igrp]
+        te = mats['TE'][igrp]
+        ga = mats['GA'][igrp]
+        ph = mats['PH'][igrp]
+        nullify_diagonal(ph)
+        ps = mats['PS'][igrp]
+
+        # prepare a matrix to hold the evaluated derivs
+        D_e = np.matrix([0.0]*(D.shape[0]*D.shape[1]))
+        D_e.shape = D.shape
+        for i, val in np.ndenumerate(D):
+	        D_e[i] = eval(val) # derivs are evaluated (matrices used)
+
+        # apply Delta method:
+        Vs = D_e.T * V * D_e
+
+        return(Vs)
 
 def symmetrize_matrix(mat):
     """mat is a NumPy.matrix or .array. Copies the lower diagonal elements
