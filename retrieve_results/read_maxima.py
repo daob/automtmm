@@ -64,7 +64,8 @@ def get_derivs(maxpath='derivmatrix.txt'):
        Each list in derivs refers to the first derivatives wrt to one free parameter.
             (the order is in paramdict)
        Each string in each of these lists refers to one standardized coefficient.
-          (the order is in scoefdict)
+          (the order is in scoefdict and also in the handy-to-read scoefs.names file
+           which can be read by R scan() )
        The string can be evaluated in an environment where the relevant matrices are
             present as NumPy.matrices or arrays. Also 'from math import sqrt' is needed."""
     derivs = eval(pythonize_maxima(maxpath))

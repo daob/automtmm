@@ -444,7 +444,8 @@ class LisrelInput:
             standardized estimate can be looked up in the
             dictionary read_maxima.scoefdict.
            """
-        # Provide math functions
+        # Provide math functions when evaluating the expressions 
+        #   obtained from Maxima
         from math import log, exp, sqrt
 
         # Varcov matrix of the parameters

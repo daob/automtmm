@@ -22,7 +22,7 @@ ga_9 : matrix(
  [0000,0000,ga93,0000,0000,ga96]
  );
 
-ga : matrix(
+ga : matrix( 
  [ga11,0000,0000,ga14,0000,0000,0000], 
  [0000,ga22,0000,ga24,0000,0000,0000], 
  [0000,0000,ga33,ga34,0000,0000,0000], 
@@ -35,7 +35,7 @@ ga : matrix(
  [ga101,0000,0000,0000,0000,0000,ga107], 
  [0000,ga112,0000,0000,0000,0000,ga117], 
  [0000,0000,ga123,0000,0000,0000,ga127]
-);
+);/* note that parameters such as ga44 and ga54 will be ignored */
 
 ly : matrix(
     [ly11,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000],
@@ -50,7 +50,7 @@ ly : matrix(
     [0000,0000,0000,0000,0000,0000,0000,0000,0000,ly1010,0000,0000],
     [0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,ly1111,0000],
     [0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,ly1212]
-);
+); /* any cross loadings will be ignored (but are not identified anyway)*/
 
 te: matrix(
     [te11,te21,te31,te41,te51,te61,te71,te81,te91,te101,te111,te121],
@@ -86,7 +86,7 @@ ph : matrix(
     [0,0,0,0,0,0,ph77]
 );
 
-Eee : ga . ph. transpose(ga); 
+Eee : ga . ph. transpose(ga); /* assumes PSI and BETA are Zero. */
 
 Eyy : ly . Eee . transpose(ly) + te;
 
@@ -159,7 +159,9 @@ params : matrix([ph11,ph22,ph33,ph44,ph55,ph66,ph77,ph21,ph23,ph31,
           ga76,ga82,ga86,ga93,ga96,ga101,ga107,ga112,ga117,ga123,ga127,
 
           te11,te22,te33,te44,te55,te66,te77,te88,te99,te1010,te1111,te1212
-]);
+]) /* the off-diagonal elements of TE and PS are not included because they do not 
+         appear in the formulas for ly_s and ga_s. The diagonal of PSI is assumed
+         all-zero, as is the BETA matrix */;
 
 M : matrixmap(df, params);
 
