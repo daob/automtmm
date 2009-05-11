@@ -42,7 +42,7 @@ def pythonize_maxima(maxpath='derivmatrix.txt'):
     commasep = re.compile(r'([^,\[\]]+)([,\]])', re.MULTILINE)
     number = re.compile(r'(?<![a-z0-9])([0-9]+)', re.MULTILINE)
     powerop = re.compile(r'\^', re.MULTILINE)
-    index = re.compile(r'([a-z]{2})([0-9]{1,2})([0-9])', re.MULTILINE)
+    index = re.compile(r'([a-z]{2})([0-9]{1,2})([0-9]{1,2})', re.MULTILINE)
 
     der_str = der_file.read()
     der_str = linesep.sub(r'], \n[', der_str) # recognize rows
