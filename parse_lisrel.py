@@ -335,14 +335,19 @@ class LisrelInput:
                                      )[ \n\r]*$""", re.VERBOSE)
         numbers = re.compile(r' [ ]+([0-9]+)')
         row_num = re.compile(r'^[ ]*(KSI|ETA|VAR) (?P<rownum>[0-9]+)')
+        invariant = re.compile(r'(?P<matname>[A-Z\-]{3,}) EQUALS (?P=matname) IN THE FOLLOWING GROUP[ \n\r]*$')
 
         free_params = [] # ngroups size list of free params
 
         outfile = file(outpath)
+        # ngroups-length list of list of names of matrices 
+        #   that were set 'invariant'
+        invariant_mats = []
         for line in outfile:
             if parspec.search(line):
                 in_specs = True
                 igroup += 1
+                invariant_mats.append([])
                 free_params.append({})
                 which_mat = '' # reset
                 sys.stderr.write('Found specs at line %d. Group num is %d.\n' %
@@ -353,6 +358,7 @@ class LisrelInput:
                     break # stop reading output
 
                 mat_match = matrix.search(line)
+                inv_match = invariant.search(line)
                 if mat_match:
                     if mat_match.group('matname') != which_mat:
                         which_mat = mat_match.group('matname')
@@ -366,7 +372,10 @@ class LisrelInput:
                                 (which_mat, short_name, iline, mat_form))
                     else:
                         col_start += 6
-
+                elif inv_match: # a matrix is set invariant on this line
+                    invariant_mats[igroup-1].append(inv_match.group('matname'))
+                    # cannot do anything yet because the free params for the
+                    # next groups are not known.
                 pnums = numbers.findall(line)
                 if pnums:
                     rowmatch = row_num.search(line)
@@ -390,6 +399,20 @@ class LisrelInput:
 
             iline += 1
         sys.stderr.write('Read first %d lines from %s.\n' % (iline, outpath))
+
+        # Now go back and fill in any invariant matrices that were found
+        for igroup, inv_mats in enumerate(invariant_mats):
+            for matname in inv_mats:
+                short_name = self.long_names[matname].lower()
+                pnums = []
+                gnum = igroup
+                while not pnums: # search groups until one is found w/ the params
+                    gnum += 1
+                    pnums = [pnum for pnum in free_params[gnum].keys() 
+                             if free_params[gnum][pnum].startswith(short_name)]
+                    print gnum
+                for pnum in pnums:
+                    free_params[igroup][pnum] = free_params[gnum][pnum]
 
         return free_params
 
@@ -469,7 +492,7 @@ class LisrelInput:
         # matrix estimates
         mats = self.get_matrices(path = path)
 
-        # put matrices in scope
+        # put matrices for this group in scope
         be = mats['BE'][groupnum]
         ly = mats['LY'][groupnum]
         te = mats['TE'][groupnum]
