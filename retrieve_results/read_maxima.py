@@ -1,3 +1,23 @@
+"""
+This module consists of two parts: one written in the Maxima Computer 
+Algebra System language <http://maxima.sourceforge.net/>, and the other a Python
+script to read in and translate the results obtained from Maxima to Python.
+
+In the Maxima script, the standardized gamma and lambda coefficients are 
+first defined in terms of the unstandardized parameters.
+These parameters *might*, but need not be, free parameters of the 
+model for a given MTMM analysis.
+
+The analytical derivatives of the standardized coefficients are then taken 
+for each parameter. This yields a (number of parameters) x (number coefficients)
+size matrix of analytical expressions in terms of the parameters.
+
+This matrix is read in by the Python script and used by the ``parse_lisrel``
+module to calculate the variance-covariance matrix of the standardized 
+coefficients. 
+
+See also the ``get_var_standardized`` function in ``parse_lisrel``.
+"""
 #!/usr/bin/python
 
 import os, re, sys
@@ -62,12 +82,14 @@ def get_derivs(maxpath='derivmatrix.txt'):
        Returns a list 'derivs'.
 
        Each list in derivs refers to the first derivatives wrt to one free parameter.
-            (the order is in paramdict)
+       (the order is in paramdict)
+
        Each string in each of these lists refers to one standardized coefficient.
-          (the order is in scoefdict and also in the handy-to-read scoefs.names file
-           which can be read by R scan() )
+       (the order is in scoefdict and also in the handy-to-read scoefs.names file
+       which can be read by R scan() )
+     
        The string can be evaluated in an environment where the relevant matrices are
-            present as NumPy.matrices or arrays. Also 'from math import sqrt' is needed."""
+       present as NumPy.matrices or arrays. Also 'from math import sqrt' is needed."""
     derivs = eval(pythonize_maxima(maxpath))
 
     return derivs

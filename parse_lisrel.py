@@ -1,7 +1,8 @@
+# vim: set fileencoding=utf-8 :
 """The ``parse_lisrel`` module contains classes and functions to 
 deal with LISREL input and output files.
 
-The LisrelInput class provides functions for the following tasks:
+The ``LisrelInput`` class provides functions for the following tasks:
 
     * Modifying a LISREL input file such that it will write the
       (unstandardized) estimates and variance-covariance matrix of 
@@ -23,6 +24,7 @@ It also provides some utility functions such as retrieving the number of
 groups, making a lower diagonal matrix symmetric, etc.  
 """
 #!/usr/bin/python
+
 import os, sys, re
 from copy import deepcopy
 import numpy as np
@@ -499,17 +501,31 @@ class LisrelInput:
                 ('ly 7 7', 'ly 8 8', 'ly 9 9', 'ga 7 1', 'ga 8 2', 'ga 9 3'), 
                 ('ly 10 10', 'ly 11 11', 'ly 12 12', 'ly 1 1', 'ly 2 2', 'ly 3 3',
                  'ga 10 1', 'ga 11 2', 'ga 12 3', 'ga 1 1', 'ga 2 2', 'ga 3 3')) ):
-        """Calculate the analytical variance-covariance matrix of the 
-           standardized estimates via the Delta method. 
+        """ Calculate the analytical variance-covariance matrix of the 
+            standardized estimates via the Delta method. 
             
-           select: a tuple of tuples that determines for each group which 
+            The delta method obtains the variance matrix of a (vector-valued) 
+            function of (a vector of) random variables θ by the formula
+            
+                D[f(θ)]' V(θ) D[f(θ)],
+            
+            where D[.] is the gradient and V(.) the variance matrix. In our case 
+            the function f(.) is the calculation of standardized coefficients from 
+            unstandardized coefficients (e.g. Bollen 1989:350). 
+
+            Therefore the derivative (gradient) matrix of this calculation with 
+            respect to the unstandardized parameters is obtained from Maxima via
+            the ``read_maxima`` module.
+
+            select
+                    a tuple of tuples that determines for each group which 
                     standardized coefficients' derivatives are to be selected 
                     from the derivative matrix. By default the coefficients for 
                     the first MTMM method are taken from the last group.
            
-           Returns a tuple of the names of the selected standardized coefficients, 
-                and a symmetric matrix of variances and covariances between the
-                various standardized estimates in the same order."""
+            Returns a tuple of the names of the selected standardized coefficients, 
+            and a symmetric matrix of variances and covariances between the
+            various standardized estimates in the same order."""
         # Provide math functions when evaluating the expressions 
         #   obtained from Maxima
         from math import log, exp, sqrt

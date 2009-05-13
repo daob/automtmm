@@ -36,7 +36,7 @@ templates_path = ['.templates']
 source_suffix = '.rst'
 
 # The encoding of source files.
-#source_encoding = 'utf-8'
+source_encoding = 'utf-8'
 
 # The master toctree document.
 master_doc = 'index'
@@ -169,23 +169,23 @@ htmlhelp_basename = 'automtmmdoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, document class [howto/manual]).
 latex_documents = [
-  ('index', 'automtmm.tex', ur'automtmm Documentation',
-   ur'daniel oberski', 'manual'),
+  ('index', 'automtmm.tex', ur'automtmm Documentation\\ESS JRA-3 deliverable 9',
+   ur'Daniel Oberski\\Tilburg University and Universitat Pompeu Fabra', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
-#latex_logo = None
+latex_logo = 'ess-logo.pdf'
 
 # For "manual" documents, if this is true, then toplevel headings are parts,
 # not chapters.
 #latex_use_parts = False
 
 # Additional stuff for the LaTeX preamble.
-#latex_preamble = ''
+latex_preamble = '\\bibliographystyle{apalike}'
 
 # Documents to append as an appendix to all manuals.
-#latex_appendices = []
+#latex_appendices = ['appendix-questions.rst']
 
 # If false, no module index is generated.
 #latex_use_modindex = True
