@@ -10,8 +10,23 @@ epstol = np.finfo(float).eps
 sys.stderr = file('logfile', 'w')
 
 
+def write_tuple_to_file(tup, path, sep='\r'):
+    """takes a (multidimensional) tuple and writes it to a file at path"""
+    if type(path) == tuple:
+       path = os.path.join(path[0], path[1])
+    outfile = open(path, 'w')
+    for elem in tup:
+        if type(elem) == tuple:
+            for subel in elem:
+                outfile.write(subel + sep)
+        else:
+            outfile.writeline(elem)
+    outfile.close()
+    sys.stderr.write('Wrote tuple to file %s.\n' % path)
+
 def solution_obtained(outpath):
-    """Checks whether the output file contains errors or non-convergence messages."""
+    """Checks whether the output file contains errors or non-convergence 
+       messages."""
     outfile = file(outpath, 'rb')
     outstr = outfile.read()
     outfile.close()
@@ -30,15 +45,16 @@ def solution_obtained(outpath):
 
 
 def default_action(matrix, **kwargs):
-    "By default the standardized matrices encountered by walk_and_run are just printed"
+    """By default the standardized matrices encountered by walk_and_run are 
+       just printed"""
     print matrix
 
 
-def save_estimates(input_path, experiment, country, study, val, rel, met, varnum, 
-        update_or_insert = 'insert'):
-    """Writes one row of estimates data to the database. Returns True if all is well,
-        False if an exception occurs (an exception is not thrown directly to ensure
-        that the database connection is closed)."""
+def save_estimates(input_path, experiment, country, study, val, rel, met, 
+        varnum, update_or_insert = 'insert'):
+    """Writes one row of estimates data to the database. Returns True if all
+       is well, False if an exception occurs (exception is not thrown 
+       directly to ensure that the database connection is closed)."""
     try:
         conn = MySQLdb.connect (host = "localhost",
                                user = "automtmm",
@@ -51,16 +67,17 @@ def save_estimates(input_path, experiment, country, study, val, rel, met, varnum
     try:
         if update_or_insert == 'insert':
             sql = """INSERT INTO estimates (input_path, experiment, country, 
-                    study, validity_coef, reliability_coef, method_coef, var_num )
-                    VALUES
+                    study, validity_coef, reliability_coef, method_coef, 
+                    var_num ) VALUES
                         ('%s', '%s', '%s', '%s', %2.16f, %2.16f, %2.16f, %d)
-                    """ % (input_path, experiment, country, study, val, rel, met, varnum) 
+                    """ % (input_path, experiment, country, study, val, rel, 
+                            met, varnum) 
         elif update_or_insert == 'update':
             sql = """UPDATE estimates SET reliability_coef=%2.16f
                      WHERE
-                        input_path='%s' and experiment='%s' and country='%s' and 
-                        study='%s' and var_num=%d
-                    """ % (rel, input_path, experiment, country, study, varnum) 
+                        input_path='%s' and experiment='%s' and country='%s' 
+                    and study='%s' and var_num=%d """ % (rel, input_path, 
+                        experiment, country, study, varnum) 
             
         sys.stderr.write(sql + "\n")
         cursor.execute(sql)
@@ -87,7 +104,7 @@ def entry_exists(input_path, experiment, country, study, varnum):
     cursor = conn.cursor()
     try:
         sql = """SELECT * FROM estimates WHERE
-                        input_path='%s' and experiment='%s' and country='%s' and 
+                        input_path='%s' and experiment='%s' and country='%s' and
                         study='%s' and var_num=%d
                     """ % (input_path, experiment, country, study, varnum) 
         sys.stderr.write(sql + "\n")
@@ -102,8 +119,8 @@ def entry_exists(input_path, experiment, country, study, varnum):
 
                     
 def retrieve_mtmm(matrix, **kwargs):
-    """An 'action' that collects the reliabilities, validities, and method effects
-       and writes them to one data file."""
+    """An 'action' that collects the reliabilities, validities, and method 
+       effects and writes them to one data file."""
     group_num = kwargs['group_num']
     dirpath = kwargs['dirpath']
     filename = kwargs['filename']
@@ -175,17 +192,19 @@ def walk_and_run(top_dir, tempdir='', action=default_action):
                                     (filename, igrp+1, matname))
                             action(stanmat, matname=matname, group_num = igrp+1,
                                     filename=filename, dirpath=dirpath)
-                            # try to write the variance matrix of 
-                            #   the standardized estimates
-                            try:
-                                vmat = lisfile.get_var_standardized(path = tempdir,
-                                        groupnum = igrp)
-                                vfile = open( os.path.join(dirpath, 
-                                        'vcov_standardized_g%d.txt' % igrp), 'w')
-                                io.write_array(vfile, vmat, separator='\t',
-                                    linesep='\n', precision=10,)
-                            except:
-                               sys.stderr.write('ERROR writing or getting vcov matrix of standardized estimates for group %d. Error: %s\n' % (igrp, str(e.args)))
+                    # try to write the variance matrix of 
+                    #   the standardized estimates
+                    try:
+                        vnames, vmat = lisfile.get_var_standardized(path = \
+                                tempdir)
+                        vfile = open(os.path.join(dirpath, 
+                                    'vcov_standardized.txt'), 'w')
+                        io.write_array(vfile, vmat, separator='\t',
+                                    linesep='\n', precision=10,) # closes vfile
+                        write_tuple_to_file(vnames, 
+                                    path=(dirpath, 'vcov_standardized.names'))
+                    except:
+                        sys.stderr.write('ERROR writing or getting vcov matrix of standardized estimates for group %d. Error: %s\n' % (igrp, str(e.args)))
                 else:
                     print "No solution could be obtained, skipping...\n"
                     not_converged.write(os.path.join(dirpath, filename) + "\n")
