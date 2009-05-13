@@ -1,17 +1,27 @@
-"""Classes to deal with LISREL input and output files.
-Contains a design error: (i.e. TODO/FIXME: refactor)
-    * LisrelInput should be called LisrelModel
-    * there should be a LisrelMatrix(np.matrix) class 
-      with 'SY', 'FU' etc. subclasses
-    * the LisrelModel class has a list of groups which has a list of 
-      LisrelMatrices. 
-These changes would eliminate: 
-    * large function calls with separate logic for different types of matrices
-    * need for dictionary lookup of 'Form'
-    * need to keep calling get_matrices again and again
-    * need for floating utility functions at the end of this file
-Would make it possible to:
-    * persist the detection of DIagonal rather than SY or FUll matrix"""
+"""The ``parse_lisrel`` module contains classes and functions to 
+deal with LISREL input and output files.
+
+The LisrelInput class provides functions for the following tasks:
+
+    * Modifying a LISREL input file such that it will write the
+      (unstandardized) estimates and variance-covariance matrix of 
+      the free parameters to a temporary directory when run;
+    * Running LISREL on an input file;
+    * Getting the form (symmetric, full, diagonal, ...), 
+      dimensions (number of rows and columns), and contents 
+      (actual estimates) of the different matrices in each group;
+    * Reading in the variance-covariance matrix of the free parameters,
+      and figuring out from the LISREL output what name (e.g. 'GA 1 1')
+      belongs to each numbered free parameter in that matrix;
+    * Calculating the completely standardized coefficients from
+      the unstandardized estimates;
+    * Calculating the variance-covariance matrix of the _standardized_
+      coefficients from the unstandardized estimates and their variance-
+      covariance matrix via the Delta method.
+
+It also provides some utility functions such as retrieving the number of 
+groups, making a lower diagonal matrix symmetric, etc.  
+"""
 #!/usr/bin/python
 import os, sys, re
 from copy import deepcopy
@@ -19,6 +29,20 @@ import numpy as np
 
 sys.path.append('/home/daob/work/automtmm/retrieve_results')
 import read_maxima
+
+#Contains a design error: (i.e. TODO/FIXME: refactor)
+#    * LisrelInput should be called LisrelModel
+#    * there should be a LisrelMatrix(np.matrix) class 
+#      with 'SY', 'FU' etc. subclasses
+#    * the LisrelModel class has a list of groups which has a list of 
+#      LisrelMatrices. 
+#These changes would eliminate: 
+#    * large function calls with separate logic for different types of matrices
+#    * need for dictionary lookup of 'Form'
+#    * need to keep calling get_matrices again and again
+#    * need for floating utility functions at the end of this file
+#Would make it possible to:
+#    * persist the detection of DIagonal rather than SY or FUll matrix
 
 
 class LisrelInput:

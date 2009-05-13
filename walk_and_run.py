@@ -1,3 +1,25 @@
+"""
+The ``walk_and_run`` module works by following these steps:
+
+    #. Walk a directory tree, looking for LISREL input files;
+    #. If an input file is encountered:
+
+        #. Modify the input so that the needed estimates will be
+          written to files;
+        #. Run this modified input using the LISREL executable 
+          (application);
+        #. Retrieve the standardized estimates and perform an 'action'
+          on them. Currently available 'actions' are:
+
+            * Selecting the MTMM validity and reliability coefficients
+              from the appropriate group, inserting them into a MySQL database 
+              table, retrieving their variance-covariance matrix and 
+              writing them to a file (this matrix is needed in order to 
+              perform meta-analyses);
+            * Just printing the standardized estimates.
+
+Most of the above procedures use the module ``parse_lisrel``.
+"""
 #!/usr/bin/python
 import os, tempfile, sys, re
 import MySQLdb
