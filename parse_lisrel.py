@@ -1,4 +1,17 @@
-"""Classes to deal with LISREL input and output files."""
+"""Classes to deal with LISREL input and output files.
+Contains a design error: (i.e. TODO/FIXME: refactor)
+    * LisrelInput should be called LisrelModel
+    * there should be a LisrelMatrix(np.matrix) class 
+      with 'SY', 'FU' etc. subclasses
+    * the LisrelModel class has a list of groups which has a list of 
+      LisrelMatrices. 
+These changes would eliminate: 
+    * large function calls with separate logic for different types of matrices
+    * need for dictionary lookup of 'Form'
+    * need to keep calling get_matrices again and again
+    * need for floating utility functions at the end of this file
+Would make it possible to:
+    * persist the detection of DIagonal rather than SY or FUll matrix"""
 #!/usr/bin/python
 import os, sys, re
 from copy import deepcopy
@@ -158,6 +171,7 @@ class LisrelInput:
         """Read matrices from output files <MAT>.out, taking into account 
            the form of the matrix. Returns dict of <ngroups> list of 
            NumPy.matrices read from the files."""
+        # TODO: refactor to several functions, maybe even a LisrelMatrix class
         if path == '':
             path = self.path
         mats = deepcopy(self.mats)
@@ -410,7 +424,6 @@ class LisrelInput:
                     gnum += 1
                     pnums = [pnum for pnum in free_params[gnum].keys() 
                              if free_params[gnum][pnum].startswith(short_name)]
-                    print gnum
                 for pnum in pnums:
                     free_params[igroup][pnum] = free_params[gnum][pnum]
 
@@ -457,60 +470,86 @@ class LisrelInput:
 
         return(symat)
 
-    def get_var_standardized(self, groupnum = 2, path='temp'):
+    def get_var_standardized(self, path='temp', 
+            select=(('ly 4 4', 'ly 5 5', 'ly 6 6', 'ga 4 1', 'ga 5 2', 'ga 6 3'), 
+                ('ly 7 7', 'ly 8 8', 'ly 9 9', 'ga 7 1', 'ga 8 2', 'ga 9 3'), 
+                ('ly 10 10', 'ly 11 11', 'ly 12 12', 'ly 1 1', 'ly 2 2', 'ly 3 3',
+                 'ga 10 1', 'ga 11 2', 'ga 12 3', 'ga 1 1', 'ga 2 2', 'ga 3 3')) ):
         """Calculate the analytical variance-covariance matrix of the 
-           standardized estimates via the Delta method for group groupnum.
+           standardized estimates via the Delta method. 
+            
+           select: a tuple of tuples that determines for each group which 
+                    standardized coefficients' derivatives are to be selected 
+                    from the derivative matrix. By default the coefficients for 
+                    the first MTMM method are taken from the last group.
            
-           Note that groupnum is 0 indexed, so 2 means LISREL group 3.
-           Returns a symmetric matrix of variances and covariances between the
-            various standardized estimates. Which rows/columns refer to which 
-            standardized estimate can be looked up in the
-            dictionary read_maxima.scoefdict.
-           """
+           Returns a tuple of the names of the selected standardized coefficients, 
+                and a symmetric matrix of variances and covariances between the
+                various standardized estimates in the same order."""
         # Provide math functions when evaluating the expressions 
         #   obtained from Maxima
         from math import log, exp, sqrt
+        num_groups = self.get_ngroups()
 
         # Varcov matrix of the parameters
         Vcov = self.get_varcov_params(path = path) 
-        # key, value dict of free parameters and their parameter number
-        free_params = self.get_free_params(os.path.join(path, 'OUT'))[groupnum]
-        # derivative matrix and list of relevant parameters for group
-        derivkeys, D = self.get_derivs(groupnum)
-        # select only relevant parameters for this group from Vcov
-        paramnums = []
-        for paramname in derivkeys:
-            try: # create a list of relevant parameter numbers as they are in Vcov
-                paramnums.append(free_params.keys()\
-                        [free_params.values().index(paramname)] - 1)
-            except ValueError:
-                pass # some relevant params are not parameters of the model
-        # select only the submatrix of Vcov
-        # yielded by slicing out rows and columns not in paramnums
-        V = Vcov[paramnums,].T[paramnums,].T 
-
         # matrix estimates
         mats = self.get_matrices(path = path)
+        
+        if select: # work out number of scoefs from select
+            num_scoefs = sum([len(x) for x in select])
+        else: # all available scoefs are used
+            num_scoefs = len(read_maxima.scoefdict)
 
-        # put matrices for this group in scope
-        be = mats['BE'][groupnum]
-        ly = mats['LY'][groupnum]
-        te = mats['TE'][groupnum]
-        ga = mats['GA'][groupnum]
-        ph = mats['PH'][groupnum]
-        nullify_diagonal(ph)
-        ps = mats['PS'][groupnum]
+        #  The per-group columnwise-stacked derivative matrix:
+        D_stacked = np.resize([0.0], (Vcov.shape[0], num_scoefs))
+        prev_cols = 0 # No. scoefs written in previous iteration
 
-        # prepare a matrix to hold the evaluated derivs
-        D_e = np.matrix([0.0]*(D.shape[0]*D.shape[1]))
-        D_e.shape = D.shape
-        for i, val in np.ndenumerate(D):
-	        D_e[i] = eval(val) # derivs are evaluated (matrices used)
+        for groupnum in range(num_groups): 
+            # Note that groupnum is 0 indexed, so 2 means LISREL group 3.
+            # key, value dict of free parameters and their parameter number
+            free_params = self.get_free_params(os.path.join(path, 'OUT'))[groupnum]
+            # derivative matrix and list of relevant parameters for group
+            derivkeys, D = self.get_derivs(groupnum)
+
+            used = [free_params.keys()[free_params.values().index(k)] 
+                for k in derivkeys]
+            D_big = []
+            zeroes = ['0.0'] * D.shape[1]
+            for pnum in range(Vcov.shape[0]):
+                try: # copy the row found in get_derivs()
+                    D_big.append(D[used.index(pnum+1),].tolist()[0])
+                except ValueError: # the derivative wrt this parameter is all-zero
+                    D_big.append(zeroes)
+            D = np.matrix(D_big) # overwrite derivative matrix with 0-rows inserted
+
+            if select: # select only some scoefs
+                select_indices = [ read_maxima.scoefdict[ind]
+                                     for ind in select[groupnum] ]
+                D = D[:,select_indices] # select by slicing columns
+
+            # put matrices for this group in scope
+            be = mats['BE'][groupnum]
+            ly = mats['LY'][groupnum]
+            te = mats['TE'][groupnum]
+            ga = mats['GA'][groupnum]
+            ph = mats['PH'][groupnum]
+            nullify_diagonal(ph)
+            ps = mats['PS'][groupnum]
+
+            # prepare a matrix to hold the evaluated derivs
+            D_e = np.matrix([0.0]*(D.shape[0]*D.shape[1]))
+            D_e.shape = D.shape
+            for i, val in np.ndenumerate(D):
+	            D_e[i] = eval(val) # derivs are evaluated (matrices used)
+
+            D_stacked[:,groupnum*prev_cols:((groupnum+1)*D_e.shape[1])] = D_e
+            prev_cols = D_e.shape[1] # remember no. scoefs written this time
 
         # apply Delta method:
-        Vs = D_e.T * V * D_e
+        Vs = D_stacked.T * Vcov * D_stacked
 
-        return(Vs)
+        return(select, Vs)
 
 
 def symmetrize_matrix(mat):
