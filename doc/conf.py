@@ -170,7 +170,7 @@ htmlhelp_basename = 'automtmmdoc'
 # (source start file, target name, title, author, document class [howto/manual]).
 latex_documents = [
   ('index', 'automtmm.tex', ur'automtmm Documentation\\ESS JRA-3 deliverable 9',
-   ur'Daniel Oberski\\Tilburg University and Universitat Pompeu Fabra', 'manual'),
+   ur'Daniel Oberski', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
