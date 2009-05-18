@@ -81,6 +81,7 @@ methodological background of the program will be explained.
 Evaluation of the quality of survey questions by MTMM experiments
 -----------------------------------------------------------------
 
+
 The quality of survey questions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -120,6 +121,11 @@ this document discusses psychometric assessment in more detail. The following
 section explains briefly how this assessment is done.
 
 
+.. _mtmm-example:
+.. figure:: trait-1.pdf
+
+    A trait measured by three different methods from round two of the ESS.
+
 A short explanation of MTMM
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -146,43 +152,148 @@ questions asked by this specific method in their own way that is stable across q
 
 The right-hand side of the figure shows this basic response model applied to the
 variety of work example. In this picture, one would have liked to have measured
-'work variety', but obtained only the observed scores. Although the 'work
-variety' score cannot be recovered, it can be estimated how strong the
+'work variety', but obtained only the observed scores. Although true 'work
+variety' can never be observed, it can be estimated how strong the
 relationship between this variable and the observed answers is.
-
-The path diagrams in the figure can also be expressed in equations as
-
-    *y = τ + e*
-
-    *τ = m.M + v.T*
-
-where *y* is the observed variable, *τ* the true score, *e* the random error
-component, *M* the method factor, and *T* the trait. *m* and *v* are scaling coefficients.
-It can then be shown that the proportion of random error in the observed variable
-equals *var(e)/var(y)*, which we call the 'reliability' of the question.
-The proportion of variance in the true score due to the trait we want to measure
-is called the internal 'validity' and equals *v.[var(T)/var(τ)]*.
-
-.. _mtmm-example:
-.. figure:: trait-1.pdf
-
-    A trait measured by three different methods from round two of the ESS.
 
 +-------------------------------+---------------------------------------+
 | .. image:: response_model.pdf | .. image:: response_model_example.pdf |
 +-------------------------------+---------------------------------------+
 
+The path diagrams in the figure can also be expressed in equations as
+
+    *y = τ + ε*
+
+    *τ = m.M + v.T*
+
+where *y* is the observed variable, *τ* the true score, *ε* the random error
+component, *M* the method factor, and *T* the trait, and *m* and *v* are scaling coefficients.
+This model implies that the deviation scores of the observed variable are unbiased for the 
+true score, and that there are no unique components in the true score besides
+method and trait variance.
+
+It can then be shown that the proportion of random error in the observed variable
+equals *var(e)/var(y)*, which we call the 'reliability' of the question.
+The proportion of variance in the true score due to the trait we want to measure
+is called the internal 'validity' and equals *v.[var(T)/var(τ)]*.
+
+The model shown is clearly not identified as there is only one observed
+variable and four unobserved variables. 
+However, in the ESS experiments there are three traits and three or
+four methods, yielding nine or twelve observed variables. Then the model is
+identified under the following assumption:
+
+    Cov(T\ :sub:`i`\, M\ :sub:`j`\) = Cov(T\ :sub:`i`\, ε\ :sub:`j`\) = 
+    Cov(M\ :sub:`j`\, ε\ :sub:`i`\) = Cov(ε\ :sub:`i`\, ε\ :sub:`j`\) = 0,
+    for all *i* not equal to *j*;
+   
+that is, there are no correlations between the traits and methods, 
+among the methods, among the random errors, or between either traits
+or methods and random errors.
+
+Furthermore in the first instance the following assumptions are also made but
+relaxed when necessary:
+
+    #. Cov(ε\ :sub:`i`\, ε\ :sub:`j`\) = 0 (uncorrelated error terms);
+    #. *m*\ :sub:`ij`\ *= 1* for all *i* and *j*. (equal scaling coefficients for the
+       method factors)
+
 The goal of the MTMM experiments is to estimate how much random and systematic
 error each question contains. That is, it is to estimate the validity and
 reliability of the questions. These two quantities can be expressed as the
-standardized coefficients of a structural equation model (SEM). We then label
+standardized coefficients of a structural equation model (SEM) [saris1991]_. We then label
 these coefficients the *validity coefficient* and the *reliability coefficient*.
+Their product, the *quality coefficient*, is the square root of the proportion
+of variation in the observed variable that is explained by the trait we want
+to measure. 
+
+For instance, in the work variety example above, if the quality coefficient 
+for an 11 point scale in Norway were to equal *0.8*, then 
+*0.8*\ :sup:`2`\ *(100) = 64%* of the variation in the observed answers to the question 
+"Please indicate, on a scale of 0 to 10, how varied your work is..." is due to
+the respondents' perception of variety in their work, while 36% is random and
+systematic measurement error. In round 3 of the ESS, the median quality
+coefficient found was *0.7*.
+
+
+Why estimate the quality?
+-------------------------
+
+The European Social Survey aims to allow governments, policy analysts, 
+scholars and members of the public to interpret how people in 
+different countries and at different times see themselves and 
+the world around them.
+
+The reliability and validity of the survey questions have several influences on
+this goal:
+
+    #. The lower the quality of a question, **the larger the amount of variation
+       in that variable that has no interpretation**. This means that real
+       differences between countries or across time will take larger
+       sample sizes to detect than would otherwise be the case. Since larger
+       sample sizes cost money, it follows that measurement error costs money.
+    
+    #. Besides increasing the variance of variables users analyse, low quality
+       questions will also have lower correlations with other variables. The
+       consequence is that regression coefficients, cross-tables, and other
+       measures of relationship will be biased. This bias can be
+       upwards as well as downwards [fuller1986]_. 
+
+    #. If the reliability and validity are different in different countries or
+       times, measures of relationship will be biased differently. Thus, for
+       measures of relationship
+       **differences between countries and times arise that have no
+       interpretation, or true differences are suppressed**. Previous studies
+       have shown that there is considerable variation in quality across
+       countries [oberski2004]_.
+
+These arguments clarify both the need to create questions that are as good as
+possible and the need to estimate the extent of the errors so that corrections
+can be made afterwards.
+
+After the estimation, the second need is immediately satisfied, because the
+estimates of the quality can be used directly to correct estimates of regression
+coefficients.
+
+The improvement of questions is more complicated, because it involves
+identifying precisely which methods of asking a question are better or worse.
+For this purpose the program SQP was developed, which suggests improvement of
+questions based on their characteristics [sqp2007]_. It also provides estimates of
+the quality of the question so that survey estimates can be corrected. 
+
+This programme, however, currently has limited use for cross-national 
+comparisons in the ESS, because it does not provide estimates for all
+participating countries and languages. Moreover, with the great wealth of
+information available from the ESS experiments, it could be greatly improved.
+
+Therefore, the multitrait-multimethod experiments conducted in the European
+Social Survey:
+
+    * Contribute to the improvement of the ESS questionnare, yielding higher
+      efficiency and a greater power for governments, policy analysts, 
+      scholars and members of the public to detect important phenomena;
+
+    * Contribute to the improvement of survey questions in general;
+
+    * Contribute academic knowledge about the way people answer different kinds
+      of questions in different cultures and languages;
+
+    * Allow for the correction of the effect measurement errors have on estimates
+      and the cross-national comparison of those estimates.
+
+
+Complications and the solution: split ballot MTMM
+-------------------------------------------------
+
+The model shown above has the advantage of being able to evaluate the
+reliability and validity of any survey question, and of being able to identify
+which methods of asking it provide the highest quality. 
+
+Moreover, in cross-national comparisons, for which the ESS has been designed, 
+differences between the countries in reliability and validity may cause differences in
+regression coefficients and other measures of relationship.
 
 split ballot [saris2004]_
-
-
-
-
 
 
 
@@ -213,6 +324,8 @@ Explanation of the program and structure
     "Testing for equivalence using cross-national cognitive interviewing".
     *Centre for Comparative Social Surveys Working Paper Series*, paper no. 01.
 
+.. [fuller1986] Fuller, W. A. (1986). *Measurement error models*. New York: Wiley.
+
 .. [lord1968] Lord, F. M. and Novick, M. R. (1968). 
     *Statistical theories of mental test scores*.  Reading MA: Addison-Welsley Publishing Company.
 
@@ -225,6 +338,11 @@ Explanation of the program and structure
 .. [oliphant2006]  Oliphant, T. E. (2006). *Guide to NumPy*. 
     <http://numpy.scipy.org/>.
 
+.. [oberski2004] Oberski, D. L., W. E. Saris, and J. A. P. Hagenaars (2004). 
+    "Why are there Differences in Measurement Quality across Countries?"
+    in: *Measuring meaningful data in social research*, G. Loosveldt, M.
+    Swyngedouw, and B. Cambré (eds.). Leuven: Acco.
+
 .. [ongena2003]  Ongena, Y. (2003).
     *Pre-testing the ESS-questionnaire using interaction analysis*.
     <http://europeansocialsurvey.org/?option=com_docman&task=doc_download&gid=181&itemid=80>
@@ -236,6 +354,12 @@ Explanation of the program and structure
 .. [rossum2009] Rossum, G. van, and F. L. Drake Jr. (ed.) (2009).
     *The Python Language Reference*. Hampton, NH: Python Software Foundation.
 
+.. [saris1991] Saris, W. E. and F. Andrews (1991). 
+    "Evaluation of measurement instruments using a structural modeling
+    approach".
+    In: *Measurement errors in surveys*, Biemer, P. P. et al. (eds.).
+    New York: Wiley.
+
 .. [saris2004] Saris, W. E., Satorra, A. and G. Coenders (2004). 
     A new approach to evaluating the quality of measurement instruments: 
     the split-ballot MTMM design.
@@ -244,6 +368,9 @@ Explanation of the program and structure
 .. [saris2007] Saris, W. E. and I. Gallhofer (2007).
     *Design, Evaluation, and Analysis of Questionnaires for Survey Research*.
     New York: Wiley.
+
+.. [sqp] Saris, W. E., D. Oberski, and S. Kuipers. *SQP: Survey Quality
+    Predictor* (computer programme). <http://www.sqp.nl/>
 
 .. [willis2005] Willis, B. G. (2004).
     *Cognitive interviewing: a tool for improving questionnaire design*. 
