@@ -182,7 +182,10 @@ latex_logo = 'ess-logo.pdf'
 #latex_use_parts = False
 
 # Additional stuff for the LaTeX preamble.
-latex_preamble = '\\bibliographystyle{apalike}'
+latex_preamble = '''\DeclareUnicodeCharacter{2713}{$\\surd$}
+\DeclareUnicodeCharacter{2260}{$\\not=$}
+\DeclareUnicodeCharacter{2200}{$\\forall$}
+'''
 
 # Documents to append as an appendix to all manuals.
 #latex_appendices = ['appendix-questions.rst']
