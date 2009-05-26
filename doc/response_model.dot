@@ -1,0 +1,13 @@
+digraph response_model {
+    size ="3,3";
+    fontname = "Arial";
+    fontsize = "10";
+    Trait -> true_score;
+    true_score [label="True\nscore"];
+    true_score ->  observed;
+    observed [label="Observed\nvariable", shape=box];
+    Method -> true_score;
+    "Random\nerror" -> observed;
+ }
+
+

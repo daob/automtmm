@@ -1,0 +1,14 @@
+digraph response_model_example {
+    size ="3,3";
+    fontname = "Arial";
+    fontsize = "10";
+    ratio = fill;
+    variety [label="Work\nvariety"]
+    variety -> true_score;
+    true_score [label="Work\nvariety,\n11pt scale"];
+    true_score ->  observed;
+    observed [label="Answer chosen\nby respondent", shape=box];
+    method [label="Respondent\nstarting point\n11pt scale"];
+    method -> true_score;
+    "Random\nerror" -> observed;
+ }
