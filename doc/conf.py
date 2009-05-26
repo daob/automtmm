@@ -185,6 +185,9 @@ latex_logo = 'ess-logo.pdf'
 latex_preamble = '''\DeclareUnicodeCharacter{2713}{$\\surd$}
 \DeclareUnicodeCharacter{2260}{$\\not=$}
 \DeclareUnicodeCharacter{2200}{$\\forall$}
+\DeclareUnicodeCharacter{25BD}{$\\nabla$}
+\DeclareUnicodeCharacter{221A}{$\sqrt{n}$}
+\DeclareUnicodeCharacter{2192}{$\\to$}
 '''
 
 # Documents to append as an appendix to all manuals.

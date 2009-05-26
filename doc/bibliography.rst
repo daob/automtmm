@@ -14,6 +14,9 @@ Bibliography
 
 .. [fuller1986] Fuller, W. A. (1986). *Measurement error models*. New York: Wiley.
 
+.. [git] Torvalds, L., J. C. Hamano and others (2009). *``git``, the fast version
+    control system*. <http://git-scm.com/>.
+
 .. [lord1968] Lord, F. M. and Novick, M. R. (1968). 
     *Statistical theories of mental test scores*.  Reading MA: Addison-Welsley Publishing Company.
 
@@ -48,7 +51,7 @@ Bibliography
     In: *Measurement errors in surveys*, Biemer, P. P. et al. (eds.).
     New York: Wiley.
 
-.. [saris2004] Saris, W. E., Satorra, A. and G. Coenders (2004). 
+.. [saris2004] Saris, W. E., A. Satorra and G. Coenders (2004). 
     A new approach to evaluating the quality of measurement instruments: 
     the split-ballot MTMM design.
     *Sociological methodology*, 34(1), pp. 311-347.
@@ -57,17 +60,25 @@ Bibliography
     *Design, Evaluation, and Analysis of Questionnaires for Survey Research*.
     New York: Wiley.
 
+.. [sarisfrth] Saris, W. E., A. Satorra and W. van der Veld (2007)
+    *Testing structural equation models or detection of misspecifications?*
+    Forthcoming.
+
 .. [sqp2007] Saris, W. E., D. Oberski, and S. Kuipers. *SQP: Survey Quality
     Predictor* (computer programme). <http://www.sqp.nl/>
+
+.. [satorra1992] Satorra, A. Asymptotic Robust Inferences in the Analysis 
+    of Mean and Covariance Structures. *Sociological Methodology*, 22, 
+    pp.  249-278
 
 .. [willis2005] Willis, B. G. (2004).
     *Cognitive interviewing: a tool for improving questionnaire design*. 
     London: Sage.
 
-.. [zouwen1998]  Van der Zouwen, J. en W. Dijkstra (1998).
+.. [zouwen1998] Zouwen, J. van der and W. Dijkstra (1998).
     Het vraaggesprek onderzocht. Wat zegt het verloop van de interactie in 
     survey-interviews over de kwaliteit van de vraagformulering?
-    [The survey interview dissected. What does the course of the interaction
+    [The survey interview dissected. What does the course of interaction
     in survey-interviews tell us about the quality of the question formulation?]
     *Sociologische Gids*, 45(6), 387-403.
 

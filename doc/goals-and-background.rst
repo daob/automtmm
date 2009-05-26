@@ -75,8 +75,8 @@ this goal:
     #. The lower the quality of a question, **the larger the amount of variation
        in that variable that has no interpretation**. This means that real
        differences between countries or across time will take larger
-       sample sises to detect than would otherwise be the case. Since larger
-       sample sises cost money, it follows that measurement error costs money.
+       sample sizes to detect than would otherwise be the case. Since larger
+       sample sizes cost money, it follows that measurement error costs money.
     
     #. Besides increasing the variance of variables users analyse, low quality
        questions will also have lower correlations with other variables. The
@@ -314,12 +314,11 @@ available, or if new insights require that the models need to be adjusted.
 
 
 
-How ``automtmm`` works
-----------------------
+Functions of ``automtmm``
+-------------------------
 
 ``automtmm`` is not a single programme, but a suite of independently operating
 modules.
-
 
 Each of these modules performs or facilitates one of the five steps listed in
 the previous section.
@@ -333,8 +332,124 @@ and write the result to a directory tree with different directories for
 countries, and experiments. The output is different files containing the
 covariances and means for each split-ballot group in each such directory.
 
+Currently these ``R`` scripts are not sufficiently general to allow running them
+on new data sets without some adjustments. However, they do allow for re-running
+of the first three ESS rounds and provide an easily adjusted template for other
+datasets.
 
+.. rubric:: Model formulation and adjustment
 
-The delta method [oehlert1992]_.
+The basic starting model is the same for each analysis, but sometimes
+adjustments are needed. It may be the case that the method scaling factors are 
+not equal for the different topics, for instance. This can happen when one of 
+the questions was negatively formulated if respondents' answering strategies 
+are not exactly symmetrical. An example of this was found in the experiment 
+on opinion about the position of women in round two of the ESS.
+Adjustment may also be needed if some random errors terms turn out to be correlated.
 
+In order to detect which parts of the model may be misspecified, the procedure
+suggested by Saris, Satorra and van der Veld is used as implemented by the 
+program JRule for LISREL [sarisfrth]_.
+This may yield different versions of the same model file, as the model
+is adapted. The versions may even branch into non-nested models. 
+For this reason a module is in development that uses the version control system 
+``git`` [git]_ to keep track of different versions of the model and their
+outcomes in terms of the reliability and validity estimates. We aim to add this module to
+``automtmm`` before September 2009.
 
+.. rubric:: Extracting results and calculating necessary quantities
+
+LISREL provides as output the estimates of the model parameters as well as the
+standardized reliability and validity coefficients. It also provides standard
+errors and a full variance-covariance matrix for the free (unstandardised) parameters.
+
+However, what LISREL does not provide is standard errors and/or a
+variance-covariance matrix for the standardized estimates (the SEM program Mplus
+does provide standard errors, but not the full variance matrix). 
+
+This matrix is, however, needed for the subsequent meta-analysis. If it is not
+available, sampling variation in the reliability and validity estimates and
+dependence among estimates obtained from the same experiment cannot be taken
+into account. This results in predictions that have too-narrow intervals and in
+severe cases even in bias. In order to improve the predictions made by the
+program SQP, therefore, this information is needed.
+
+There are different ways of obtaining the variance of standardized estimates.
+We have chosen an analytic approximation to the variance matrix by applying the 
+delta method [oehlert1992]_. This is the same approach as used by Mplus to
+obtain standard errors for standardized coefficients [#]_. 
+
+.. [#] See <http://www.statmodel.com/download/StandardizedCoefficients.pdf>.
+
+The validity and reliability coefficients can be viewed as a function *g(θ)* 
+of the free parameters of the model across all split-ballot groups 
+**m**, **v**, Var(**T**), Var(**M**), and Var(**ε**). 
+
+For example, the reliability coefficient of the question measured with trait 1 and
+method 1 equals:
+    
+    g\ :sub:`v1`\(θ) = 
+    [m\ :sup:`2`\  var(M\ :sub:`1`\) + v\ :sub:`1`\ \ :sup:`2`\  var(T\ :sub:`1`\)]\ :sup:`1/2`\  
+    [var(ε\ :sub:`1`\) + (m\ :sup:`2`\  var(M\ :sub:`1`\) + v\ :sub:`1`\ \ :sup:`2`\  var(T\
+    :sub:`1`\))]\ :sup:`-1/2`\ .
+
+Since for each of the coefficients such a formula exists, the function *g(θ)* is
+vector-valued.
+
+If all free parameters of
+the multi-group model are collected in a vector **θ**, while the validity and
+reliability coefficients are collected in a vector **q**, so that **q** *= g(θ)*,
+the delta method states that their variance covariance matrix will be:
+
+    Var(**q**) =  ▽g(**θ**)' Var(**θ**) ▽g(**θ**),                     
+
+where ▽ denotes the gradient of the function with respect to the free
+parameters.
+
+Moreover, if θ converges in distribution to a normal distribution with variance
+Var(θ), **q** will converge in distribution to a normal distribution with
+Var(**q**):
+
+    √ (q - Q) → N(0, Var(**q**)) iff √ (θ - Θ) → N(0, Var(**θ**)).
+
+Thus, the sampling distribution of the validity and reliability coefficients can
+be obtained if the gradient of the vector-valued function *g(θ)* with respect to
+the vector θ is calculated, together with the variance-covariance matrix of θ.
+
+``automtmm`` contains a module which accomplishes these tasks. The first task,
+obtaining the derivatives, is accomplished by reading in algebraic formulas for
+the derivatives from a file. This file is generated by a batch script for the
+Maxima computer algebra system [maxima2009]_. The variance-covariance matrix is
+obtained from a LISREL output file. It can therefore be computed in any way that
+is supported by LISREL, such as from the observed or expected information
+matrix, or applying the Satorra correction for non-normality [satorra1992]_. 
+The information about which parameter
+number in this file refers to which parameter in the model is read directly from
+the 'parameter specification' part of the LISREL output. 
+
+The module then reads in the parameter estimates, and, based on these estimates, 
+calculates the validity and reliability coefficients, as well as the matrix of
+derivatives. It automatically selects the parameters and coefficients from the
+correct split-ballot group [#]_. The formula for Var(**q**) is then applied.
+
+.. [#]  The validity and reliability coefficients for the first method are
+        available in all split-ballot groups. In this case the estimates for the
+        last group are chosen.
+
+.. rubric:: Gathering estimates and constructing a database
+
+The module ``walk_and_run`` applies the above procedures to a directory tree of
+files, usually one created by the ESS data preprocessing module. This directory
+tree contains information about the country and experiment, as well as the input
+files for the analyses.
+
+The analyses are run one by one and the module that calculates validity and
+reliability coefficients and their variance matrix is applied. This variance
+matrix is written to a separate text file in the same directory, along with a
+file containing the names of the coefficients. These files are readable by other
+programs such as ``R``. 
+
+The module also stores the coefficient estimates along with the information
+found in the directory structure in a MySQL database table. The variable numbers
+are stored as well, so that the estimates can later be linked to a database of questions.
+By default the database name is 'automtmm' and the table name 'estimates'.
