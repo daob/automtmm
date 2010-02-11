@@ -1,0 +1,45 @@
+digraph g {
+    graph [
+        rankdir = "LR"
+    ];
+    node [
+        fontsize = "16"
+        shape = "record"
+    ];
+    edge [
+    ];
+    "question" [
+        label = "<id> Question| <item> item | language|country|..."
+    ];
+    "item" [
+        label = "<id> Item | <trait> trait | <method> method | <in_experiment> in_experiment | <study> study | ..."
+    ];
+
+    "trait" [ label = "<id> Trait| ..." ];
+    "method" [ label = "<id> Method| ..." ];
+    "experiment" [ label = "<id> Experiment| ..." ];
+
+    "parameter_name" [ label = "<id> ParameterName| name" ];
+    "model" [ label = "<id> Model | path : Text | input : Text | type" ];
+
+    "item_parameter" [
+        label = "<id> ItemParameter|<question> question | <model> model | <parameter_name> parameter_name | estimate : Double "
+    ];
+    "item_parameter_covariance" [
+        label = "<id> ItemParameterCovariance|<item_row> item_row | <item_column> item_column | estimate : Double "
+    ];
+
+    "question":item:e -> "item":id [ ];  
+
+    "item":trait:e -> "trait":id [ ];  
+    "item":method:e -> "method":id [ ];  
+    "item":in_experiment:e -> "experiment":id [ ];  
+
+    "item_parameter":question:e -> "question":id [ ];  
+    "item_parameter":model:e -> "model":id [ ];  
+    "item_parameter":parameter_name:e -> "parameter_name":id [ ];  
+
+    "item_parameter_covariance":item_row:e -> "item_parameter":id [ ];  
+    "item_parameter_covariance":item_column:e -> "item_parameter":id [ ];  
+
+}
