@@ -87,7 +87,7 @@ class ParameterizedMatrixTestCase(unittest.TestCase):
 class SymmetricMatrixTestCase(unittest.TestCase):
     
     def setUp(self):
-        self.mat = SymmetricMatrix('PHI')
+        self.mat = SymmetricMatrix('PHI', phi_test_txt)
 
     def test_infer_size(self):
         self.mat.param_num_vector = self.mat.parse_parameters(phi_test_txt)
@@ -107,6 +107,21 @@ class SymmetricMatrixTestCase(unittest.TestCase):
         self.mat.read_parameter_numbers(phi_test_txt)
         self.assertEqual(self.mat.param_nums, should_be)
 
+    def test_set_values(self):
+        values = """ 0.10000D+01 -0.83273D-01  0.10000D+01 -0.71127D-01  0.37063D+00  0.10000D+01
+  0.00000D+00  0.00000D+00  0.00000D+00  0.37532D-01  0.00000D+00  0.00000D+00
+  0.00000D+00  0.00000D+00  0.32159D-01  0.00000D+00  0.00000D+00  0.00000D+00
+  0.00000D+00  0.00000D+00  0.46088D-01"""
+        should_be = [[1.0, -0.083273, -0.071126999999999996, 0.0, 0.0, 0.0],
+ [-0.083273, 1.0, 0.37063000000000001, 0.0, 0.0, 0.0],
+ [-0.071126999999999996, 0.37063000000000001, 1.0, 0.0, 0.0, 0.0],
+ [0.0, 0.0, 0.0, 0.037532000000000003, 0.0, 0.0],
+ [0.0, 0.0, 0.0, 0.0, 0.032159, 0.0],
+ [0.0, 0.0, 0.0, 0.0, 0.0, 0.046087999999999997]]
+        self.mat.set_values(values)
+        #Should take tol into account but I am too lazy to loop over mat
+        self.assertEqual(self.mat.values, should_be) 
+        
 
 
 class DiagonalMatrixTestCase(unittest.TestCase):
@@ -137,6 +152,24 @@ class DiagonalMatrixTestCase(unittest.TestCase):
 
         self.mat.read_parameter_numbers(te_test_txt)
         self.assertEqual(self.mat.param_nums, should_be)
+
+    def test_set_values(self):
+        values = """  0.42352D+00  0.39308D+00  0.26996D+00  0.16325D+00  0.26425D+00  0.18492D+00
+  0.10000D+01  0.10000D+01  0.10000D+01"""
+
+        should_be = [[0.42352000000000001, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0.39307999999999998, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0.26995999999999998, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0.16325000000000001, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0.26424999999999998, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0.18492, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 1.0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 1.0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 1.0]]
+
+        self.mat.set_values(values)
+        #Should take tol into account but I am too lazy to loop over mat
+        self.assertEqual(self.mat.values, should_be) 
 
 class FullMatrixTestCase(unittest.TestCase):
     
@@ -194,7 +227,6 @@ class FullMatrixTestCase(unittest.TestCase):
  [0.64102000000000003, 0.0, 0.0, 0.0, 0.0, 1.0],
  [0.0, 0.93235000000000001, 0.0, 0.0, 0.0, 1.0],
  [0.0, 0.0, 0.86711000000000005, 0.0, 0.0, 1.0]]
-
 
         self.mat.set_values(values)
         #Should take tol into account but I am too lazy to loop over mat
