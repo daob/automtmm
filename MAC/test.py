@@ -1,5 +1,5 @@
 import unittest
-from LisrelMatrix import SymmetricMatrix
+from LisrelMatrix import SymmetricMatrix, DiagonalMatrix
 
 phi_test_txt = """
 
@@ -71,7 +71,7 @@ class SymmetricMatrixTestCase(unittest.TestCase):
         self.mat = SymmetricMatrix('PHI')
 
     def test_infer_size(self):
-        self.mat.param_nums = self.mat.parse_parameters(phi_test_txt)
+        self.mat.param_num_vector = self.mat.parse_parameters(phi_test_txt)
         self.mat.infer_size() # IO
         self.assertEqual(self.mat.ncols, 6)
         self.assertEqual(self.mat.nrows, 6)
@@ -86,8 +86,38 @@ class SymmetricMatrixTestCase(unittest.TestCase):
                 [0,0,0,0,14,0], [0,0,0,0,0,15]]        
 
         self.mat.read_parameter_numbers(phi_test_txt)
-        self.assertEqual(self.mat.values, should_be)
+        self.assertEqual(self.mat.param_nums, should_be)
 
+
+
+class DiagonalMatrixTestCase(unittest.TestCase):
+    
+    def setUp(self):
+        self.mat = DiagonalMatrix('THETA-EPS')
+
+    def test_infer_size(self):
+        self.mat.param_num_vector = self.mat.parse_parameters(te_test_txt)
+        self.mat.infer_size() # IO
+        self.assertEqual(self.mat.ncols, 9)
+        self.assertEqual(self.mat.nrows, 9)
+        self.assertEqual(self.mat.shape, (9, 9))
+
+    def test_read_parameter_numbers(self):
+        # Test whether the following snippet from a LISREL output is correctly
+        # read in as a 6x6 parameter number matrix
+        should_be = \
+            [[112, 0, 0, 0, 0, 0, 0, 0, 0],
+             [0, 113, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 114, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 118, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 119, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0, 120]]
+
+        self.mat.read_parameter_numbers(te_test_txt)
+        self.assertEqual(self.mat.param_nums, should_be)
 
 if __name__ == '__main__':
     unittest.main()

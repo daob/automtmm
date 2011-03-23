@@ -45,9 +45,14 @@ class ParameterizedMatrix(object):
 
     def read_parameter_numbers(self, txt):
         """[IO]
-        Read parameter values into list of lists and set self.values to that
+        Read parameter numbers into list of lists and set self.values to that
         list."""
-        self.values = self.parse_parameter_numbers(txt)
+        self.param_nums = self.parse_parameter_numbers(txt)
+
+    def read_parameter_values(self, txt):
+        """[IO]
+        Read parameter numbers"""
+        pass
 
     @property
     def shape(self):
@@ -66,21 +71,68 @@ class SymmetricMatrix(ParameterizedMatrix):
         """[IO]  Symmetric-specifc method to infer nrows and ncols & create 
         appropriate-size values and numbers matrices."""
 
-        self.param_nums = self.parse_parameters(txt)
-        self.infer_size() # IO
+        self.param_num_vector = self.parse_parameters(txt)
+        self.infer_size() # IO; requires self.param_num_vector to be set
 
-        poplist = deepcopy(self.param_nums)
+        return self.symmetric_from_vector(self.param_num_vector)
+
+    def symmetric_from_vector(self, params):
+        """[Pure]  take a vector of parameters, and, given the size of the
+        symmetric, matrix, return a symmetric matrix with the appropriate
+        values set. Can be used for both parameter numbers and values."""
+
+        poplist = deepcopy(params)
+        # Pop the first few items off the list, adding on zeroes, increasing
+        # the number of items to pop per row (1,2,3,..order)
         resmat = \
             [   [poplist.pop(0) for n in xrange(self.order - i)] + [0,]*i
             for i in reversed(xrange(self.order))]
 
+        # Copy the lower-diagonal elements to the upper diagonal to make a
+        # symmetric matrix (operates on the resmat directly):
         Helper.symmetrize_list_matrix(resmat, self.shape) # IO
 
         return resmat
 
     def infer_size(self):
         """[IO]  Symmetric-specifc method to infer nrows and ncols"""
-        self.nrows = Helper.nrows_symm(len(self.param_nums))
+        self.nrows = Helper.nrows_symm(len(self.param_num_vector))
+        self.ncols = self.nrows # Symmetric
+
+    @property
+    def order(self):
+        "Just nice to use the same words as in algebra"
+        return self.ncols
+    
+
+class DiagonalMatrix(ParameterizedMatrix):
+    """A matrix which has been treated as DIAGONAL within LISREL"""
+
+    def parse_parameter_numbers(self, txt):
+        """[IO]  Diagonal-specifc method to infer nrows and ncols & create 
+        appropriate-size values and numbers matrices."""
+
+        self.param_num_vector = self.parse_parameters(txt)
+        self.infer_size() # IO; requires self.param_num_vector to be set
+
+        return self.diagonal_from_vector(self.param_num_vector)
+
+    @staticmethod
+    def diagonal_from_vector(params):
+        """[Pure]  take a vector of parameters, and
+        return a diagonal matrix with the appropriate 
+        values set. Can be used for both parameter numbers and values."""
+
+        order = len(params)
+        resmat = [[0,]*order for i in range(order)]
+        for i in range(order):
+            resmat[i][i] = params[i]
+
+        return resmat
+
+    def infer_size(self):
+        """[IO]  Symmetric-specifc method to infer nrows and ncols"""
+        self.nrows = len(self.param_num_vector)
         self.ncols = self.nrows # Symmetric
 
     @property
