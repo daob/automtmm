@@ -95,6 +95,14 @@ class LisrelInput:
             for key in mats.keys():
                 find_n = start_re + key + r'[ ]*=[ ]*([A-Z,]+)'
                 find = re.findall(find_n, self.input_text, self.re_flags)
+
+                if len(find) != ngroups:# skip this matrix
+                    sys.stderr.write('Skipping matform for ' +key+\
+                            ', because #'
+                            'times mentioned on model lines does not equal '
+                            'number of groups.\n')
+                    continue
+
                 if len(find) > 0:
                     tmp = find[igroup].split(',')
                     if len(tmp) > 1:
@@ -198,6 +206,7 @@ class LisrelInput:
            the form of the matrix. Returns dict of <ngroups> list of 
            NumPy.matrices read from the files."""
         # TODO: refactor to several functions, maybe even a LisrelMatrix class
+        sys.stderr.write('Getting matrices ..\n')
         if path == '':
             path = self.path
         mats = deepcopy(self.mats)
@@ -258,6 +267,7 @@ class LisrelInput:
                             tmp.extend([0.0] * (ncols - row - 1))
                             symat.append(tmp)
                             start_prev = start
+                        import pdb; pdb.set_trace()
                         symat = symmetrize_matrix(np.matrix(symat))
                     mat.append(symat)
 
@@ -273,7 +283,7 @@ class LisrelInput:
                 
             elif matforms[matname]['Form'] == 'ZE': # zero matrix
                 sys.stderr.write('%s is a ZEroed matrix.\n' % matname)
-                nrows, ncols = self.get_matrix_shape(matname, igrp)
+                nrows, ncols = self.get_matrix_shape(matname, 0)
                 zemat = np.matrix([0.0] * (nrows * ncols))
                 zemat.shape = (nrows, ncols)
                 for igrp in range(ngroups):

@@ -29,7 +29,8 @@ import numpy as np
 from scipy import io
 
 epstol = np.finfo(float).eps
-sys.stderr = file('logfile', 'w')
+#sys.stderr = file('logfile', 'w')
+sys.stderr = sys.stdout
 
 
 def write_tuple_to_file(tup, path, sep='\r'):
