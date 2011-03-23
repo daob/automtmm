@@ -18,6 +18,10 @@ class ParameterizedMatrix(object):
             re.DOTALL|re.VERBOSE)
     re_cleannums = re.compile(r'([\n\r]|[ ]+([A-Za-z_]+)( \d+){0,1})')
 
+    nrows = None 
+    ncols = None
+    param_nums = None # Actual matrix with parameter numbers
+    param_num_vector = None # Parameter numbers in raw vector form
 
     def __init__(self, name):
         self.name = name
@@ -65,10 +69,17 @@ class ParameterizedMatrix(object):
 
     @property
     def shape(self):
+        "Rows and columns in a tuple, just as numpy does"
         return (self.nrows, self.ncols)
 
     def infer_size(self):
-        pass
+        "Infer the size of the matrix (abstract method)"
+        raise NotImplementedError()
+
+    def matrix_from_vector(self, params):
+        "Create a matrix from a vector (abstract method)"
+        raise NotImplementedError()
+        
 
 class SymmetricMatrix(ParameterizedMatrix):
     """A matrix which has been treated as SY within LISREL"""
@@ -133,6 +144,8 @@ class DiagonalMatrix(ParameterizedMatrix):
 class FullMatrix(ParameterizedMatrix):
     """A matrix which has been treated as DIAGONAL within LISREL"""
 
+    # A regex used to count the number of rows. Won't work when split across
+    # multiple rows (will count double)
     re_row = re.compile(r'[ ]+([a-zA-Z_]+)(?: \d+){0,1} (?:(?:[ ]+\d)+)[\n\r]')
 
     def __init__(self, name, param_num_txt):
@@ -152,15 +165,8 @@ class FullMatrix(ParameterizedMatrix):
     def infer_size(self):
         """[IO] Full-specifc method to infer nrows and ncols"""
 
+        # Just count the number of rows in the parameter specification part
         results = self.re_row.findall(self.param_num_txt)
-        print "------------ "
-        print results
-        print "------------ "
 
         self.nrows = len(results)
         self.ncols = len(self.param_num_vector) / self.nrows
-
-    @property
-    def order(self):
-        "Just nice to use the same words as in algebra"
-        return self.ncols
