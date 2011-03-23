@@ -157,7 +157,7 @@ class FullMatrix(ParameterizedMatrix):
         """[Pure]  take a vector of parameters, and
         return a full matrix with the appropriate 
         values set. Can be used for both parameter numbers and values."""
-        resmat = [self.param_num_vector[i*self.ncols : (i + 1)*self.ncols] \
+        resmat = [params[i*self.ncols : (i + 1)*self.ncols] \
                 for i in range(self.nrows)]
         return resmat
 

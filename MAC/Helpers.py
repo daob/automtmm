@@ -1,4 +1,5 @@
 """A helper class"""
+import re
 
 class Helper(object):
     @staticmethod
@@ -39,3 +40,16 @@ class Helper(object):
            len(vech(matrix)) equals n"""
         from math import sqrt
         return int((sqrt(8*n + 1) - 1) / 2)
+
+    @staticmethod
+    def lisrel_science_to_other(string):
+        '''Finds numbers of the form 0.12D-04 and converts them to a list of
+           Python floats.
+           
+           LISREL Scientific notation is different from the regular one. 
+           Normally an e or E is used to mean 'multiplied by 10 to the power
+           of...'. LISREL uses a D, confusing Python and R.'''
+        numbers = re.compile(r'([0-9.DE\-\\+]+)', re.MULTILINE|re.IGNORECASE)
+        numbers = [float(num.replace('D','e')) for 
+                        num in numbers.findall(string) ]
+        return(numbers)
