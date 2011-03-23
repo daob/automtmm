@@ -23,9 +23,12 @@ class ParameterizedMatrix(object):
     param_nums = None # Actual matrix with parameter numbers
     param_num_vector = None # Parameter numbers in raw vector form
 
-    def __init__(self, name):
+    def __init__(self, name, param_num_txt=None):
         self.name = name
         self.short_name = name[:2].upper()
+        self.param_num_txt = param_num_txt
+        if param_num_txt:
+            self.read_parameter_numbers(param_num_txt)
 
     def parse_parameter_numbers(self, txt):
         """[IO]  Specifc method to infer nrows and ncols & create 
@@ -61,6 +64,10 @@ class ParameterizedMatrix(object):
         Read parameter numbers into list of lists and set self.values to that
         list."""
         self.param_nums = self.parse_parameter_numbers(txt)
+
+    def set_values(self, txt):
+        vec = Helper.lisrel_science_to_other(txt)
+        self.values = self.matrix_from_vector(vec)
 
     @property
     def shape(self):
@@ -146,12 +153,6 @@ class FullMatrix(ParameterizedMatrix):
     # A regex used to count the number of rows. Won't work when split across
     # multiple rows (will count double)
     re_row = re.compile(r'[ ]+([a-zA-Z_]+)(?: \d+){0,1} (?:(?:[ ]+\d)+)[\n\r]')
-
-    def __init__(self, name, param_num_txt):
-        """FullMatrix requires that the actual text is saved in the object so
-        the shape of the matrix can be inferred."""
-        self.param_num_txt = param_num_txt
-        super(FullMatrix, self).__init__(name)
 
     def matrix_from_vector(self, params):
         """[Pure]  take a vector of parameters, and

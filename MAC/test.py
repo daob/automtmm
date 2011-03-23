@@ -198,7 +198,7 @@ class FullMatrixTestCase(unittest.TestCase):
 
         self.mat.set_values(values)
         #Should take tol into account but I am too lazy to loop over mat
-        assertEqual(self.mat.values, should_be) 
+        self.assertEqual(self.mat.values, should_be) 
 
 
 
