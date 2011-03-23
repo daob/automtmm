@@ -23,6 +23,15 @@ class ParameterizedMatrix(object):
         self.name = name
         self.short_name = name[:2].upper()
 
+    def parse_parameter_numbers(self, txt):
+        """[IO]  Specifc method to infer nrows and ncols & create 
+        appropriate-size values and numbers matrices."""
+
+        self.param_num_vector = self.parse_parameters(txt)
+        self.infer_size() # IO; requires self.param_num_vector to be set
+
+        return self.matrix_from_vector(self.param_num_vector)
+
     def parse_parameters(self, txt, num_type=int):
         """[Pure]
         Take the text of the matrix as output from LISREL and return a list of
@@ -58,25 +67,13 @@ class ParameterizedMatrix(object):
     def shape(self):
         return (self.nrows, self.ncols)
 
-    def parse_parameter_numbers(self, txt):
-        pass
-
     def infer_size(self):
         pass
 
 class SymmetricMatrix(ParameterizedMatrix):
     """A matrix which has been treated as SY within LISREL"""
 
-    def parse_parameter_numbers(self, txt):
-        """[IO]  Symmetric-specifc method to infer nrows and ncols & create 
-        appropriate-size values and numbers matrices."""
-
-        self.param_num_vector = self.parse_parameters(txt)
-        self.infer_size() # IO; requires self.param_num_vector to be set
-
-        return self.symmetric_from_vector(self.param_num_vector)
-
-    def symmetric_from_vector(self, params):
+    def matrix_from_vector(self, params):
         """[Pure]  take a vector of parameters, and, given the size of the
         symmetric, matrix, return a symmetric matrix with the appropriate
         values set. Can be used for both parameter numbers and values."""
@@ -108,17 +105,9 @@ class SymmetricMatrix(ParameterizedMatrix):
 class DiagonalMatrix(ParameterizedMatrix):
     """A matrix which has been treated as DIAGONAL within LISREL"""
 
-    def parse_parameter_numbers(self, txt):
-        """[IO]  Diagonal-specifc method to infer nrows and ncols & create 
-        appropriate-size values and numbers matrices."""
-
-        self.param_num_vector = self.parse_parameters(txt)
-        self.infer_size() # IO; requires self.param_num_vector to be set
-
-        return self.diagonal_from_vector(self.param_num_vector)
 
     @staticmethod
-    def diagonal_from_vector(params):
+    def matrix_from_vector(params):
         """[Pure]  take a vector of parameters, and
         return a diagonal matrix with the appropriate 
         values set. Can be used for both parameter numbers and values."""
@@ -140,3 +129,38 @@ class DiagonalMatrix(ParameterizedMatrix):
         "Just nice to use the same words as in algebra"
         return self.ncols
     
+
+class FullMatrix(ParameterizedMatrix):
+    """A matrix which has been treated as DIAGONAL within LISREL"""
+
+    re_row = re.compile(r'[ ]+([a-zA-Z_]+)(?: \d+){0,1} (?:(?:[ ]+\d)+)[\n\r]')
+
+    def __init__(self, name, param_num_txt):
+        """FullMatrix requires that the actual text is saved in the object so
+        the shape of the matrix can be inferred."""
+        self.param_num_txt = param_num_txt
+        super(FullMatrix, self).__init__(name)
+
+    def matrix_from_vector(self, params):
+        """[Pure]  take a vector of parameters, and
+        return a full matrix with the appropriate 
+        values set. Can be used for both parameter numbers and values."""
+        resmat = [self.param_num_vector[i*self.ncols : (i + 1)*self.ncols] \
+                for i in range(self.nrows)]
+        return resmat
+
+    def infer_size(self):
+        """[IO] Full-specifc method to infer nrows and ncols"""
+
+        results = self.re_row.findall(self.param_num_txt)
+        print "------------ "
+        print results
+        print "------------ "
+
+        self.nrows = len(results)
+        self.ncols = len(self.param_num_vector) / self.nrows
+
+    @property
+    def order(self):
+        "Just nice to use the same words as in algebra"
+        return self.ncols

@@ -1,5 +1,24 @@
 import unittest
-from LisrelMatrix import SymmetricMatrix, DiagonalMatrix
+from LisrelMatrix import SymmetricMatrix, DiagonalMatrix, FullMatrix
+
+ga_test_txt = """
+
+         GAMMA       
+
+               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6
+            --------   --------   --------   --------   --------   --------
+    ETA 1          1          0          0          0          0          0
+    ETA 2          0          2          0          0          0          0
+    ETA 3          0          0          3          0          0          0
+    ETA 4          4          0          0          0          0          0
+    ETA 5          0          5          0          0          0          0
+    ETA 6          0          0          6          0          0          0
+    ETA 7          7          0          0          0          0          0
+    ETA 8          0          8          0          0          0          0
+    ETA 9          0          0          9          0          0          0
+
+
+"""
 
 phi_test_txt = """
 
@@ -118,6 +137,48 @@ class DiagonalMatrixTestCase(unittest.TestCase):
 
         self.mat.read_parameter_numbers(te_test_txt)
         self.assertEqual(self.mat.param_nums, should_be)
+
+class FullMatrixTestCase(unittest.TestCase):
+    
+    def setUp(self):
+        self.mat = FullMatrix('GaMma', ga_test_txt)
+
+    def test_short_name(self):
+        # Make sure the short name is correctly set
+        self.assertEqual(self.mat.short_name, 'GA')
+
+    def test_infer_size(self):
+        self.mat.param_num_vector = self.mat.parse_parameters(ga_test_txt)
+        self.mat.infer_size() # IO
+        self.assertEqual(self.mat.ncols, 6)
+        self.assertEqual(self.mat.nrows, 9)
+        self.assertEqual(self.mat.shape, (9, 6))
+
+    def test_read_parameter_numbers(self):
+        # Test whether the following snippet from a LISREL output is correctly
+        # read in as a 6x6 parameter number matrix
+
+        should_be = \
+            [[1, 0, 0, 0, 0, 0],
+            [0, 2, 0, 0, 0, 0],
+            [0, 0, 3, 0, 0, 0],
+            [4, 0, 0, 0, 0, 0],
+            [0, 5, 0, 0, 0, 0],
+            [0, 0, 6, 0, 0, 0],
+            [7, 0, 0, 0, 0, 0],
+            [0, 8, 0, 0, 0, 0],
+            [0, 0, 9, 0, 0, 0],]
+
+        self.mat.read_parameter_numbers(ga_test_txt)
+        self.assertEqual(self.mat.param_nums, should_be)
+
+
+
+
+
+
+
+
 
 if __name__ == '__main__':
     unittest.main()
