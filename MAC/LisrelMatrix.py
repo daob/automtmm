@@ -62,15 +62,14 @@ class ParameterizedMatrix(object):
         list."""
         self.param_nums = self.parse_parameter_numbers(txt)
 
-    def read_parameter_values(self, txt):
-        """[IO]
-        Read parameter numbers"""
-        pass
-
     @property
     def shape(self):
         "Rows and columns in a tuple, just as numpy does"
         return (self.nrows, self.ncols)
+
+    def read_parameter_values(self, txt):
+        """[IO] Read parameter numbers (abstract)"""
+        raise NotImplementedError()
 
     def infer_size(self):
         "Infer the size of the matrix (abstract method)"
