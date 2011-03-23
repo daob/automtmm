@@ -69,6 +69,9 @@ class ParameterizedMatrix(object):
         vec = Helper.lisrel_science_to_other(txt)
         self.values = self.matrix_from_vector(vec)
 
+    def parse_standardized(self, txt):
+        self.values_std = None
+
     @property
     def shape(self):
         "Rows and columns in a tuple, just as numpy does"

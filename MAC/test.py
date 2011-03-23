@@ -1,6 +1,41 @@
 import unittest
 from LisrelMatrix import SymmetricMatrix, DiagonalMatrix, FullMatrix
 
+ly_std_test = """
+
+
+         LAMBDA-Y    
+
+               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   
+            --------   --------   --------   --------   --------   --------
+    VAR 1      0.717       - -        - -        - -        - -        - - 
+    VAR 2       - -       0.762       - -        - -        - -        - - 
+    VAR 3       - -        - -       0.832       - -        - -        - - 
+    VAR 4       - -        - -        - -        - -        - -        - - 
+    VAR 5       - -        - -        - -        - -        - -        - - 
+    VAR 6       - -        - -        - -        - -        - -        - - 
+    VAR 7       - -        - -        - -        - -        - -        - - 
+    VAR 8       - -        - -        - -        - -        - -        - - 
+    VAR 9       - -        - -        - -        - -        - -        - - 
+
+         LAMBDA-Y    
+
+               ETA 7      ETA 8      ETA 9   
+            --------   --------   --------
+    VAR 1       - -        - -        - - 
+    VAR 2       - -        - -        - - 
+    VAR 3       - -        - -        - - 
+    VAR 4       - -        - -        - - 
+    VAR 5       - -        - -        - - 
+    VAR 6       - -        - -        - - 
+    VAR 7      0.557       - -        - - 
+    VAR 8       - -       0.749       - - 
+    VAR 9       - -        - -       0.732
+
+    
+"""
+
+
 ga_test_txt = """
 
          GAMMA       
@@ -171,6 +206,7 @@ class DiagonalMatrixTestCase(unittest.TestCase):
         #Should take tol into account but I am too lazy to loop over mat
         self.assertEqual(self.mat.values, should_be) 
 
+
 class FullMatrixTestCase(unittest.TestCase):
     
     def setUp(self):
@@ -232,6 +268,20 @@ class FullMatrixTestCase(unittest.TestCase):
         #Should take tol into account but I am too lazy to loop over mat
         self.assertEqual(self.mat.values, should_be) 
 
+    def test_parse_standardized(self):
+        self.mat.parse_standardized(ly_std_test)
+        should_be = [[0.71699999999999997, 0, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0.76200000000000001, 0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0.83199999999999996, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0.0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0.0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0.0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0.55700000000000005, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0.749, 0],
+ [0, 0, 0, 0, 0, 0, 0, 0, 0.73199999999999998]]
+
+        self.assertEqual(self.mat.values_std, should_be)
+        
 
 
 
