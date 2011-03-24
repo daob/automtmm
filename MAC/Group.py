@@ -21,6 +21,9 @@ class Group(object):
     def __repr__(self):
         return "Group %d: '%s'" % (self.number, self.name)
 
+    def __unicode__(self):
+        return repr(self)
+
     def create_matrices(self, txt):
         """Detect standardized matrices and add them to matrices list"""
         mat_txts = self.split_matrices(txt)

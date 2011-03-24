@@ -46,6 +46,9 @@ class ParameterizedMatrix(object):
     def __repr__(self):
         return self.name
 
+    def __unicode__(self):
+        return repr(self)
+
     def parse_parameter_numbers(self, txt):
         """[IO]  Specifc method to infer nrows and ncols & create 
         appropriate-size values and numbers matrices."""
