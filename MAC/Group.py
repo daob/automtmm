@@ -9,7 +9,7 @@ from LisrelMatrix import FullMatrix, DiagonalMatrix, SymmetricMatrix
 class Group(object):
     """Group information and group-level operations"""
 
-    matrices = [] # list of matrices in this group
+    matrices = None # list of matrices in this group
 
     re_splitmat = re.compile(r"(%s)" % '|'.join(matrix_names.keys()))
     re_strip = re.compile(r'(^[\s]+(?=\w*)|\s+$)') 
@@ -18,9 +18,13 @@ class Group(object):
         self.name = name.strip()
         self.number = int(number)
 
+    def __repr__(self):
+        return "Group %d: '%s'" % (self.number, self.name)
+
     def create_matrices(self, txt):
         """Detect standardized matrices and add them to matrices list"""
         mat_txts = self.split_matrices(txt)
+        self.matrices = []
 
         for mat_txt in mat_txts:
             matrix = FullMatrix(mat_txt['name'])

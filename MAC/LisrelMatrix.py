@@ -22,7 +22,7 @@ class ParameterizedMatrix(object):
                          (?:[\n\r]{2}|$)  # blank line signals end of section.""",
             re.DOTALL|re.VERBOSE)
     re_cleannums = re.compile(r'(--+|[\n\r]|[ ]+([A-Za-z_]+)( \d+){0,1})')
-    re_cleandashes = re.compile(r' - - ')
+    re_cleandashes = re.compile(r'(?: |^)- -(?: |$)')
 
     nrows = None 
     ncols = None
@@ -42,6 +42,9 @@ class ParameterizedMatrix(object):
         self.param_num_txt = param_num_txt
         if param_num_txt:
             self.read_parameter_numbers(param_num_txt)
+
+    def __repr__(self):
+        return self.name
 
     def parse_parameter_numbers(self, txt):
         """[IO]  Specifc method to infer nrows and ncols & create 

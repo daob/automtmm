@@ -27,6 +27,9 @@ class LisrelModel(object):
 
         self.ngroups = self.get_ngroups()
 
+    def __repr__(self):
+        return "Model file '%s'" % (self.path)
+
     def get_ngroups(self):
         """Read in number of groups from the LISREL output file."""
         match = self.re_group.search(self.txt)
@@ -46,6 +49,9 @@ class LisrelModel(object):
 
         # Loop over results and add a new Group for each detected group
         for igroup, group in enumerate(self.re_std_result):
-            self.groups.append(Group(group[0].strip(), igroup + 1))
+            newgroup = Group(group[0].strip(), igroup + 1)
+            #import pdb; pdb.set_trace()
+            newgroup.create_matrices(group[1])
+            self.groups.append(newgroup)
 
 

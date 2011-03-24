@@ -336,8 +336,19 @@ class LisrelModelTestCase(unittest.TestCase):
         self.assertEqual(len(self.model_r1.groups), 38)
         self.assertEqual(len(self.model_r1.groups), self.model_r1.ngroups)
         
+        firstels = [0.751, 0.751, 0.719, 0.719, 0.734, 0.734, 0.719, 0.719,
+                0.737, 0.737, 0.717, 0.717, 0.717, 0.717, 0.682, 0.682, 0.600,
+                0.600, 0.596, 0.596, 0.723, 0.723, 0.698, 0.698, 0.687, 0.687,
+                0.755, 0.755, 0.714, 0.714, 0.719, 0.719, 0.764, 0.764, 0.759,
+                0.759, 0.707, 0.707]
+
         for i in range(38):
-            self.assertEqual(type(self.model_r1.groups[i]), Group)
+            grp = self.model_r1.groups[i]
+            self.assertEqual(type(grp), Group)
+            fe = grp.matrices[0].values_std[0][0]
+            self.assertEqual(fe, firstels[i])
+
+
 
 class GroupTestCase(unittest.TestCase):
     def setUp(self):
@@ -356,7 +367,7 @@ class GroupTestCase(unittest.TestCase):
 
         ly = self.grp1.matrices[0]
 
-        Helper.pmat(ly.values_std)
+        #Helper.pmat(ly.values_std)
 
         self.assertEqual(ly.shape, (9, 9))
         self.assertEqual(ly.values_std[3][3], 0.0)
@@ -367,7 +378,7 @@ class GroupTestCase(unittest.TestCase):
         self.assertEqual(ly.values_std[8][8], 0.869)
 
         ga = self.grp1.matrices[1]
-        Helper.pmat(ga.values_std)
+        #Helper.pmat(ga.values_std)
         self.assertEqual(ga.shape, (9, 6))
         self.assertEqual(ga.values_std[3][3], 0.0)
         self.assertEqual(ga.values_std[2][2], 0.971)
