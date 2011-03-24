@@ -20,8 +20,12 @@ class Group(object):
 
     def create_matrices(self, txt):
         """Detect standardized matrices and add them to matrices list"""
-        return 
-        matrix.read_standardized(txt_std)
+        mat_txts = self.split_matrices(txt)
+
+        for mat_txt in mat_txts:
+            matrix = FullMatrix(mat_txt['name'])
+            matrix.read_standardized(mat_txt['txt_std'])
+            self.matrices.append(matrix)
     
     def split_matrices(self, txt):
         """Given a snippet for this group with different matrices, split into
@@ -41,10 +45,11 @@ class Group(object):
         # or a new one. 
         prev_name = None
         for i, name in enumerate(names):
-            if name == prev_name:       # If continuation, 
-                reslist[-1] += retl[i]  # Just concatenate text with previous
-            else:                       # New matrix
-                reslist.append(retl[i]) # Add to list of matrix texts
+            if name == prev_name:  # If continuation, 
+                reslist[-1]['txt_std'] += retl[i]  # Just concatenate text with previous
+            else:  # New matrix
+                # Add to list of matrix texts
+                reslist.append({'txt_std':retl[i], 'name':name})
             prev_name = name
 
         return reslist
