@@ -1,5 +1,6 @@
 import unittest
 from LisrelMatrix import SymmetricMatrix, DiagonalMatrix, FullMatrix
+from LisrelModel import LisrelModel
 
 ly_std_test = """
 
@@ -305,8 +306,14 @@ class FullMatrixTestCase(unittest.TestCase):
  [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.73199999999999998]]
 
         self.assertEqual(self.mat.values_std, should_be)
-        
 
+
+class LisrelModelTestCase(unittest.TestCase):
+    def setUp(self):
+        self.model_r1 = LisrelModel('TEST-R1.OUT')
+    
+    def test_ngroups(self):
+        self.assertEqual(self.model_r1.ngroups, 38)
 
 
 if __name__ == '__main__':
