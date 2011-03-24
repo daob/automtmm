@@ -318,6 +318,7 @@ class LisrelModelTestCase(unittest.TestCase):
     def test_ngroups(self):
         self.assertEqual(self.model_r1.ngroups, 38)
 
+    @unittest.skip("Skipping re_std test to save time...")
     def test_re_std(self):
         t0 = time.time()
         res = self.model_r1.re_std.findall(self.model_r1.txt)
@@ -353,9 +354,25 @@ class GroupTestCase(unittest.TestCase):
 
         ly = self.grp1.matrices[0]
         self.assertEqual(ly.shape, (9, 9))
-        self.assertEqual(ly.values_std[0][0], 0.741)
-        self.assertEqual(ly.values_std[7][7], 0.957)
-        self.assertEqual(ly.values_std[8][8], 0.893)
+        self.assertEqual(ly.values_std[3][3], 0.0)
+        self.assertEqual(ly.values_std[5][8], 0.0)
+        self.assertEqual(ly.values_std[0][0], 0.759)
+        self.assertEqual(ly.values_std[1][1], 0.846)
+        self.assertEqual(ly.values_std[7][7], 0.832)
+        self.assertEqual(ly.values_std[8][8], 0.869)
+
+        ga = self.grp1.matrices[1]
+        self.assertEqual(ga.shape, (9, 6))
+        self.assertEqual(ga.values_std[3][3], 0.0)
+        self.assertEqual(ga.values_std[2][2], 0.971)
+        self.assertEqual(ga.values_std[2][3], 0.237)
+        
+
+    def test_split_matrices(self):
+        res = self.grp1.split_matrices(self.test_txt)
+        self.assertEqual(len(res), 2)
+        self.assertEqual(res[0], 'ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   \r\n            --------   --------   --------   --------   --------   --------\r\n    VAR 1      0.759       - -        - -        - -        - -        - - \r\n    VAR 2       - -       0.846       - -        - -        - -        - - \r\n    VAR 3       - -        - -       0.879       - -        - -        - - \r\n    VAR 4       - -        - -        - -        - -        - -        - - \r\n    VAR 5       - -        - -        - -        - -        - -        - - \r\n    VAR 6       - -        - -        - -        - -        - -        - - \r\n    VAR 7       - -        - -        - -        - -        - -        - - \r\n    VAR 8       - -        - -        - -        - -        - -        - - \r\n    VAR 9       - -        - -        - -        - -        - -        - -ETA 7      ETA 8      ETA 9   \r\n            --------   --------   --------\r\n    VAR 1       - -        - -        - - \r\n    VAR 2       - -        - -        - - \r\n    VAR 3       - -        - -        - - \r\n    VAR 4       - -        - -        - - \r\n    VAR 5       - -        - -        - - \r\n    VAR 6       - -        - -        - - \r\n    VAR 7      0.702       - -        - - \r\n    VAR 8       - -       0.832       - - \r\n    VAR 9       - -        - -       0.869')
+        
 
 if __name__ == '__main__':
     unittest.main()
