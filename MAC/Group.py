@@ -46,7 +46,7 @@ class Group(object):
         prev_name = None
         for i, name in enumerate(names):
             if name == prev_name:  # If continuation, 
-                reslist[-1]['txt_std'] += retl[i]  # Just concatenate text with previous
+                reslist[-1]['txt_std'] += '\r\n\r\n' + retl[i]  # Just concatenate text with previous
             else:  # New matrix
                 # Add to list of matrix texts
                 reslist.append({'txt_std':retl[i], 'name':name})

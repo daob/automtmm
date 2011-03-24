@@ -3,9 +3,9 @@
 import re
 from copy import deepcopy
 
-from Helpers import Helper
+from Helpers import Helper, lf
 
-# Dictionary with all possible LISREL matrix names and their 2 letter shorthand
+# Dictionary with all possible LISREL matrix names and their two-letter shorthand
 matrix_names = {'LAMBDA-Y':'LY', 'LAMBDA-X':'LX',
     'BETA':'BE','GAMMA':'GA','PHI':'PH', 'PSI':'PS',
     'THETA-DELTA':'TD','THETA-EPS':'TE',  
@@ -19,9 +19,9 @@ class ParameterizedMatrix(object):
     re_lismat = re.compile(r"""(?:[ ]+--------)+? # One+ groups of LISREL's separator lines
                          [\n\r]     # Everything after the separators is the parameters
                          (.+?)       # Parameter values in whatever format
-                         [\n\r]{2}  # blank line signals end of section.""",
+                         (?:[\n\r]{2}|$)  # blank line signals end of section.""",
             re.DOTALL|re.VERBOSE)
-    re_cleannums = re.compile(r'([\n\r]|[ ]+([A-Za-z_]+)( \d+){0,1})')
+    re_cleannums = re.compile(r'(--+|[\n\r]|[ ]+([A-Za-z_]+)( \d+){0,1})')
     re_cleandashes = re.compile(r' - - ')
 
     nrows = None 
@@ -47,7 +47,7 @@ class ParameterizedMatrix(object):
         """[IO]  Specifc method to infer nrows and ncols & create 
         appropriate-size values and numbers matrices."""
 
-        self.param_num_vector = self.parse_parameters(txt)
+        self.param_num_vector = self.parse_parameters(lf(txt))
         self.infer_size() # IO; requires self.param_num_vector to be set
 
         return self.matrix_from_vector(self.param_num_vector)
@@ -63,7 +63,7 @@ class ParameterizedMatrix(object):
         # expression to find the numbers needed, taking into account that
         # LISREL sometimes splits matrices across several parts when they
         # exceed the screen width.
-        mlist = self.re_lismat.findall(txt)    # List of results (for splits)
+        mlist = self.re_lismat.findall(lf(txt))    # List of results (for splits)
 
         # If you want to understand how this works, read from bottom to top:
         return [num_type(number) for number in    # Convert to wanted value
@@ -76,7 +76,7 @@ class ParameterizedMatrix(object):
         """[Pure]  take a snippet with LISREL standardized matrix results and
         return a list of floats."""
     
-        nrows, joined = self.join_mlist(self.re_lismat.findall(txt))
+        nrows, joined = self.join_mlist(self.re_lismat.findall(lf(txt)))
 
         # Read bottom to top for execution order:
         return nrows, [[float(num) for num in      # Convert to float 
@@ -105,7 +105,7 @@ class ParameterizedMatrix(object):
         """Take a snippet with LISREL standardized matrix results and set the
         values_std property to a corresponding matrix of floats."""
 
-        self.nrows, self.values_std = self.parse_standardized(txt)
+        self.nrows, self.values_std = self.parse_standardized(lf(txt))
         self.ncols = len(self.values_std[0])
         
 
@@ -113,7 +113,7 @@ class ParameterizedMatrix(object):
         """[IO]
         Read parameter numbers into list of lists and set self.values to that
         list."""
-        self.param_nums = self.parse_parameter_numbers(txt)
+        self.param_nums = self.parse_parameter_numbers(lf(txt))
 
 
     def set_values(self, txt):
@@ -121,7 +121,7 @@ class ParameterizedMatrix(object):
         for this matrix) and set the values property to a corresponding matrix
         of floats."""
 
-        vec = Helper.lisrel_science_to_other(txt)
+        vec = Helper.lisrel_science_to_other(lf(txt))
         self.values = self.matrix_from_vector(vec)
 
     @property
@@ -221,7 +221,7 @@ class FullMatrix(ParameterizedMatrix):
         """[IO] Full-specifc method to infer nrows and ncols"""
 
         # Just count the number of rows in the parameter specification part
-        results = self.re_row.findall(self.param_num_txt)
+        results = self.re_row.findall(lf(self.param_num_txt))
 
         self.nrows = len(results)
         self.ncols = len(self.param_num_vector) / self.nrows

@@ -5,6 +5,8 @@ from LisrelMatrix import SymmetricMatrix, DiagonalMatrix, FullMatrix
 from LisrelModel import LisrelModel
 from Group import Group
 
+from Helpers import Helper
+
 ly_std_test = """
 
 
@@ -353,6 +355,9 @@ class GroupTestCase(unittest.TestCase):
             self.assertEqual(type(self.grp1.matrices[i]), FullMatrix)
 
         ly = self.grp1.matrices[0]
+
+        Helper.pmat(ly.values_std)
+
         self.assertEqual(ly.shape, (9, 9))
         self.assertEqual(ly.values_std[3][3], 0.0)
         self.assertEqual(ly.values_std[5][8], 0.0)
@@ -362,6 +367,7 @@ class GroupTestCase(unittest.TestCase):
         self.assertEqual(ly.values_std[8][8], 0.869)
 
         ga = self.grp1.matrices[1]
+        Helper.pmat(ga.values_std)
         self.assertEqual(ga.shape, (9, 6))
         self.assertEqual(ga.values_std[3][3], 0.0)
         self.assertEqual(ga.values_std[2][2], 0.971)
@@ -373,7 +379,7 @@ class GroupTestCase(unittest.TestCase):
         self.assertEqual(len(res), 2)
         self.assertEqual(res[0]['name'], 'LAMBDA-Y')
         self.assertEqual(res[1]['name'], 'GAMMA')
-        self.assertEqual(res[0]['txt_std'], 'ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   \r\n            --------   --------   --------   --------   --------   --------\r\n    VAR 1      0.759       - -        - -        - -        - -        - - \r\n    VAR 2       - -       0.846       - -        - -        - -        - - \r\n    VAR 3       - -        - -       0.879       - -        - -        - - \r\n    VAR 4       - -        - -        - -        - -        - -        - - \r\n    VAR 5       - -        - -        - -        - -        - -        - - \r\n    VAR 6       - -        - -        - -        - -        - -        - - \r\n    VAR 7       - -        - -        - -        - -        - -        - - \r\n    VAR 8       - -        - -        - -        - -        - -        - - \r\n    VAR 9       - -        - -        - -        - -        - -        - -ETA 7      ETA 8      ETA 9   \r\n            --------   --------   --------\r\n    VAR 1       - -        - -        - - \r\n    VAR 2       - -        - -        - - \r\n    VAR 3       - -        - -        - - \r\n    VAR 4       - -        - -        - - \r\n    VAR 5       - -        - -        - - \r\n    VAR 6       - -        - -        - - \r\n    VAR 7      0.702       - -        - - \r\n    VAR 8       - -       0.832       - - \r\n    VAR 9       - -        - -       0.869')
+        self.assertEqual(res[0]['txt_std'], 'ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   \r\n            --------   --------   --------   --------   --------   --------\r\n    VAR 1      0.759       - -        - -        - -        - -        - - \r\n    VAR 2       - -       0.846       - -        - -        - -        - - \r\n    VAR 3       - -        - -       0.879       - -        - -        - - \r\n    VAR 4       - -        - -        - -        - -        - -        - - \r\n    VAR 5       - -        - -        - -        - -        - -        - - \r\n    VAR 6       - -        - -        - -        - -        - -        - - \r\n    VAR 7       - -        - -        - -        - -        - -        - - \r\n    VAR 8       - -        - -        - -        - -        - -        - - \r\n    VAR 9       - -        - -        - -        - -        - -        - -\r\n\r\nETA 7      ETA 8      ETA 9   \r\n            --------   --------   --------\r\n    VAR 1       - -        - -        - - \r\n    VAR 2       - -        - -        - - \r\n    VAR 3       - -        - -        - - \r\n    VAR 4       - -        - -        - - \r\n    VAR 5       - -        - -        - - \r\n    VAR 6       - -        - -        - - \r\n    VAR 7      0.702       - -        - - \r\n    VAR 8       - -       0.832       - - \r\n    VAR 9       - -        - -       0.869')
         
 
 if __name__ == '__main__':

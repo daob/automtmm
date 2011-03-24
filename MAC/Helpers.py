@@ -1,6 +1,9 @@
 """A helper class"""
 import re
 
+def lf(s):
+    return s.replace('\r\n','\n')
+
 class Helper(object):
     @staticmethod
     def symmetrize_numpy_matrix(mat):
@@ -53,3 +56,11 @@ class Helper(object):
         numbers = [float(num.replace('D','e')) for 
                         num in numbers.findall(string) ]
         return(numbers)
+
+    @staticmethod
+    def pmat(mat):
+        """Sort of pretty print the matrix"""
+        print "\n" + "-"*40 + "\n"
+        for row in mat:
+            print row
+        print "\n" + "-"*40 + "\n"

@@ -2,6 +2,7 @@
 
 import re
 from Group import Group
+from Helpers import lf
 
 
 class LisrelModel(object):
@@ -21,7 +22,7 @@ class LisrelModel(object):
     def __init__(self, path):
         self.path = path
         outfile = open(path, 'rb')
-        self.txt = outfile.read()
+        self.txt = lf(outfile.read())
         outfile.close()
 
         self.ngroups = self.get_ngroups()
