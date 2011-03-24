@@ -90,6 +90,10 @@ te_test_txt = """
 
 
 class ParameterizedMatrixTestCase(unittest.TestCase):
+
+    lismat_out = ['    VAR 1      0.717       - -        - -        - -        - -        - - \n    VAR 2       - -       0.762       - -        - -        - -        - - \n    VAR 3       - -        - -       0.832       - -        - -        - - \n    VAR 4       - -        - -        - -        - -        - -        - - \n    VAR 5       - -        - -        - -        - -        - -        - - \n    VAR 6       - -        - -        - -        - -        - -        - - \n    VAR 7       - -        - -        - -        - -        - -        - - \n    VAR 8       - -        - -        - -        - -        - -        - - \n    VAR 9       - -        - -        - -        - -        - -        - - ',
+ '    VAR 1       - -        - -        - - \n    VAR 2       - -        - -        - - \n    VAR 3       - -        - -        - - \n    VAR 4       - -        - -        - - \n    VAR 5       - -        - -        - - \n    VAR 6       - -        - -        - - \n    VAR 7      0.557       - -        - - \n    VAR 8       - -       0.749       - - \n    VAR 9       - -        - -       0.732']
+
     def setUp(self):
         self.mat = SymmetricMatrix('TeSt')
                  
@@ -107,6 +111,15 @@ class ParameterizedMatrixTestCase(unittest.TestCase):
         self.assertEqual(self.mat.re_lismat.findall(te_test_txt),
                 ['                 112        113        114          0          0          0',
  '                 118        119        120'])
+    def test_re_lismat_ly(self):
+        self.assertEqual(self.mat.re_lismat.findall(ly_std_test), self.lismat_out)
+        self.assertEqual(self.mat.re_cleandashes.sub('0.0',' '.join(self.lismat_out)),
+            '    VAR 1      0.717      0.0      0.0      0.0      0.0      0.0\n    VAR 2      0.0      0.762      0.0      0.0      0.0      0.0\n    VAR 3      0.0      0.0      0.832      0.0      0.0      0.0\n    VAR 4      0.0      0.0      0.0      0.0      0.0      0.0\n    VAR 5      0.0      0.0      0.0      0.0      0.0      0.0\n    VAR 6      0.0      0.0      0.0      0.0      0.0      0.0\n    VAR 7      0.0      0.0      0.0      0.0      0.0      0.0\n    VAR 8      0.0      0.0      0.0      0.0      0.0      0.0\n    VAR 9      0.0      0.0      0.0      0.0      0.0      0.0     VAR 1      0.0      0.0      0.0\n    VAR 2      0.0      0.0      0.0\n    VAR 3      0.0      0.0      0.0\n    VAR 4      0.0      0.0      0.0\n    VAR 5      0.0      0.0      0.0\n    VAR 6      0.0      0.0      0.0\n    VAR 7      0.557      0.0      0.0\n    VAR 8      0.0      0.749      0.0\n    VAR 9      0.0      0.0      0.732')
+
+    def test_join_mlist(self):
+        self.assertEqual(self.mat.join_mlist(self.lismat_out), (9, 
+            ['    VAR 1      0.717       - -        - -        - -        - -        - -      VAR 1       - -        - -        - - ', '    VAR 2       - -       0.762       - -        - -        - -        - -      VAR 2       - -        - -        - - ', '    VAR 3       - -        - -       0.832       - -        - -        - -      VAR 3       - -        - -        - - ', '    VAR 4       - -        - -        - -        - -        - -        - -      VAR 4       - -        - -        - - ', '    VAR 5       - -        - -        - -        - -        - -        - -      VAR 5       - -        - -        - - ', '    VAR 6       - -        - -        - -        - -        - -        - -      VAR 6       - -        - -        - - ', '    VAR 7       - -        - -        - -        - -        - -        - -      VAR 7      0.557       - -        - - ', '    VAR 8       - -        - -        - -        - -        - -        - -      VAR 8       - -       0.749       - - ', '    VAR 9       - -        - -        - -        - -        - -        - -      VAR 9       - -        - -       0.732']
+            ))
 
     def test_parse_parameters(self):
         # Test that parse_parameters correctly extracts the parameter numbers
@@ -269,16 +282,27 @@ class FullMatrixTestCase(unittest.TestCase):
         self.assertEqual(self.mat.values, should_be) 
 
     def test_parse_standardized(self):
-        self.mat.parse_standardized(ly_std_test)
-        should_be = [[0.71699999999999997, 0, 0, 0, 0, 0, 0, 0, 0],
- [0, 0.76200000000000001, 0, 0, 0, 0, 0, 0, 0],
- [0, 0, 0.83199999999999996, 0, 0, 0, 0, 0, 0],
- [0, 0, 0, 0.0, 0, 0, 0, 0, 0],
- [0, 0, 0, 0, 0.0, 0, 0, 0, 0],
- [0, 0, 0, 0, 0, 0.0, 0, 0, 0],
- [0, 0, 0, 0, 0, 0, 0.55700000000000005, 0, 0],
- [0, 0, 0, 0, 0, 0, 0, 0.749, 0],
- [0, 0, 0, 0, 0, 0, 0, 0, 0.73199999999999998]]
+        self.mat.read_standardized(ly_std_test)
+        self.assertEqual(self.mat.shape, (9,9))
+#        self.assertEqual(self.mat.values_std_vector,
+#                [0.717, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.762, 0.0, 0.0, 0.0,
+#                    0.0, 0.0, 0.0, 0.832, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+#                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+#                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+#                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+#                    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+#                    0.0, 0.0, 0.557, 0.0, 0.0, 0.0, 0.749, 0.0, 0.0, 0.0,
+#                    0.732])
+
+        should_be = [[0.71699999999999997, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+ [0.0, 0.76200000000000001, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+ [0.0, 0.0, 0.83199999999999996, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+ [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+ [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+ [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+ [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.55700000000000005, 0.0, 0.0],
+ [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.749, 0.0],
+ [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.73199999999999998]]
 
         self.assertEqual(self.mat.values_std, should_be)
         

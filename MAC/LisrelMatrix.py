@@ -17,11 +17,18 @@ class ParameterizedMatrix(object):
                          [\n\r]{2}  # blank line signals end of section.""",
             re.DOTALL|re.VERBOSE)
     re_cleannums = re.compile(r'([\n\r]|[ ]+([A-Za-z_]+)( \d+){0,1})')
+    re_cleandashes = re.compile(r' - - ')
 
     nrows = None 
     ncols = None
     param_nums = None # Actual matrix with parameter numbers
     param_num_vector = None # Parameter numbers in raw vector form
+
+    values_vector = None   # Vector with parameter values (unstandardized)
+    values = None   # Matrix with parameter values (unstandardized)
+
+    values_std_vector = None # Vector with parameter values (standardized)
+    values_std = None # Matrix with parameter values (standardized)
 
     def __init__(self, name, param_num_txt=None):
         self.name = name
@@ -59,18 +66,57 @@ class ParameterizedMatrix(object):
                 ' '.join(mlist))       # Join matrices split by LISREL
         ) if number != '']              # Remove any remaining empty entries
 
+    def parse_standardized(self, txt):
+        """[Pure]  take a snippet with LISREL standardized matrix results and
+        return a list of floats."""
+    
+        nrows, joined = self.join_mlist(self.re_lismat.findall(txt))
+
+        # Read bottom to top for execution order:
+        return nrows, [[float(num) for num in      # Convert to float 
+                re.split(r'[ ]+',           # Split result on whitespace
+                self.re_cleannums.sub('',   # Remove any variable labels from text
+                    self.re_cleandashes.sub('0.0',  #  double dashes are zeroes
+                        row 
+                    )
+                )
+            ) if num != ''] # Remove any remaining empty entries
+        for row in joined]  # Loop over rows
+
+    @staticmethod
+    def join_mlist(mlist):
+        """Take the output of re_lismat.findall() and join each line together,
+        also providing a row count. Return (nrows, joined)"""
+        
+        sublist = [re.split(r'[\n\r]', mpart) for mpart in mlist]
+        nrows = len(sublist[0])
+
+        joined = [' '.join([msub[i] for msub in sublist]) for i in range(nrows)]
+
+        return nrows, joined
+        
+    def read_standardized(self, txt):
+        """Take a snippet with LISREL standardized matrix results and set the
+        values_std property to a corresponding matrix of floats."""
+
+        self.nrows, self.values_std = self.parse_standardized(txt)
+        self.ncols = len(self.values_std[0])
+        
+
     def read_parameter_numbers(self, txt):
         """[IO]
         Read parameter numbers into list of lists and set self.values to that
         list."""
         self.param_nums = self.parse_parameter_numbers(txt)
 
+
     def set_values(self, txt):
+        """Take a part of text as output to GA.out-type files (only the part
+        for this matrix) and set the values property to a corresponding matrix
+        of floats."""
+
         vec = Helper.lisrel_science_to_other(txt)
         self.values = self.matrix_from_vector(vec)
-
-    def parse_standardized(self, txt):
-        self.values_std = None
 
     @property
     def shape(self):
