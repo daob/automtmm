@@ -315,6 +315,9 @@ class LisrelModelTestCase(unittest.TestCase):
     def test_ngroups(self):
         self.assertEqual(self.model_r1.ngroups, 38)
 
+    def test_re_std(self):
+        res = self.model_r1.re_std.findall(self.model_r1.txt)
+        self.assertEqual(res[35][0], ' Analysis of group 2 SE (gp36)')
 
 if __name__ == '__main__':
     unittest.main()
