@@ -1,6 +1,9 @@
 import unittest
+import time
+
 from LisrelMatrix import SymmetricMatrix, DiagonalMatrix, FullMatrix
 from LisrelModel import LisrelModel
+from Group import Group
 
 ly_std_test = """
 
@@ -316,9 +319,43 @@ class LisrelModelTestCase(unittest.TestCase):
         self.assertEqual(self.model_r1.ngroups, 38)
 
     def test_re_std(self):
+        t0 = time.time()
         res = self.model_r1.re_std.findall(self.model_r1.txt)
-        self.assertEqual(res[35][0], ' Analysis of group 2 SE (gp36)')
+        elapsed = time.time() - t0 # time taken in seconds
+        self.assertTrue(elapsed < 5.0) # more than five secs is really too slow
+        self.assertEqual(res[35][0].strip(), 'Analysis of group 2 SE (gp36)')
         txt33 = '\n\r\n         LAMBDA-Y    \r\n\r\n               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   \r\n            --------   --------   --------   --------   --------   --------\r\n    VAR 1      0.764       - -        - -        - -        - -        - - \r\n    VAR 2       - -       0.874       - -        - -        - -        - - \r\n    VAR 3       - -        - -       0.827       - -        - -        - - \r\n    VAR 4       - -        - -        - -       0.932       - -        - - \r\n    VAR 5       - -        - -        - -        - -       0.949       - - \r\n    VAR 6       - -        - -        - -        - -        - -       0.984\r\n    VAR 7       - -        - -        - -        - -        - -        - - \r\n    VAR 8       - -        - -        - -        - -        - -        - - \r\n    VAR 9       - -        - -        - -        - -        - -        - - \r\n\r\n         LAMBDA-Y    \r\n\r\n               ETA 7      ETA 8      ETA 9   \r\n            --------   --------   --------\r\n    VAR 1       - -        - -        - - \r\n    VAR 2       - -        - -        - - \r\n    VAR 3       - -        - -        - - \r\n    VAR 4       - -        - -        - - \r\n    VAR 5       - -        - -        - - \r\n    VAR 6       - -        - -        - - \r\n    VAR 7       - -        - -        - - \r\n    VAR 8       - -        - -        - - \r\n    VAR 9       - -        - -        - - \r\n\r\n         GAMMA       \r\n\r\n               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6   \r\n            --------   --------   --------   --------   --------   --------\r\n    ETA 1      0.965       - -        - -       0.261       - -        - - \r\n    ETA 2       - -       0.972       - -       0.235       - -        - - \r\n    ETA 3       - -        - -       0.971      0.237       - -        - - \r\n    ETA 4      0.974       - -        - -        - -       0.228       - - \r\n    ETA 5       - -       0.977       - -        - -       0.213       - - \r\n    ETA 6       - -        - -       0.976       - -       0.217       - - \r\n    ETA 7      0.948       - -        - -        - -        - -       0.318\r\n    ETA 8       - -       0.975       - -        - -        - -       0.224\r\n    ETA 9       - -        - -       0.971       - -        - -       0.240\r\n\r\n         '
         self.assertEqual(res[32][1], txt33)
+
+    def test_create_groups_from_std(self):
+        self.model_r1.create_groups_from_std()
+
+        self.assertEqual(len(self.model_r1.groups), 38)
+        self.assertEqual(len(self.model_r1.groups), self.model_r1.ngroups)
+        
+        for i in range(38):
+            self.assertEqual(type(self.model_r1.groups[i]), Group)
+
+class GroupTestCase(unittest.TestCase):
+    def setUp(self):
+        self.mod1 = LisrelModel('TEST-R1.OUT')
+        self.grp1 = Group('Some test group', 2)
+        self.test_txt = '\n\r\n         LAMBDA-Y    \r\n\r\n               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   \r\n            --------   --------   --------   --------   --------   --------\r\n    VAR 1      0.759       - -        - -        - -        - -        - - \r\n    VAR 2       - -       0.846       - -        - -        - -        - - \r\n    VAR 3       - -        - -       0.879       - -        - -        - - \r\n    VAR 4       - -        - -        - -        - -        - -        - - \r\n    VAR 5       - -        - -        - -        - -        - -        - - \r\n    VAR 6       - -        - -        - -        - -        - -        - - \r\n    VAR 7       - -        - -        - -        - -        - -        - - \r\n    VAR 8       - -        - -        - -        - -        - -        - - \r\n    VAR 9       - -        - -        - -        - -        - -        - - \r\n\r\n         LAMBDA-Y    \r\n\r\n               ETA 7      ETA 8      ETA 9   \r\n            --------   --------   --------\r\n    VAR 1       - -        - -        - - \r\n    VAR 2       - -        - -        - - \r\n    VAR 3       - -        - -        - - \r\n    VAR 4       - -        - -        - - \r\n    VAR 5       - -        - -        - - \r\n    VAR 6       - -        - -        - - \r\n    VAR 7      0.702       - -        - - \r\n    VAR 8       - -       0.832       - - \r\n    VAR 9       - -        - -       0.869\r\n\r\n         GAMMA       \r\n\r\n               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6   \r\n            --------   --------   --------   --------   --------   --------\r\n    ETA 1      0.965       - -        - -       0.261       - -        - - \r\n    ETA 2       - -       0.972       - -       0.235       - -        - - \r\n    ETA 3       - -        - -       0.971      0.237       - -        - - \r\n    ETA 4      0.974       - -        - -        - -       0.228       - - \r\n    ETA 5       - -       0.977       - -        - -       0.213       - - \r\n    ETA 6       - -        - -       0.976       - -       0.217       - - \r\n    ETA 7      0.948       - -        - -        - -        - -       0.318\r\n    ETA 8       - -       0.975       - -        - -        - -       0.224\r\n    ETA 9       - -        - -       0.971       - -        - -       0.240\r\n\r\n         '
+
+    def test_create_matrices(self):
+        self.grp1.create_matrices(self.test_txt)
+        
+        self.assertEqual([m.name for m in self.grp1.matrices], ['LAMBDA-Y',
+            'GAMMA'])
+        
+        for i in range(2):
+            self.assertEqual(type(self.grp1.matrices[i]), FullMatrix)
+
+        ly = self.grp1.matrices[0]
+        self.assertEqual(ly.shape, (9, 9))
+        self.assertEqual(ly.values_std[0][0], 0.741)
+        self.assertEqual(ly.values_std[7][7], 0.957)
+        self.assertEqual(ly.values_std[8][8], 0.893)
+
 if __name__ == '__main__':
     unittest.main()

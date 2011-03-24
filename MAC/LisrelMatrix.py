@@ -5,6 +5,11 @@ from copy import deepcopy
 
 from Helpers import Helper
 
+# Dictionary with all possible LISREL matrix names and their 2 letter shorthand
+matrix_names = {'LAMBDA-Y':'LY', 'LAMBDA-X':'LX',
+    'BETA':'BE','GAMMA':'GA','PHI':'PH', 'PSI':'PS',
+    'THETA-DELTA':'TD','THETA-EPS':'TE',  
+    'THETA-DELTA-EPSILON':'TH'}
 
 class ParameterizedMatrix(object):
     """Base class for LisrelMatrices."""
@@ -32,7 +37,8 @@ class ParameterizedMatrix(object):
 
     def __init__(self, name, param_num_txt=None):
         self.name = name
-        self.short_name = name[:2].upper()
+        self.short_name = name in matrix_names and matrix_names[name] \
+                or name[:2].upper()
         self.param_num_txt = param_num_txt
         if param_num_txt:
             self.read_parameter_numbers(param_num_txt)
