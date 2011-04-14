@@ -19,13 +19,14 @@ class LisrelModel(object):
     # List of groups detected in this model output
     groups = []
 
-    def __init__(self, path):
+    def __init__(self, path, auto_load=False):
         self.path = path
         outfile = open(path, 'rb')
         self.txt = lf(outfile.read())
         outfile.close()
 
         self.ngroups = self.get_ngroups()
+        if auto_load: self.create_groups_from_std()
 
     def __repr__(self):
         return "Model file '%s'" % (self.path)
