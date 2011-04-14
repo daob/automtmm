@@ -333,6 +333,7 @@ class LisrelModelTestCase(unittest.TestCase):
         txt33 = '\n\r\n         LAMBDA-Y    \r\n\r\n               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   \r\n            --------   --------   --------   --------   --------   --------\r\n    VAR 1      0.764       - -        - -        - -        - -        - - \r\n    VAR 2       - -       0.874       - -        - -        - -        - - \r\n    VAR 3       - -        - -       0.827       - -        - -        - - \r\n    VAR 4       - -        - -        - -       0.932       - -        - - \r\n    VAR 5       - -        - -        - -        - -       0.949       - - \r\n    VAR 6       - -        - -        - -        - -        - -       0.984\r\n    VAR 7       - -        - -        - -        - -        - -        - - \r\n    VAR 8       - -        - -        - -        - -        - -        - - \r\n    VAR 9       - -        - -        - -        - -        - -        - - \r\n\r\n         LAMBDA-Y    \r\n\r\n               ETA 7      ETA 8      ETA 9   \r\n            --------   --------   --------\r\n    VAR 1       - -        - -        - - \r\n    VAR 2       - -        - -        - - \r\n    VAR 3       - -        - -        - - \r\n    VAR 4       - -        - -        - - \r\n    VAR 5       - -        - -        - - \r\n    VAR 6       - -        - -        - - \r\n    VAR 7       - -        - -        - - \r\n    VAR 8       - -        - -        - - \r\n    VAR 9       - -        - -        - - \r\n\r\n         GAMMA       \r\n\r\n               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6   \r\n            --------   --------   --------   --------   --------   --------\r\n    ETA 1      0.965       - -        - -       0.261       - -        - - \r\n    ETA 2       - -       0.972       - -       0.235       - -        - - \r\n    ETA 3       - -        - -       0.971      0.237       - -        - - \r\n    ETA 4      0.974       - -        - -        - -       0.228       - - \r\n    ETA 5       - -       0.977       - -        - -       0.213       - - \r\n    ETA 6       - -        - -       0.976       - -       0.217       - - \r\n    ETA 7      0.948       - -        - -        - -        - -       0.318\r\n    ETA 8       - -       0.975       - -        - -        - -       0.224\r\n    ETA 9       - -        - -       0.971       - -        - -       0.240\r\n\r\n         '
         self.assertEqual(res[32][1], txt33)
 
+    @unittest.skip("Skipping create groups test to save time...")
     def test_create_groups_from_std(self):
         self.model_r1.create_groups_from_std()
 
@@ -418,6 +419,7 @@ class ESSOutputsTestCase(unittest.TestCase):
             mod = LisrelModel(os.path.join(self.path, outcome['file']),
                     auto_load=True)
 
+            print "testing '%s'..." % outcome['gp']
             # Test one randomly chosen group
             grp = mod.groups[outcome['gp_index']]
             self.assertEqual(grp.name, outcome['gp'])
