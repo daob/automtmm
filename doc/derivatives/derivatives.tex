@@ -1,0 +1,131 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\title{Derivatives and standard errors of standardized parameters in the LISREL
+model}
+\author{Daniel Oberski\\RECSM research paper, Universitat Pompeu Fabra}
+
+
+\newcommand{\n}{\eta}
+\renewcommand{\l}{\lambda}
+\renewcommand{\b}{\beta}
+\newcommand{\p}{\phi}
+
+\renewcommand{\d}{\,\mathrm{d}\,}
+
+\newcommand{\definedas}{\triangleq}
+\newcommand{\kronprod}{\otimes}
+\newcommand{\hadaprod}{\circ}
+
+\newcommand{\diag}{\mathrm{diag}}
+\renewcommand{\vec}{\mathrm{vec}\,}
+\newcommand{\vech}{\mathrm{vech}\,}
+
+
+\begin{document}
+\maketitle
+
+Assume the following model for a vector of observed variables $y$ has been
+specified:
+\begin{align}
+\label{eq:lisrel_observed}
+y &= \Lambda \n + \epsilon\\
+\n &= B_0 \n + \zeta,\label{eq:lisrel_latent}
+\end{align}
+where $\n$ is a vector of unobserved variables, $\zeta$ is a vector of
+disturbance terms and $\epsilon$ is a vector of measurement errors. Model
+\ref{eq:lisrel_latent} implies the following model
+$\Sigma_\n$ for the variance-covariance matrix of the unobserved variables:
+\begin{equation}\label{eq:sigma_n}
+    \Sigma_\n = B^{-1} \Phi B^{-T},
+\end{equation}
+where $B \definedas I - B_0$ is positive definite, 
+and $\Phi$ is the variance-covariance
+matrix of $\zeta$. Model \ref{eq:lisrel_observed} can then be seen to imply the
+following model $\Sigma_y$ for the variance-covariance matrix of the observed
+variables:
+\begin{equation}\label{eq:sigma_y}
+    \Sigma_y = \Lambda B^{-1} \Phi B^{-T} \Lambda' + \Psi,
+\end{equation}
+where  $\Psi$ is the variance-covariance matrix of $\epsilon$. 
+We assume throughout that both $\Sigma_y$ and $\Sigma_\n$ are positive
+definite.
+
+Often, interest focuses not only on the parameter matrices $\Lambda$, $B_0$, 
+$\Phi$, and $\Psi$, but also on the so-called ``standardized'' matrices
+$\Lambda^{(s)}$ and $B^{(s)}_0$. These are defined as:
+\begin{align}\label{eq:lambda_s}
+    \Lambda^{(s)} &\definedas D^{-1}_y \Lambda D_\n
+    \\
+    B_0^{(s)} &\definedas D^{-1}_\n B_0 D_\n,\label{eq:beta_s}
+\end{align}
+where $D_y \definedas \sqrt{I \hadaprod \Sigma_y}$, and 
+$D_\n \definedas \sqrt{I \hadaprod \Sigma_\n}$. We now derive the differentials
+of these standardized parameter matrices. 
+
+From definition \ref{eq:lambda_s}, 
+\begin{multline}
+\d\vec\Lambda^{(s)} = 
+    (D_\n \Lambda' \kronprod I_p) \d \vec D_y^{-1} + 
+    (D_\n \kronprod D_y^{-1}) \d\vec\Lambda + \\
+    (I_q \kronprod D_y^{-1} \Lambda) \d\vec D_\n.
+\end{multline}
+
+The differentials of the standardized parameter matrices are, thus, 
+functions of the differentials of the covariance structure models $\Sigma_y$ and
+$\Sigma_\n$.
+From Neudecker \& Satorra (1990), the differential of the implied variance
+matrix $\Sigma_y$ of the observed variables is:
+\begin{equation}\label{eq:delta_y}
+\begin{split}
+\d\vec \Sigma_y = (I + K) (\Lambda B^{-1} \Phi B^{-T} \kronprod I) 
+\d\vec\Lambda 
+- \\
+(I + K) (\Lambda B^{-1} \Phi B^{-T} \kronprod \Lambda B^{-1}) \d\vec B
++ \\
+(\Lambda B^{-1} \kronprod \Lambda B^{-1}) E \d \vech \Phi
++ \\
+\d \vech \Psi,
+\end{split}
+\end{equation}
+where the commutation matrix $K$, the elimination matrix $E$, and the operators
+$\vec$ and $\vech$ are defined in Magnus and Neudecker (1989).
+Let $\Delta_\l$ equal the coefficient matrix
+ of $\d\vec\Lambda$ in equation \ref{eq:delta_y}, 
+$\Delta_\b$ the coefficient  of $\d\vec B$, and
+$\Delta_\p$ the coefficient  of $\d\vech\Phi$.
+
+
+From equation \ref{eq:delta_y} together with equation \ref{eq:sigma_n} the
+differential of the variance matrix of $\n$ can be obtained as:
+\begin{equation}\label{eq:delta_n}
+\begin{split}
+\d\vec \Sigma_\n = 
+- (I + K) (B^{-1} \Phi B^{-T} \kronprod  B^{-1}) \d\vec B
++ \\
+(B^{-1} \kronprod  B^{-1}) E \d \vech \Phi.
+\end{split}
+\end{equation}
+Let $\Delta^*_\b$ and $\Delta^*_\p$  be the coefficients of $\d\vec B$ and
+$\d\vech\Phi$ respectively in equation \ref{eq:delta_n}.
+
+
+Let 
+\begin{align}
+    C_{y2} \definedas&
+        (I_p \kronprod \frac{1}{2 (I_p \hadaprod \Sigma_y)^{\frac{3}{2}}})
+        \diag[\vec(I_p)],
+\\
+    C_{\n1} \definedas&
+        (I_q \kronprod \frac{1}{2 (I_q \hadaprod \Sigma_\n)^{\frac{1}{2}}})
+        \diag[\vec(I_q)],
+\\
+    C_{\n2} \definedas&
+        (I_q \kronprod \frac{1}{2 (I_q \hadaprod \Sigma_\n)^{\frac{3}{2}}})
+        \diag[\vec(I_q)].
+\end{align}
+
+
+\end{document}
