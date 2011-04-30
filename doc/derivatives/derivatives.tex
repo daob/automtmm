@@ -66,11 +66,19 @@ $D_\n \definedas \sqrt{I \hadaprod \Sigma_\n}$. We now derive the differentials
 of these standardized parameter matrices. 
 
 From definition \ref{eq:lambda_s}, 
-\begin{multline}
+\begin{multline}\label{eq:dveclam}
 \d\vec\Lambda^{(s)} = 
     (D_\n \Lambda' \kronprod I_p) \d \vec D_y^{-1} + 
     (D_\n \kronprod D_y^{-1}) \d\vec\Lambda + \\
     (I_q \kronprod D_y^{-1} \Lambda) \d\vec D_\n.
+\end{multline}
+
+From definition \ref{eq:beta_s}, 
+\begin{multline}\label{eq:dvecbet}
+\d\vec B^{(s)} = 
+    (D_\n B' \kronprod I_p) \d \vec D_\n^{-1} + 
+    (D_\n \kronprod D_\n^{-1}) \d\vec B + \\
+    (I_q \kronprod D_\n^{-1} B) \d\vec D_\n.
 \end{multline}
 
 The differentials of the standardized parameter matrices are, thus, 
@@ -111,8 +119,7 @@ differential of the variance matrix of $\n$ can be obtained as:
 Let $\Delta^*_\b$ and $\Delta^*_\p$  be the coefficients of $\d\vec B$ and
 $\d\vech\Phi$ respectively in equation \ref{eq:delta_n}.
 
-
-Let 
+Also, let
 \begin{align}
     C_{y2} \definedas&
         (I_p \kronprod \frac{1}{2 (I_p \hadaprod \Sigma_y)^{\frac{3}{2}}})
@@ -127,5 +134,21 @@ Let
         \diag[\vec(I_q)].
 \end{align}
 
+Applying standard operations on \ref{eq:dveclam} and rearranging terms, 
+\begin{equation}\label{eq:dveclam_final}
+\begin{split}
+  \d\vec\Lambda^{(s)} = &\\
+     & [(D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\l + 
+        (D_\n \kronprod D_y^{-1})] 
+        \d\vec\Lambda +\\
+     & [(D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\b + 
+        (I_q \kronprod D_y^{-1}\Lambda) C_{\n1} \Delta^*_\b ] 
+        \d\vec B +\\
+     & [(D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\p + 
+        (I_q \kronprod D_y^{-1}\Lambda) C_{\n1} \Delta^*_\p ] 
+        \d\vec \Phi +\\
+     & [(D_\n \Lambda' \kronprod I_p) C_{y2} 
+        \d\vec \Psi.
+\end{split}\end{equation}
 
 \end{document}
