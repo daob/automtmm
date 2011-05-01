@@ -23,6 +23,8 @@ model}
 \renewcommand{\vec}{\mathrm{vec}\,}
 \newcommand{\vech}{\mathrm{vech}\,}
 
+\newcommand{\Lambdastan}{\tilde{\Lambda}}
+\newcommand{\Bstan}{\tilde{B}}
 
 \begin{document}
 \maketitle
@@ -55,11 +57,11 @@ definite.
 
 Often, interest focuses not only on the parameter matrices $\Lambda$, $B_0$, 
 $\Phi$, and $\Psi$, but also on the so-called ``standardized'' matrices
-$\Lambda^{(s)}$ and $B^{(s)}_0$. These are defined as:
+$\Lambdastan$ and $\Bstan_0$. These are defined as:
 \begin{align}\label{eq:lambda_s}
-    \Lambda^{(s)} &\definedas D^{-1}_y \Lambda D_\n
+    \Lambdastan &\definedas D^{-1}_y \Lambda D_\n
     \\
-    B_0^{(s)} &\definedas D^{-1}_\n B_0 D_\n,\label{eq:beta_s}
+    \Bstan_0 &\definedas D^{-1}_\n B_0 D_\n,\label{eq:beta_s}
 \end{align}
 where $D_y \definedas \sqrt{I \hadaprod \Sigma_y}$, and 
 $D_\n \definedas \sqrt{I \hadaprod \Sigma_\n}$. We now derive the differentials
@@ -67,14 +69,14 @@ of these standardized parameter matrices.
 
 From definition \ref{eq:lambda_s}, 
 \begin{multline}\label{eq:dveclam}
-\d\vec\Lambda^{(s)} = 
+\d\vec\Lambdastan = 
     (D_\n \Lambda' \kronprod I_p) \d \vec D_y^{-1} + 
     (D_\n \kronprod D_y^{-1}) \d\vec\Lambda + \\
     (I_q \kronprod D_y^{-1} \Lambda) \d\vec D_\n,
 \end{multline}
 and from definition \ref{eq:beta_s}, 
 \begin{multline}\label{eq:dvecbeta}
-\d\vec B_0^{(s)} = 
+\d\vec \Bstan_0 = 
     (D_\n B_0' \kronprod I_p) \d \vec D_\n^{-1} + 
     (D_\n \kronprod D_\n^{-1}) \d\vec B_0 + \\
     (I_q \kronprod D_\n^{-1} B_0) \d\vec D_\n.
@@ -134,10 +136,10 @@ Also, let
 \end{align}
 
 Then, applying standard operations on \ref{eq:dveclam} and rearranging terms,
-the differential of the standardized $\Lambda^{(s)}$ matrix is
+the differential of the standardized $\Lambdastan$ matrix is
 \begin{equation}\label{eq:dveclam_final}
 \begin{split}
-  \d\vec\Lambda^{(s)} = &\\
+  \d\vec\Lambdastan = &\\
      & [(D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\l + 
         (D_\n \kronprod D_y^{-1})] 
         \d\vec\Lambda +\\
@@ -150,11 +152,11 @@ the differential of the standardized $\Lambda^{(s)}$ matrix is
      & [(D_\n \Lambda' \kronprod I_p) C_{y2} 
         \d\vec \Psi.
 \end{split}\end{equation}
-And similarly, the differential of the standardized $B_0^{(s)}$ matrix from
+And similarly, the differential of the standardized $\Bstan_0$ matrix from
 equation \ref{eq:dvecbeta} is
 \begin{equation}\label{eq:dvecbeta_final}
 \begin{split}
-  \d\vec B_0^{(s)} = &\\
+  \d\vec \Bstan_0 = &\\
      & [\{(D_\n B_0' \kronprod I_p) C_{\n2}  + 
         (I_q \kronprod D_\n^{-1}B_0) C_{\n1} \} \Delta^*_\b +
            (D_\n \kronprod D_\n^{-1})  ] 
