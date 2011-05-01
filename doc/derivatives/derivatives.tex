@@ -26,6 +26,8 @@ model}
 \newcommand{\Lambdastan}{\tilde{\Lambda}}
 \newcommand{\Bstan}{\tilde{B}}
 
+\newcommand{\0}{\boldsymbol{0}}
+
 \begin{document}
 \maketitle
 
@@ -39,24 +41,28 @@ y &= \Lambda \n + \epsilon\\
 where $\n$ is a vector of unobserved variables, $\zeta$ is a vector of
 disturbance terms and $\epsilon$ is a vector of measurement errors. Model
 \ref{eq:lisrel_latent} implies the following model
-$\Sigma_\n$ for the variance-covariance matrix of the unobserved variables:
+$\Sigma_\n(\theta)$ for the variance-covariance matrix of the unobserved
+variables: 
 \begin{equation}\label{eq:sigma_n}
-    \Sigma_\n = B^{-1} \Phi B^{-T},
+    \Sigma_\n(\theta) = B^{-1} \Phi B^{-T},
 \end{equation}
 where $B \definedas I - B_0$ is positive definite, 
 and $\Phi$ is the variance-covariance
 matrix of $\zeta$. Model \ref{eq:lisrel_observed} can then be seen to imply the
-following model $\Sigma_y$ for the variance-covariance matrix of the observed
-variables:
+following model $\Sigma_y(\theta)$ for the variance-covariance matrix of the
+observed variables:
 \begin{equation}\label{eq:sigma_y}
-    \Sigma_y = \Lambda B^{-1} \Phi B^{-T} \Lambda' + \Psi,
+    \Sigma_y(\theta) = \Lambda B^{-1} \Phi B^{-T} \Lambda' + \Psi,
 \end{equation}
 where  $\Psi$ is the variance-covariance matrix of $\epsilon$. 
 We assume throughout that both $\Sigma_y$ and $\Sigma_\n$ are positive
-definite.
+definite. In what follows we will write $\Sigma_.$ for $\Sigma_.(\theta)$ in the
+interest of clarity.
 
-Often, interest focuses not only on the parameter matrices $\Lambda$, $B_0$, 
-$\Phi$, and $\Psi$, but also on the so-called ``standardized'' matrices
+The parameters of the model are collected in a parameter
+vector $$\theta \definedas [\vec{\Lambda}, \vech{\Phi}, \vec B_0, \vech \Psi].$$
+Often, interest focuses not only on the parameters $\theta$, 
+but also on the so-called ``standardized'' matrices
 $\Lambdastan$ and $\Bstan_0$. These are defined as:
 \begin{align}\label{eq:lambda_s}
     \Lambdastan &\definedas D^{-1}_y \Lambda D_\n
@@ -149,7 +155,7 @@ the differential of the standardized $\Lambdastan$ matrix is
      & [(D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\p + 
         (I_q \kronprod D_y^{-1}\Lambda) C_{\n1} \Delta^*_\p ] 
         \d\vec \Phi +\\
-     & [(D_\n \Lambda' \kronprod I_p) C_{y2} 
+     & (D_\n \Lambda' \kronprod I_p) C_{y2} 
         \d\vec \Psi.
 \end{split}\end{equation}
 And similarly, the differential of the standardized $\Bstan_0$ matrix from
@@ -166,5 +172,35 @@ equation \ref{eq:dvecbeta} is
         \d\vec \Phi.
 \end{split}\end{equation}
 
-
+From the differentials in equations \ref{eq:dveclam_final} and
+\ref{eq:dvecbeta_final},
+we conclude that the derivative matrices  $G_{\tilde{\l}}$ and 
+$G_{\tilde{\b}}$ of the standardized parameters $\vec \Bstan$ and 
+$\vec \Lambdastan$ with respect to the free parameters of the model 
+$\theta$ will be the partitioned matrices
+\begin{multline}
+    G_{\tilde{\l}} = [
+        (D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\l + 
+            (D_\n \kronprod D_y^{-1}), \\
+        (D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\p +
+         (I_q \kronprod D_y^{-1}\Lambda) C_{\n1} \Delta^*_\p, \\
+        (D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\b + 
+            (I_q \kronprod D_y^{-1}\Lambda) C_{\n1} \Delta^*_\b,\\
+        (D_\n \Lambda' \kronprod I_p) C_{y2}  
+ ] 
+\end{multline}
+and
+\begin{multline}
+    G_{\tilde{\b}} = [
+        \0,
+        \{(D_\n B_0' \kronprod I_p) C_{\n2}  + 
+            (I_q \kronprod D_\n^{-1}B_0) C_{\n1} \} \Delta^*_\p
+            ,\\
+        \{(D_\n B_0' \kronprod I_p) C_{\n2}  + 
+            (I_q \kronprod D_\n^{-1}B_0) C_{\n1} \} \Delta^*_\b +
+            (D_\n \kronprod D_\n^{-1})
+            ,
+        \0
+ ] .
+\end{multline}
 \end{document}
