@@ -1,6 +1,9 @@
 import unittest
 import time
 
+import os
+import glob
+
 from LisrelMatrix import SymmetricMatrix, DiagonalMatrix, FullMatrix
 from LisrelModel import LisrelModel
 from Group import Group
@@ -102,7 +105,7 @@ class ParameterizedMatrixTestCase(unittest.TestCase):
 
     def setUp(self):
         self.mat = SymmetricMatrix('TeSt')
-                 
+
     def test_short_name(self):
         # Make sure the short name is correctly set
         self.assertEqual(self.mat.short_name, 'TE')
@@ -111,7 +114,7 @@ class ParameterizedMatrixTestCase(unittest.TestCase):
         # Test regular expression that reads matrices on PHI param matrix
         self.assertEqual(self.mat.re_lismat.findall(phi_test_txt),
             ['    KSI 1          0\n    KSI 2        109          0\n    KSI 3        110        111          0\n    KSI 4          0          0          0         13\n    KSI 5          0          0          0          0         14\n    KSI 6          0          0          0          0          0         15',])
-        
+
     def test_re_lismat_te(self):
         # Test regular expression that reads matrices on TE param matrix
         self.assertEqual(self.mat.re_lismat.findall(te_test_txt),
@@ -123,7 +126,7 @@ class ParameterizedMatrixTestCase(unittest.TestCase):
             '    VAR 1      0.717      0.0      0.0      0.0      0.0      0.0\n    VAR 2      0.0      0.762      0.0      0.0      0.0      0.0\n    VAR 3      0.0      0.0      0.832      0.0      0.0      0.0\n    VAR 4      0.0      0.0      0.0      0.0      0.0      0.0\n    VAR 5      0.0      0.0      0.0      0.0      0.0      0.0\n    VAR 6      0.0      0.0      0.0      0.0      0.0      0.0\n    VAR 7      0.0      0.0      0.0      0.0      0.0      0.0\n    VAR 8      0.0      0.0      0.0      0.0      0.0      0.0\n    VAR 9      0.0      0.0      0.0      0.0      0.0      0.0     VAR 1      0.0      0.0      0.0\n    VAR 2      0.0      0.0      0.0\n    VAR 3      0.0      0.0      0.0\n    VAR 4      0.0      0.0      0.0\n    VAR 5      0.0      0.0      0.0\n    VAR 6      0.0      0.0      0.0\n    VAR 7      0.557      0.0      0.0\n    VAR 8      0.0      0.749      0.0\n    VAR 9      0.0      0.0      0.732')
 
     def test_join_mlist(self):
-        self.assertEqual(self.mat.join_mlist(self.lismat_out), (9, 
+        self.assertEqual(self.mat.join_mlist(self.lismat_out), (9,
             ['    VAR 1      0.717       - -        - -        - -        - -        - -      VAR 1       - -        - -        - - ', '    VAR 2       - -       0.762       - -        - -        - -        - -      VAR 2       - -        - -        - - ', '    VAR 3       - -        - -       0.832       - -        - -        - -      VAR 3       - -        - -        - - ', '    VAR 4       - -        - -        - -        - -        - -        - -      VAR 4       - -        - -        - - ', '    VAR 5       - -        - -        - -        - -        - -        - -      VAR 5       - -        - -        - - ', '    VAR 6       - -        - -        - -        - -        - -        - -      VAR 6       - -        - -        - - ', '    VAR 7       - -        - -        - -        - -        - -        - -      VAR 7      0.557       - -        - - ', '    VAR 8       - -        - -        - -        - -        - -        - -      VAR 8       - -       0.749       - - ', '    VAR 9       - -        - -        - -        - -        - -        - -      VAR 9       - -        - -       0.732']
             ))
 
@@ -131,15 +134,15 @@ class ParameterizedMatrixTestCase(unittest.TestCase):
         # Test that parse_parameters correctly extracts the parameter numbers
 
         self.assertEqual(self.mat.parse_parameters(phi_test_txt),
-                [ 0, 109, 0, 110, 111, 0, 0, 
+                [ 0, 109, 0, 110, 111, 0, 0,
                   0, 0, 13, 0, 0, 0, 0, 14, 0, 0, 0, 0, 0, 15])
 
         self.assertEqual(self.mat.parse_parameters(te_test_txt),
-                [112,113,114,0,0,0,118,119,120]) 
+                [112,113,114,0,0,0,118,119,120])
 
 
 class SymmetricMatrixTestCase(unittest.TestCase):
-    
+
     def setUp(self):
         self.mat = SymmetricMatrix('PHI', phi_test_txt)
 
@@ -154,9 +157,9 @@ class SymmetricMatrixTestCase(unittest.TestCase):
     def test_read_parameter_numbers(self):
         # Test whether the following snippet from a LISREL output is correctly
         # read in as a 6x6 parameter number matrix
-        should_be = [[0,109,110,0,0,0], [109, 0, 111, 0, 0, 0], 
-                [110, 111, 0, 0, 0, 0], [0,0,0,13,0,0], 
-                [0,0,0,0,14,0], [0,0,0,0,0,15]]        
+        should_be = [[0,109,110,0,0,0], [109, 0, 111, 0, 0, 0],
+                [110, 111, 0, 0, 0, 0], [0,0,0,13,0,0],
+                [0,0,0,0,14,0], [0,0,0,0,0,15]]
 
         self.mat.read_parameter_numbers(phi_test_txt)
         self.assertEqual(self.mat.param_nums, should_be)
@@ -174,12 +177,12 @@ class SymmetricMatrixTestCase(unittest.TestCase):
  [0.0, 0.0, 0.0, 0.0, 0.0, 0.046087999999999997]]
         self.mat.set_values(values)
         #Should take tol into account but I am too lazy to loop over mat
-        self.assertEqual(self.mat.values, should_be) 
-        
+        self.assertEqual(self.mat.values, should_be)
+ 
 
 
 class DiagonalMatrixTestCase(unittest.TestCase):
-    
+
     def setUp(self):
         self.mat = DiagonalMatrix('THETA-EPS')
 
@@ -223,11 +226,11 @@ class DiagonalMatrixTestCase(unittest.TestCase):
 
         self.mat.set_values(values)
         #Should take tol into account but I am too lazy to loop over mat
-        self.assertEqual(self.mat.values, should_be) 
+        self.assertEqual(self.mat.values, should_be)
 
 
 class FullMatrixTestCase(unittest.TestCase):
-    
+ 
     def setUp(self):
         self.mat = FullMatrix('GaMma', ga_test_txt)
 
@@ -285,7 +288,7 @@ class FullMatrixTestCase(unittest.TestCase):
 
         self.mat.set_values(values)
         #Should take tol into account but I am too lazy to loop over mat
-        self.assertEqual(self.mat.values, should_be) 
+        self.assertEqual(self.mat.values, should_be)
 
     def test_parse_standardized(self):
         self.mat.read_standardized(ly_std_test)
@@ -316,7 +319,7 @@ class FullMatrixTestCase(unittest.TestCase):
 class LisrelModelTestCase(unittest.TestCase):
     def setUp(self):
         self.model_r1 = LisrelModel('TEST-R1.OUT')
-    
+
     def test_ngroups(self):
         self.assertEqual(self.model_r1.ngroups, 38)
 
@@ -330,6 +333,7 @@ class LisrelModelTestCase(unittest.TestCase):
         txt33 = '\n\r\n         LAMBDA-Y    \r\n\r\n               ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   \r\n            --------   --------   --------   --------   --------   --------\r\n    VAR 1      0.764       - -        - -        - -        - -        - - \r\n    VAR 2       - -       0.874       - -        - -        - -        - - \r\n    VAR 3       - -        - -       0.827       - -        - -        - - \r\n    VAR 4       - -        - -        - -       0.932       - -        - - \r\n    VAR 5       - -        - -        - -        - -       0.949       - - \r\n    VAR 6       - -        - -        - -        - -        - -       0.984\r\n    VAR 7       - -        - -        - -        - -        - -        - - \r\n    VAR 8       - -        - -        - -        - -        - -        - - \r\n    VAR 9       - -        - -        - -        - -        - -        - - \r\n\r\n         LAMBDA-Y    \r\n\r\n               ETA 7      ETA 8      ETA 9   \r\n            --------   --------   --------\r\n    VAR 1       - -        - -        - - \r\n    VAR 2       - -        - -        - - \r\n    VAR 3       - -        - -        - - \r\n    VAR 4       - -        - -        - - \r\n    VAR 5       - -        - -        - - \r\n    VAR 6       - -        - -        - - \r\n    VAR 7       - -        - -        - - \r\n    VAR 8       - -        - -        - - \r\n    VAR 9       - -        - -        - - \r\n\r\n         GAMMA       \r\n\r\n               KSI 1      KSI 2      KSI 3      KSI 4      KSI 5      KSI 6   \r\n            --------   --------   --------   --------   --------   --------\r\n    ETA 1      0.965       - -        - -       0.261       - -        - - \r\n    ETA 2       - -       0.972       - -       0.235       - -        - - \r\n    ETA 3       - -        - -       0.971      0.237       - -        - - \r\n    ETA 4      0.974       - -        - -        - -       0.228       - - \r\n    ETA 5       - -       0.977       - -        - -       0.213       - - \r\n    ETA 6       - -        - -       0.976       - -       0.217       - - \r\n    ETA 7      0.948       - -        - -        - -        - -       0.318\r\n    ETA 8       - -       0.975       - -        - -        - -       0.224\r\n    ETA 9       - -        - -       0.971       - -        - -       0.240\r\n\r\n         '
         self.assertEqual(res[32][1], txt33)
 
+    @unittest.skip("Skipping create groups test to save time...")
     def test_create_groups_from_std(self):
         self.model_r1.create_groups_from_std()
 
@@ -392,6 +396,43 @@ class GroupTestCase(unittest.TestCase):
         self.assertEqual(res[1]['name'], 'GAMMA')
         self.assertEqual(res[0]['txt_std'], 'ETA 1      ETA 2      ETA 3      ETA 4      ETA 5      ETA 6   \r\n            --------   --------   --------   --------   --------   --------\r\n    VAR 1      0.759       - -        - -        - -        - -        - - \r\n    VAR 2       - -       0.846       - -        - -        - -        - - \r\n    VAR 3       - -        - -       0.879       - -        - -        - - \r\n    VAR 4       - -        - -        - -        - -        - -        - - \r\n    VAR 5       - -        - -        - -        - -        - -        - - \r\n    VAR 6       - -        - -        - -        - -        - -        - - \r\n    VAR 7       - -        - -        - -        - -        - -        - - \r\n    VAR 8       - -        - -        - -        - -        - -        - - \r\n    VAR 9       - -        - -        - -        - -        - -        - -\r\n\r\nETA 7      ETA 8      ETA 9   \r\n            --------   --------   --------\r\n    VAR 1       - -        - -        - - \r\n    VAR 2       - -        - -        - - \r\n    VAR 3       - -        - -        - - \r\n    VAR 4       - -        - -        - - \r\n    VAR 5       - -        - -        - - \r\n    VAR 6       - -        - -        - - \r\n    VAR 7      0.702       - -        - - \r\n    VAR 8       - -       0.832       - - \r\n    VAR 9       - -        - -       0.869')
         
+
+class ESSOutputsTestCase(unittest.TestCase):
+    def setUp(self, run=False):
+        from test_outcomes import outcomes
+        self.outcomes = outcomes
+
+        self.path = 'tests'
+        os.chdir(self.path)
+
+        self.outfiles = []
+        for infile in glob.glob('*.LS8'):
+            outfile = "%s.OUT" % infile
+            self.outfiles.append(outfile)
+            if run:
+                print "Running %s..." % infile
+                os.system('lisrel85 %s %s' % (infile, outfile))
+        os.chdir('..')
+
+    def test_outputs(self):
+        for outcome in self.outcomes:
+            mod = LisrelModel(os.path.join(self.path, outcome['file']),
+                    auto_load=True)
+
+            print "testing '%s'..." % outcome['gp']
+            # Test one randomly chosen group
+            grp = mod.groups[outcome['gp_index']]
+            self.assertEqual(grp.name, outcome['gp'])
+            # Test that the LY and GA are correct for this group
+            self.assertEqual(grp.matrices[0].values_std, outcome['ly'])
+            self.assertEqual(grp.matrices[1].values_std, outcome['ga'])
+
+            # Test that LY 2 2 is correct for the first n groups 
+            for i, el in enumerate(outcome['snd_el_ly']):
+                self.assertEqual(type(grp), Group)
+                fe = mod.groups[i].matrices[0].values_std[1][1]
+                self.assertEqual(fe, el)
+
 
 if __name__ == '__main__':
     unittest.main()
