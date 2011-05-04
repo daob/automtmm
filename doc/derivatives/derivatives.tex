@@ -31,6 +31,21 @@ model}
 \begin{document}
 \maketitle
 
+\section{Introduction}
+
+Linear structural equation models (SEM) with latent variables
+are a popular tool in different branches of science. Such models encompass as
+special cases a diverse range of common models of interest such as factor
+analysis, multivariate regression, errors-in-variables models, growth, and
+multilevel models \cite{bollen1989structural}. Models for categorical, count,
+and censored dependent variables as well as complex sampling and other
+extensions are also available \cite{muthen1995complex,muthen2002beyond}.
+
+
+
+
+\section{Derivatives of the standardized parameters}
+
 Assume the following model for a vector of observed variables $y$ has been
 specified:
 \begin{align}
@@ -91,7 +106,7 @@ and from definition \ref{eq:beta_s},
 The differentials of the standardized parameter matrices are, thus, 
 functions of the differentials of the covariance structure models $\Sigma_y$ and
 $\Sigma_\n$.
-From Neudecker \& Satorra (1990), the differential of the implied variance
+From \cite{neudecker1991linear}, the differential of the implied variance
 matrix $\Sigma_y$ of the observed variables is:
 \begin{equation}\label{eq:delta_y}
 \begin{split}
@@ -106,7 +121,7 @@ matrix $\Sigma_y$ of the observed variables is:
 \end{split}
 \end{equation}
 where the commutation matrix $K$, the duplication matrix $P$, and the operators
-$\vec$ and $\vech$ are defined in Magnus and Neudecker (1989).
+$\vec$ and $\vech$ are defined in \cite{magnus1988matrix}
 Let $\Delta_\l$ equal the coefficient matrix
  of $\d\vec\Lambda$ in equation \ref{eq:delta_y}, 
 $\Delta_\b$ the coefficient  of $\d\vec B_0$, and
@@ -203,4 +218,25 @@ and
         \0
  ] .
 \end{multline}
+
+
+\section{Application: standard errors of standardized parameters}
+
+[Show how to get std errors for example]
+
+     [,1]  [,2]  [,3]
+ [1,] 0.034 0.000 0.000
+ [2,] 0.033 0.000 0.000
+ [3,] 0.034 0.000 0.000
+ [4,] 0.000 0.018 0.000
+ [5,] 0.000 0.020 0.000
+ [6,] 0.000 0.018 0.000
+ [7,] 0.000 0.000 0.031
+ [8,] 0.000 0.000 0.032
+ [9,] 0.000 0.000 0.032
+
+
+
+
+\bibliography{derivatives}
 \end{document}
