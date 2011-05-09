@@ -8,7 +8,8 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 
-\title{Derivatives and standard errors of standardized parameters in structural equation models}
+\title{Derivatives and standard errors of standardized parameters in structural
+equation models}
 \author{Daniel Oberski\\RECSM research paper, Universitat Pompeu Fabra}
 
 \usepackage[margin=3.1cm]{geometry}
@@ -46,7 +47,8 @@
 \begin{abstract}\noindent
 In structural equation models, often not only the parameters of the model, but
 also the standardized coefficients are of interest to the researcher. 
-The literature does not, however, provide explicit analytical standard errors for standardized parameters. Due to this lack of availability of analytical derivatives in the literature, standard SEM software that wishes to provide SEM users with standard errors of the standardized parameters requires the use of numerical derivatives or approximate methods.
+The literature does not, however, provide explicit analytical standard errors
+for standardized parameters. %Due to this lack of availability of analytical derivatives in the literature, standard SEM software that wishes to provide SEM users with standard errors of the standardized parameters requires the use of numerical derivatives or approximate methods.
 
 We derive an explicit expression in terms of the model parameters 
 for derivatives and asymptotic standard errors of 
@@ -59,9 +61,9 @@ The expression is applied to an example application.
 Linear structural equation models (SEM) with latent variables
 have become a popular tool in different branches of science. Such models encompass as special cases a diverse range of common models of interest such as factor
 analysis, multivariate regression, errors-in-variables models, growth, and
-multilevel models \citep{bollen1989structural}. In addition, models for categorical, count,
-and censored dependent variables as well as complex sampling and other
-extensions are available \citep{muthen1995complex,muthen2002beyond}.
+multilevel and multigroup models \citep{bollen1989structural}. In addition, extensions for categorical, count,
+and censored dependent variables as well as complex sampling 
+available \citep{muthen1995complex,muthen2002beyond}.
 
 Although the main interest in such models lies in the parameters of 
 the model, researchers' interest often also focuses on the so-called 
@@ -69,7 +71,9 @@ the model, researchers' interest often also focuses on the so-called
 
 In spite of the interest in standardized coefficients in structural equation models, standard errors and confidence intervals for these coefficients are usually not provided by the standard software\footnote{At the time of writing, the exception is Mplus version 5.2 and above \citep{muthen1998mplus}.}. To our knowledge the literature does not provide any explicit expression for the asymptotic standard errors of standardized coefficients. We remedy this situation by deriving an explicit expression for the asymptotic variance-covariance matrix of the standardized coefficients. The solution requires only the parameter estimates of the model and can be readily implemented in SEM software.
 
-Section 2 provides a motivating example, using a non-recursive SEM model with latent variables where standardized parameters are of interest to the researcher.
+Section 2 provides a motivating example, using a SEM model with latent
+variables where standardized parameters and their standard errors or confidence
+intervals are of interest to the researcher.
 Section 3 derives the explicit expression for the asymptotic variance-covariance matrix of the standardized estimates. In section 4, this expression is then applied to the example. Finally, the last section discusses the scope and limitations of this proposal and suggests future research.
 
 
@@ -79,8 +83,8 @@ Section 3 derives the explicit expression for the asymptotic variance-covariance
 
 \section{Standard errors of standardized parameters}
 
-Assume the following model for a vector of observed variables $y$ has been
-specified:
+Let $y$ be a $p$-vector of observed variables, from which a sample is obtained.
+The following SEM for $y$ is specified:
 \begin{align}
 \label{eq:lisrel_observed}
 y &= \Lambda \n + \epsilon\\
@@ -90,13 +94,14 @@ where $\n$ is a vector of unobserved variables, $\zeta$ is a vector of
 disturbance terms and $\epsilon$ is a vector of measurement errors. Model
 \ref{eq:lisrel_latent} implies the following model
 $\Sigma_\n(\theta)$ for the variance-covariance matrix of the unobserved
-variables: 
+variables as a function of a parameter vector $\theta$: 
 \begin{equation}\label{eq:sigma_n}
     \Sigma_\n(\theta) = B^{-1} \Phi B^{-T},
 \end{equation}
 where $B \definedas I - B_0$ is positive definite, 
 and $\Phi$ is the variance-covariance
-matrix of $\zeta$. Model \ref{eq:lisrel_observed} can then be seen to imply thefollowing model $\Sigma_y(\theta)$ for the variance-covariance matrix of the
+matrix of $\zeta$. Model \ref{eq:lisrel_observed} can then be seen to imply the
+following model $\Sigma_y(\theta)$ for the variance-covariance matrix of the
 observed variables:
 \begin{equation}\label{eq:sigma_y}
     \Sigma_y(\theta) = \Lambda B^{-1} \Phi B^{-T} \Lambda' + \Psi,
@@ -111,7 +116,7 @@ The parameters of the model are collected in a parameter
 vector $$\theta \definedas [\vec{\Lambda}, \vech{\Phi}, \vec B_0, \vech
 \Psi].$$
 Often, interest focuses not only on the parameters $\theta$, 
-but also on the so-called ``standardized'' matrices
+but also on the so-called ``standardized'' matrices, which we denote
 $\Lambdastan$ and $\Bstan_0$. These are defined as:
 \begin{align}\label{eq:lambda_s}
     \Lambdastan &\definedas D^{-1}_y \Lambda D_\n
@@ -124,7 +129,7 @@ $D_\n \definedas \sqrt{I \hadaprod \Sigma_\n}$.
 \marginpar{TODO: Define $\thetastan$.}
 
 By standard application of the Delta method \citep[e.g.][]{oehlert1992note}, the asymptotic variance of $\thetastan$ is 
-\begin{equation}
+\begin{equation}\label{eq:deltamethod}
 	\left(\frac{d \thetastan}{d \theta}\right) 
 		\var(\theta) 
 	\left(\frac{d \thetastan}{d \theta}\right)',
@@ -134,8 +139,10 @@ where $\var(\theta)$ is the appropriate asymptotic variance matrix of the free m
 
 \subsection{Derivatives of the standardized parameters}
 
-To obtain the full expression for the variance-covariance matrix of standardized parameters, the derivatives of the standardized parameters with respect to the free parameters of the model are needed, as shown in equation \ref{eq:deltamethod}.
-We now derive these differentials. 
+To obtain the full expression for the variance-covariance matrix of
+standardized parameters in equation \ref{eq:deltamethod}, the needed
+derivatives of the standardized parameters with respect to the free parameters
+of the model are derived here.
 
 From definition \ref{eq:lambda_s}, 
 \begin{multline}\label{eq:dveclam}
@@ -170,15 +177,15 @@ matrix $\Sigma_y$ of the observed variables. To ensure completeness of the treat
 \d \vech \Psi,
 \end{split}
 \end{equation}
-where the commutation matrix $K$, the duplication matrix $P$, and the operators$\vec$ and $\vech$ are defined in \cite{magnus1988matrix}
+where the commutation matrix $K$, the duplication matrix $P$, and the operators
+$\vec$ and $\vech$ are defined in \cite{magnus1988matrix}
 Let $\Delta_\l$ equal the coefficient matrix
  of $\d\vec\Lambda$ in equation \ref{eq:delta_y}, 
 $\Delta_\b$ the coefficient  of $\d\vec B_0$, and
 $\Delta_\p$ the coefficient  of $\d\vech\Phi$.
 
 
-From equation \ref{eq:delta_y} together with equation \ref{eq:sigma_n} the
-differential of the variance matrix of $\n$ can be obtained as:
+The differential of the variance matrix of $\n$ can be obtained as:
 \begin{equation}\label{eq:delta_n}
 \begin{split}
 \d\vec \Sigma_\n = 
@@ -209,7 +216,7 @@ Then, applying standard operations on \ref{eq:dveclam} and rearranging terms,
 the differential of the standardized $\Lambdastan$ matrix is
 \begin{equation}\label{eq:dveclam_final}
 \begin{split}
-  \d\vec\Lambdastan = &\\
+  \d\vec\Lambdastan = 
      & [(D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\l + 
         (D_\n \kronprod D_y^{-1})] 
         \d\vec\Lambda +\\
@@ -226,7 +233,7 @@ And similarly, the differential of the standardized $\Bstan_0$ matrix from
 equation \ref{eq:dvecbeta} is
 \begin{equation}\label{eq:dvecbeta_final}
 \begin{split}
-  \d\vec \Bstan_0 = &\\
+  \d\vec \Bstan_0 =
      & [\{(D_\n B_0' \kronprod I_q) C_{\n2}  + 
         (I_q \kronprod D_\n^{-1}B_0) C_{\n1} \} \Delta^*_\b +
            (D_\n \kronprod D_\n^{-1})  ] 
@@ -281,21 +288,40 @@ and
 
 \subsection{Scope}
 
-Limited, categorical variables, effects/correlations between latent variables, factor loadings, error correlations.
+Limited, categorical variables, effects/correlations between latent variables,
+factor loadings, error correlations.
 
 \subsection{Others}
-\cite{bollen1990direct} note that an approximate method exists for regression analysis that does not take the estimation of the model-implied standard deviations into account. 
+\cite{bollen1990direct} note that an approximate method exists for regression
+analysis that does not take the estimation of the model-implied standard
+deviations into account. 
 
 References to Delta method but without providing the derivatives.
 
 Likelihood based confidence intervals, bootstrapping.
 
-Our method dispenses with the need for approximate methods or numerical derivatives.
+Our method dispenses with the need for approximate methods or numerical
+derivatives.
 
 \subsection{Future}
 
-Examine relative performance of confidence intervals, similar to work done for indirect effects.
+Examine relative performance of confidence intervals, similar to work done for
+indirect effects.
 
 
 \bibliography{derivatives}
+
+\appendix
+
+\section{Extension to multigroup SEM}
+
+In multigroup SEM, let each matrix in the above equations equal the block
+diagonal of the corresponding matrices in each group. 
+
+Then define the stacking matrix $Z_{p \times pg} \definedas \left[I_p, I_p,
+..., I_p\right]$. The derivatives are then 
+$$
+	(I_q \kronprod Z) G
+$$
+
 \end{document}
