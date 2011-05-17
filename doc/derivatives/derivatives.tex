@@ -16,6 +16,8 @@ equation models}
 
 \bibliographystyle{apalike}
 \usepackage{natbib}
+\usepackage{siunitx} %for \num
+\usepackage{rotating}
 
 \newcommand{\n}{\eta}
 \renewcommand{\l}{\lambda}
@@ -40,6 +42,8 @@ equation models}
 
 \newcommand{\var}{\mathrm{var}}
 
+\newcommand{\R}{\texttt{R} 2.13.0 64-bit \citep{R}\;}
+\newcommand{\lavaan}{\texttt{lavaan} 0.4.9 \citep{lavaan}\;}
 
 \begin{document}
 \maketitle
@@ -80,6 +84,58 @@ Section 3 derives the explicit expression for the asymptotic variance-covariance
 \section{Example SEM with standardized parameters} 
 
 
+The study of differences across societal groups in self-rated health is of interest to researchers in public health.   \cite{mackenbach}, 
+for example, compare people with different incomes, age groups, and level of education.
+It is well-known, however, that in order to be able to compare correlations across groups it is necessary for the reliability of 
+the measures to be the same. Therefore not only across-group comparison of the levels of self-rated health are of interest, 
+but also the evaluation of differences between the groups in reliability \citep{finnish study}. 
+
+Different types of designs exist to estimate the reliability of survey measures. One such design is the repeated measures design, wherein the
+same question is asked at least three times with a certain interval. One can then apply the so-called `quasi-simplex' model to estimate
+reliability \cite{heise,wiley}. For an overview of other designs we refer to \cite{alwin}. 
+
+The quasi-simplex model can be formulated and estimated as a structural equation model in different societal groups, such as groups with different levels of completed education. This model is shown for four repetitions in figure 
+\ref{fig:model}. Following \cite{wiley}, the unstandardized error variances are restricted to be equal across the four repetitions. 
+The model is formulated for the observed variables with loadings set to unity. The reliability coefficients of interest are then the standardized loadings.
+
+We estimate this model using data from the LISS panel study in the Netherlands. The LISS panel is a random probability sample 
+of 8000 Dutch citizens. The respondents answer questionnaires over the web. For more information about the LISS we refer to \cite{das}.
+The LISS panel contains a study that included the commonly used self-rated health question,
+\begin{quote}
+	All things considered, how healthy would you say you are nowadays?
+	1-5.
+\end{quote}
+This question was asked of 3425 LISS respondents in the years 2007, 2008, 2009, and 2010. Using the data from all four years, we estimate the 
+quasi-simplex model shown in figure \ref{fig:model} as a SEM 
+to yield four standardized loadings for each educational group, which can be interpreted as the reliability coefficients for each group\footnote{For the estimation we used
+\R and \lavaan}. The results are shown in table \ref{tab:first-results}.
+
+\begin{table}[ht]
+\begin{center}
+\begin{tabular}{lrrrrrrr}
+  \hline  \hline
+&  &\multicolumn{6}{c}{Education level}\\\cline{3-8}
+%&	&	Primary		&VMBO		&		MBO	&HAVO/VWO&	HBO	&	WO	\\	
+&	&	Primary		& Lower secondary & Middle secondary & Upper secondary & Lower tertiary & Upper tertiary\\
+&	&	$n=279$		&$n=940$	&		$n=782$	&$n=369$	&	$n=799$	&	$n=256$	\\	
+                                                                                  
+	\hline              
+\multicolumn{2}{l}{Year}\\                                                      
+&	2007	&	0.799	&	0.821	&		0.822	&0.891	&	0.869	&	0.896	\\	
+                                                                                  
+&	2008	&	0.818	&	0.821	&		0.820	&0.879	&	0.878	&	0.898	\\	
+	                                                                          
+&	2009	&	0.828	&	0.812	&		0.808	&0.896	&	0.863	&	0.886	\\	
+	                                                                          
+&	2010	&	0.816	&	0.822	&		0.805	&0.877	&	0.874	&	0.887	\\	
+  \hline     \hline
+\end{tabular}
+\caption{Reliability of self-rated health in the Netherlands 2007-2010 for groups with different levels of education.}\label{tab:first-results}
+\end{center}
+\end{table}
+
+Table \ref{tab:first-results} shows that there appear to be quite some differences across the groups in reliability. 
+For the lowest educational level, the reliability coefficient of the self-rated health question is 
 
 \section{Standard errors of standardized parameters}
 
@@ -282,6 +338,66 @@ and
 
 \section{Application: standard errors of standardized parameters}
 
+\begin{table}[ht]
+\begin{center}
+\begin{tabular}{lrrrrrrr}
+  \hline  \hline
+&  &\multicolumn{6}{c}{Education level}\\\cline{3-8}
+&	&	Primary		&VMBO		&		MBO	&HAVO/VWO&	HBO	&	WO	\\	
+&	&	$n=279$		&$n=940$	&		$n=782$	&$n=369$	&	$n=799$	&	$n=256$	\\	
+                                                                                  
+	\hline              
+\multicolumn{2}{l}{Year}\\                                                      
+&	2007	&	0.799	&	0.821	&		0.822	&0.891	&	0.869	&	0.896	\\	
+&		&	(0.029)	&	(0.014)	&		(0.015)	&(0.016)	&	(0.013)	&	(0.017)	\vspace{7pt}\\	
+                                                                                  
+&	2008	&	0.818	&	0.821	&		0.820	&0.879	&	0.878	&	0.898	\\	
+&		&	(0.024)	&	(0.013)	&		(0.014)	&(0.017)	&	(0.012)	&	(0.017)	\vspace{7pt}\\	
+	                                                                          
+&	2009	&	0.828	&	0.812	&		0.808	&0.896	&	0.863	&	0.886	\\	
+&		&	(0.023)	&	(0.014)	&		(0.015)	&(0.015)	&	(0.013)	&	(0.018)	\vspace{7pt}\\	
+	                                                                          
+&	2010	&	0.816	&	0.822	&		0.805	&0.877	&	0.874	&	0.887	\\	
+&		&	(0.027)	&	(0.014)	&		(0.017)	&(0.018)	&	(0.013)	&	(0.019)	\\	
+  \hline     \hline
+\end{tabular}
+\caption{Reliability of self-rated health in the Netherlands 2007-2010 for different educational groups. 
+Asymptotic standard errors based on the method described in this paper are also given. For direct tests of 
+differences between the groups in reliability, see table \ref{tab:tests}.}\label{tab:health-education}
+\end{center}
+\end{table}
+
+
+% latex table generated in R 2.13.0 by xtable 1.5-6 package
+% Sun May 15 22:42:47 2011
+\begin{table}[ht]
+\begin{center}
+\begin{tabular}{lrrrl}
+  \hline  \hline
+ Comparison & $t_{\mathrm{dif}}$ & $p_{\mathrm{dif}}$ & $p_{\mathrm{dif,adj}}$ &  \\ 
+  \hline
+Primary $<$$>$ vmbo & -0.68 & 0.25 & 0.96 &  \\ 
+Primary $<$$>$ havo/vwo & -2.76 & 0.00 & 0.03 & * \\ 
+Primary $<$$>$ mbo & -0.71 & 0.24 & 0.96 &  \\ 
+Primary $<$$>$ hbo & -2.18 & 0.01 & 0.10 &  \\ 
+Primary $<$$>$ wo & -2.86 & 0.00 & 0.02 & * \\ 
+vmbo $<$$>$ havo/vwo & -3.25 & 0.00 & 0.01 & * \\ 
+vmbo $<$$>$ mbo & -0.06 & 0.48 & 0.96 &  \\ 
+vmbo $<$$>$ hbo & -2.46 & 0.01 & 0.06 &  \\ 
+vmbo $<$$>$ wo & -3.35 & 0.00 & 0.01 & * \\ 
+ havo/vwo $<$$>$ mbo & 3.12 & 0.00 & 0.01 & * \\ 
+ havo/vwo $<$$>$ hbo & 1.07 & 0.14 & 0.71 &  \\ 
+ havo/vwo $<$$>$ wo & -0.22 & 0.41 & 0.96 &  \\ 
+ mbo $<$$>$ hbo & -2.33 & 0.01 & 0.08 &  \\ 
+ mbo $<$$>$ wo & -3.22 & 0.00 & 0.01 & * \\ 
+ hbo $<$$>$ wo & -1.26 & 0.10 & 0.62 &  \\ 
+   \hline  \hline
+\end{tabular}\caption{Multiple comparison between educational groups for the reliability in 2007. 
+	The groups that are compared on reliability are shown in the first column. The second column shows the
+	$t$-value for the test of no difference between the groups in reliability. The last two columns show 
+	the corresponding $p$-value and $p$-value adjusted for multiple comparisons \citep{holm1979simple}, respectively.}\label{tab:tests}
+\end{center}
+\end{table}
 
 
 \section{Discussion}
@@ -312,6 +428,78 @@ indirect effects.
 \bibliography{derivatives}
 
 \appendix
+
+\section{Calculations for the example analysis}
+
+
+\begin{table}
+\begin{tabular}{lrrrrrrrrrrrr}\hline\hline
+	& \multicolumn{11}{c}{Unstandardized free parameters $\theta$}\\
+	%\cline{2-12}
+			& $\psi_{11}$ & $\psi_{22}$ &$\psi_{33}$ &$\psi_{44}$
+			& $\phi_{11}$ & $\phi_{22}$ &$\phi_{33}$ &$\phi_{44}$ 
+			& $\beta_{21}$ & $\beta_{32}$ &$\beta_{43}$
+			\\
+\hline
+%\multicolumn{4}{l}{$d \vec \Lambda_s / d \vec \theta$} &\\
+                   \\                                                      
+$\lambda_{s, 11}$ &-0.733  & .      & .      & .     & 0.277 & .     & .     & .     & .     & .     & .   & \\
+$\lambda_{s, 22}$&.     & -0.739  & .      & .     & 0.217 & 0.282 & .     & .     & 0.209 & .     & .   & \\
+$\lambda_{s, 33}$&.      & .     & -0.755  & .     & 0.188 & 0.244 & 0.300 & .     & 0.180 & 0.225 & .   & \\
+$\lambda_{s, 33}$&.      & .      & .     & -0.754 & 0.173 & 0.225 & 0.276 & 0.298 & 0.166 & 0.207 & 0.230\\
+\\
+%\multicolumn{4}{l}{$d \vec B_s / d \vec \theta$} &\\
+             \\                                            
+$\beta_{s, 21}$ &. & . & . & . & 0.232 & -1.059  & .      & .     & 0.223 & .     & .    & \\
+$\beta_{s, 32}$&. & . & . & . & 0.131  & 0.171 & -1.147  & .     & 0.126 & 0.157 & .    & \\
+$\beta_{s, 43}$&. & . & . & . & 0.058  & 0.076  & 0.093 & -1.193 & 0.056 & 0.070 & 0.077\\
+\hline\hline
+\end{tabular}
+\caption{Derivatives of the standardized parameters $\Lambda_s$ and $B_s$ with respect
+to the free parameters of the model in the quasi simplex example.}
+\label{tab:jacobian}
+\end{table}
+
+
+\begin{table}
+\begin{small}
+\begin{tabular}{rrrrrrrrr}\hline\hline
+	&$\psi$ & $\phi_{11}$ & $\phi_{22}$ &$\phi_{33}$ &$\phi_{44}$ & $\beta_{21}$ & $\beta_{32}$ &$\beta_{43}$  \\
+\hline
+  $\psi$   & \num{0.2e-4}\\
+  $\phi_{11}$  & -\num{0.2e-4}  & \num{2.2e-4}\\
+  $\phi_{22}$  & -\num{0.3e-4}  & \num{0.4e-4}  & \num{0.9e-4}\\
+  $\phi_{33}$  & -\num{0.2e-4}  & \num{0.2e-4}  & \num{0.1e-4}  & \num{0.5e-4}\\
+  $\phi_{44}$  & -\num{0.3e-4}  & \num{0.3e-4}  & \num{0.3e-4}  & \num{0.1e-4}  & \num{0.8e-4}\\
+  $\beta_{21}$  & \num{0.4e-4} & -\num{1.5e-4} & -\num{0.9e-4} & -\num{0.1e-4} & -\num{0.5e-4}  & \num{4.3e-4}\\
+  $\beta_{32}$  & \num{0.2e-4} & -\num{0.2e-4} & -\num{0.4e-4} & -\num{0.4e-4} & -\num{0.1e-4} & -\num{0.9e-4}   & \num{3.3e-4}\\
+  $\beta_{43}$  & \num{0.3e-4} & -\num{0.3e-4} & -\num{0.3e-4} & -\num{0.3e-4} & -\num{0.7e-4}  & \num{0.4e-4}  & -\num{1.0e-4}   & \num{3.4e-4}\\
+\hline\hline
+\end{tabular}\end{small}
+\caption{Variance-covariance matrix of the parameter estimates.}
+\label{tab:vcov}
+\end{table}
+
+\vspace{12pt}
+
+\begin{table}\begin{center}
+\begin{tabular}{rrrr}\hline\hline
+ Parameter & 	Estimate &	s.e. &	$z$\\
+ \hline
+$\lambda_{s,11}$ & 0.852& 0.006 &  134\\
+$\lambda_{s,22}$ &0.851 &0.006  & 139\\
+$\lambda_{s,33}$ &0.846 &0.006  & 136\\
+$\lambda_{s,44}$ &0.847& 0.007  & 128\\
+$\beta_{s,21}$& 0.882           &0.012 & 75\\
+$\beta_{s,32}$& 0.920            &0.009 &103\\
+$\beta_{s,43}$& 0.960            &0.011  &85\\
+\hline\hline
+\end{tabular}
+\caption{Standardized parameter estimates and asymptotic standard errors for the example ($n = 3425$).}
+\label{tab:vcov}\end{center}
+\end{table}
+
+
 
 \section{Extension to multigroup SEM}
 
