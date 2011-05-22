@@ -3,7 +3,12 @@
 \usepackage[english]{babel}
 
 %\usepackage{utopia}
+
+\usepackage{color}
+\definecolor{darkblue}{rgb}{0, 0, 0.4}
+
 \usepackage{times}
+\usepackage[colorlinks=true,linkcolor=darkblue,urlcolor=darkblue,citecolor=darkblue]{hyperref}
 
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -13,6 +18,8 @@ equation models}
 \author{Daniel Oberski\\RECSM research paper, Universitat Pompeu Fabra}
 
 \usepackage[margin=3.1cm]{geometry}
+
+\usepackage{tabularx}
 
 \bibliographystyle{apalike}
 \usepackage{natbib}
@@ -49,93 +56,171 @@ equation models}
 \maketitle
 
 \begin{abstract}\noindent
-In structural equation models, often not only the parameters of the model, but
-also the standardized coefficients are of interest to the researcher. 
-The literature does not, however, provide explicit analytical standard errors
+In structural equation models (SEM), often not only the standard errors of parameters of the model, but
+also of the standardized coefficients are of interest to the researcher. 
+Examples are the comparison of reliability coefficients across different groups, and meta-analysis of 
+standardized quantities.
+The literature does not, however, provide explicit analytical standard errors 
 for standardized parameters. %Due to this lack of availability of analytical derivatives in the literature, standard SEM software that wishes to provide SEM users with standard errors of the standardized parameters requires the use of numerical derivatives or approximate methods.
 
 We derive an explicit expression in terms of the model parameters 
-for derivatives and asymptotic standard errors of 
+for derivatives and the asymptotic variance-covariance matrix of 
 standardized parameters in structural equation models, that is straightforward to implement in standard SEM software. 
-The expression is applied to an example application. 
+The solution is applied to an analysis of the reliability of self-rated health in groups with different levels of education.
 \end{abstract}
 
 \section{Introduction}\noindent
-
 Linear structural equation models (SEM) with latent variables
-have become a popular tool in different branches of science. Such models encompass as special cases a diverse range of common models of interest such as factor
+have become a popular tool in the behavioral sciences. Such models encompass as special cases a diverse range of common models of interest such as factor
 analysis, multivariate regression, errors-in-variables models, growth, and
-multilevel and multigroup models \citep{bollen1989structural}. In addition, extensions for categorical, count,
+multilevel and multigroup models \citep{bollen1989structural}. Extensions are available for categorical, count,
 and censored dependent variables as well as complex sampling 
-available \citep{muthen1995complex,muthen2002beyond}.
+ \citep{muthen1995complex,muthen2002beyond}.
 
 Although the main interest in such models lies in the parameters of 
 the model, researchers' interest often also focuses on the so-called 
-`standardized' parameters \citep{bollen1989structural}. Typical applications include examination of factor loadings and correlations in factor analysis, and the evaluation of the relative size of regression coefficients, possibly of latent variables.
+`standardized' parameters \citep{bollen1989structural}. Typical applications include examination of factor loadings and correlations in factor analysis, as well as the evaluation of the relative size of regression coefficients, possibly of latent variables.
 
-In spite of the interest in standardized coefficients in structural equation models, standard errors and confidence intervals for these coefficients are usually not provided by the standard software\footnote{At the time of writing, the exception is Mplus version 5.2 and above \citep{muthen1998mplus}.}. To our knowledge the literature does not provide any explicit expression for the asymptotic standard errors of standardized coefficients. We remedy this situation by deriving an explicit expression for the asymptotic variance-covariance matrix of the standardized coefficients. The solution requires only the parameter estimates of the model and can be readily implemented in SEM software.
+In spite of the interest in standardized coefficients in structural equation models, to our knowledge the literature does not provide any explicit expression for the asymptotic standard errors of standardized coefficients. As a consequence, standard errors and confidence intervals for these coefficients are usually not provided by the standard software\footnote{At the time of writing, the exception is Mplus version 5.2 and above \citep{muthen1998mplus}.}.  We remedy this situation by deriving an explicit expression, in terms of the unstandardized parameter estimates, for the asymptotic variance-covariance matrix of the standardized coefficients. The solution requires only the parameter estimates of the model and can be readily implemented in SEM software.
 
 Section 2 provides a motivating example, using a SEM model with latent
-variables where standardized parameters and their standard errors or confidence
+variables where standardized parameters and their standard errors and confidence
 intervals are of interest to the researcher.
-Section 3 derives the explicit expression for the asymptotic variance-covariance matrix of the standardized estimates. In section 4, this expression is then applied to the example. Finally, the last section discusses the scope and limitations of this proposal and suggests future research.
+Section 3 derives the explicit expression for the asymptotic variance-covariance matrix of the standardized estimates. Section 4 applies this expression to the example. The last section discusses the scope and limitations of this proposal and suggests future research.
 
 
-\section{Example SEM with standardized parameters} 
+\section{Example SEM with interest in standardized parameters} 
 
 
-The study of differences across societal groups in self-rated health is of interest to researchers in public health.   \cite{mackenbach}, 
-for example, compare people with different incomes, age groups, and level of education.
+The study of differences across societal groups in self-rated health is of interest to researchers in public health.   For example,  \cite{von2006education} 
+compare people with different incomes, age groups, and level of education.
 It is well-known, however, that in order to be able to compare correlations across groups it is necessary for the reliability of 
-the measures to be the same. Therefore not only across-group comparison of the levels of self-rated health are of interest, 
-but also the evaluation of differences between the groups in reliability \citep{finnish study}. 
+the measures to be the same \citep[e.g.][]{saris_design_2007}. Therefore not only across-group comparison of the levels of self-rated health are of interest, 
+but also the evaluation of differences between the groups in reliability \citep{lundberg1996assessing}. 
 
 Different types of designs exist to estimate the reliability of survey measures. One such design is the repeated measures design, wherein the
-same question is asked at least three times with a certain interval. One can then apply the so-called `quasi-simplex' model to estimate
-reliability \cite{heise,wiley}. For an overview of other designs we refer to \cite{alwin}. 
+same question is asked at least three times with a certain interval. One can then apply the so-called `quasi-simplex' model in different groups to the estimate
+reliability, and compare reliabilities across groups \citep{heise1970validity,wiley35wiley}. For an overview of other designs we refer to \cite{alwin_margins_2007}. 
 
-The quasi-simplex model can be formulated and estimated as a structural equation model in different societal groups, such as groups with different levels of completed education. This model is shown for four repetitions in figure 
-\ref{fig:model}. Following \cite{wiley}, the unstandardized error variances are restricted to be equal across the four repetitions. 
-The model is formulated for the observed variables with loadings set to unity. The reliability coefficients of interest are then the standardized loadings.
+The quasi-simplex model can be formulated and estimated as a multiple-group structural equation model for groups with different  levels of highest completed education. This model is shown for four repetitions in figure 
+\ref{fig:model}. Following \cite{wiley35wiley}, the unstandardized error variances are restricted to be equal across the four repetitions. The reliability coefficients of interest are then the standardized loadings. This yields the  structural equation model shown as a path diagram in figure \ref{fig:model}.
+\if 1=2
+\begin{eqnarray*}\begin{split}
+\textbf{y} =  \textbf{I} {\eta} + \epsilon,& &
+{\eta} = \begin{pmatrix}
+	0 & 0 & 0 & 0\\
+	\beta_{21} & 0 & 0 & 0\\
+	0 & \beta_{32} & 0 & 0\\
+	0 & 0 & \beta_{43} & 0\\	
+\end{pmatrix} {\eta} + \zeta
+\end{split}
+\end{eqnarray*}
+\fi
+
+
+\begin{figure}[bt]\begin{center}
+\caption{Quasi-simplex model for fours repeated measures of self-rated health in the LISS panel 2007--2010.}
+\label{fig:model}
+\includegraphics[width=.9\textwidth]{self-rated-health-quasi-simplex}
+\end{center}
+\end{figure}
 
 We estimate this model using data from the LISS panel study in the Netherlands. The LISS panel is a random probability sample 
-of 8000 Dutch citizens. The respondents answer questionnaires over the web. For more information about the LISS we refer to \cite{das}.
-The LISS panel contains a study that included the commonly used self-rated health question,
+of 8000 Dutch citizens. The respondents answer questionnaires over the web. For more information about the LISS we refer to \cite{scherpenzeel2011data}.
+The  panel contains a study that included the commonly used self-rated health question\footnote{The original question was asked in Dutch. See \url{http://www.lissdata.nl/dataarchive/question_constructs/view/600}}. The question was asked as follows:
 \begin{quote}
-	All things considered, how healthy would you say you are nowadays?
-	1-5.
+	How would you describe your health, generally speaking?
+	
+	\begin{enumerate}  \setlength{\itemsep}{0pt}  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+		\item Poor
+		\item Moderate
+		\item Good
+		\item Very good
+		\item Excellent
+	\end{enumerate}
 \end{quote}
-This question was asked of 3425 LISS respondents in the years 2007, 2008, 2009, and 2010. Using the data from all four years, we estimate the 
-quasi-simplex model shown in figure \ref{fig:model} as a SEM 
-to yield four standardized loadings for each educational group, which can be interpreted as the reliability coefficients for each group\footnote{For the estimation we used
-\R and \lavaan}. The results are shown in table \ref{tab:first-results}.
 
-\begin{table}[ht]
+
+\begin{table}[bt]\begin{small}
 \begin{center}
-\begin{tabular}{lrrrrrrr}
-  \hline  \hline
-&  &\multicolumn{6}{c}{Education level}\\\cline{3-8}
+\begin{tabular}{llrrrrrrrrr}  \hline  \hline
+&&&  \multicolumn{8}{c}{\emph{Year}}\\\cline{4-11}
+&&& \multicolumn{2}{c}{2007} & \multicolumn{2}{c}{2009} & \multicolumn{2}{c}{2009} & \multicolumn{2}{c}{2010} \\
+&&$n$&Mean&sd&Mean&sd&Mean&sd&Mean&sd\\
 %&	&	Primary		&VMBO		&		MBO	&HAVO/VWO&	HBO	&	WO	\\	
-&	&	Primary		& Lower secondary & Middle secondary & Upper secondary & Lower tertiary & Upper tertiary\\
-&	&	$n=279$		&$n=940$	&		$n=782$	&$n=369$	&	$n=799$	&	$n=256$	\\	
-                                                                                  
-	\hline              
-\multicolumn{2}{l}{Year}\\                                                      
-&	2007	&	0.799	&	0.821	&		0.822	&0.891	&	0.869	&	0.896	\\	
-                                                                                  
-&	2008	&	0.818	&	0.821	&		0.820	&0.879	&	0.878	&	0.898	\\	
-	                                                                          
-&	2009	&	0.828	&	0.812	&		0.808	&0.896	&	0.863	&	0.886	\\	
-	                                                                          
-&	2010	&	0.816	&	0.822	&		0.805	&0.877	&	0.874	&	0.887	\\	
+  \hline
+  \multicolumn{2}{l}{Education level}\\
+ 
+& Primary	  & $279$ & 2.83 & (0.69) & 2.91 & (0.73) & 2.84 & (0.74) & 2.82 & (0.72) \\ 
+& Lower secondary  & $940$ & 2.98 & (0.73) & 3.08 & (0.73) & 3.01 & (0.71) & 2.97 & (0.73) \\ 
+& Middle secondary & $782$ & 3.21 & (0.80) & 3.24 & (0.76) & 3.27 & (0.81) & 3.20 & (0.75) \\ 
+& Upper secondary  & $369$ & 3.17 & (0.75) & 3.18 & (0.74) & 3.16 & (0.72) & 3.10 & (0.72) \\ 
+& Lower tertiary	  & $799$ & 3.28 & (0.73) & 3.28 & (0.76) & 3.22 & (0.72) & 3.22 & (0.74) \\ 
+& Upper tertiary	  & $256$ & 3.33 & (0.86) & 3.35 & (0.86) & 3.32 & (0.82) & 3.29 & (0.83) \\ 
+   \hline
+   \hline
+\end{tabular}
+\caption{Means and standard deviations (in brackets) of the self-rated health question across the four repetitions, in 
+groups with different levels of education.}\label{tab:descriptives}
+\end{center}\end{small}
+\end{table}
+
+This question was asked of 3425 LISS respondents in the years 2007, 2008, 2009, and 2010. Splitting the sample into
+groups with different levels of education, the means and standard deviations shown in table \ref{tab:descriptives} are obtained.
+Using the data from all four years, we estimate the  quasi-simplex model shown in figure \ref{fig:model} as a SEM
+to yield four standardized loadings for each educational group, which can be interpreted as the reliability coefficients for each group\footnote{For the estimation we used \R and \lavaan}. The unstandardized parameter estimates and model fit measures are shown in table \ref{tab:results-unstandardized}, while standardized loadings (reliability coefficients) are shown in table \ref{tab:first-results}.
+
+\begin{table}\begin{small}
+\begin{tabularx}{\textwidth}{l*{8}{X}}
+  \hline  \hline
+  	& \multicolumn{6}{c}{Group: education level}\\	\cline{2-7}
+    Par.  &       Primary         & Lower secondary & Middle secondary & Upper secondary & Lower tertiary & Upper tertiary\\
+  \hline
+$\phi_{11}$   & 0.50 (0.049) & 0.59 (0.068) & 0.35 (0.026) & 0.38 (0.030) & 0.31 (0.044) & 0.40 (0.029) \\ 
+$\phi_{22}$   & 0.13 (0.027) & 0.17 (0.040) & 0.10 (0.018) & 0.03 (0.019) & 0.05 (0.031) & 0.12 (0.021) \\ 
+$\phi_{33}$   & 0.10 (0.026) & 0.08 (0.027) & 0.05 (0.012) & 0.04 (0.013) & 0.02 (0.024) & 0.08 (0.015) \\ 
+$\phi_{44}$   & 0.06 (0.027) & 0.06 (0.035) & -0.02 (0.017) & 0.02 (0.019) & 0.02 (0.030) & 0.08 (0.020) \\ 
+$\beta_{21}$  & 0.78 (0.051) & 0.85 (0.062) & 0.84 (0.045) & 0.96 (0.050) & 0.99 (0.098) & 0.89 (0.043) \\ 
+$\beta_{32}$  & 0.99 (0.055) & 0.87 (0.052) & 0.89 (0.039) & 0.89 (0.041) & 1.01 (0.074) & 0.83 (0.034) \\ 
+$\beta_{43}$  & 0.84 (0.044) & 0.95 (0.057) & 1.07 (0.041) & 0.96 (0.044) & 0.92 (0.065) & 0.94 (0.039) \\ 
+$\psi_{ii}$   & 0.13 (0.015) & 0.14 (0.019) & 0.17 (0.010) & 0.18 (0.010) & 0.17 (0.017) & 0.13 (0.010) \\ 
+     \hline  \hline
+\end{tabularx}\caption{Unstandardized parameter estimates and standard errors for the 
+multiple group quasi-simplex model shown in figure \ref{fig:model}.
+Chi-square:  6.923 on  12 degrees of freedom  ($p = 0.863$),  SRMR:  0.0041, RMSEA: 0.000}
+\label{tab:results-unstandardized}
+\end{small}\end{table}
+
+\begin{table}[bth]
+\begin{center}\begin{small}
+\begin{tabular}{lllrrrr}  \hline  \hline
+&&&  \multicolumn{4}{c}{\emph{Year}}\\\cline{4-7}
+&&$n$& 2007&2008&2009&2010\\
+%&	&	Primary		&VMBO		&		MBO	&HAVO/VWO&	HBO	&	WO	\\	
+  \hline
+  \multicolumn{2}{l}{Education level}\\
+& Primary	   & $279$  & 0.799 & 0.818 & 0.828 & 0.816 \\ 
+& Lower secondary  & $940$  & 0.821 & 0.821 & 0.812 & 0.822 \\ 
+& Middle secondary & $782$  & 0.891 & 0.879 & 0.896 & 0.877 \\ 
+& Upper secondary  & $369$  & 0.822 & 0.820 & 0.808 & 0.805 \\ 
+& Lower tertiary   & $799$  & 0.869 & 0.878 & 0.863 & 0.874 \\ 
+& Upper tertiary   & $256$  & 0.896 & 0.898 & 0.886 & 0.887 \\ 
   \hline     \hline
 \end{tabular}
-\caption{Reliability of self-rated health in the Netherlands 2007-2010 for groups with different levels of education.}\label{tab:first-results}
+\caption{Reliability (standardized $\Lambda$) of self-rated health in the Netherlands 2007-2010 for groups with different levels of education.}\label{tab:first-results}\end{small}
 \end{center}
 \end{table}
 
 Table \ref{tab:first-results} shows that there appear to be quite some differences across the groups in reliability. 
-For the lowest educational level, the reliability coefficient of the self-rated health question is 
+For the lowest educational level in 2007, the reliability coefficient of self-rated health is 0.799, while for the highest level it is 0.896.
+There also appear to be some differences between the years, although the differences across years are much smaller than those across
+different educational groups. Finally, the values of all reliability coefficients in table \ref{tab:first-results} are quite a bit higher than those reported by \cite{lundberg1996assessing} 
+for self-rated health. This may be due to differences in the question and/or mode of interviewing, but it may also be due to sampling. 
+
+One would require standard errors or confidence intervals to properly study the differences between people with different levels of attained education in reliability. The same is true if one would like to analyze these results together with those of \cite{lundberg1996assessing}  as a meta-analysis.
+It is clear, therefore, that to answer the questions that are of interest to the researcher, standard errors and confidence intervals for the 
+reliability coefficients would be useful. The next section derives these standard errors for general structural equation models. 
 
 \section{Standard errors of standardized parameters}
 
@@ -165,40 +250,40 @@ observed variables:
 where  $\Psi$ is the variance-covariance matrix of $\epsilon$. 
 We assume throughout that both $\Sigma_y$ and $\Sigma_\n$ are positive
 definite. In what follows we will write $\Sigma_.$ for $\Sigma_.(\theta)$ in
-the
-interest of clarity.
+the interest of clarity.
 
 The parameters of the model are collected in a parameter
 vector $$\theta \definedas [\vec{\Lambda}, \vech{\Phi}, \vec B_0, \vech
 \Psi].$$
-Often, interest focuses not only on the parameters $\theta$, 
-but also on the so-called ``standardized'' matrices, which we denote
-$\Lambdastan$ and $\Bstan_0$. These are defined as:
+Interest focuses not only on the parameter vector $\theta$, 
+but also on the so-called ``standardized'' parameter vector, denoted
+$\thetastan \definedas [\Lambdastan, \Bstan_0]$, where:
 \begin{align}\label{eq:lambda_s}
     \Lambdastan &\definedas D^{-1}_y \Lambda D_\n
     \\
     \Bstan_0 &\definedas D^{-1}_\n B_0 D_\n,\label{eq:beta_s}
 \end{align}
-where $D_y \definedas \sqrt{I \hadaprod \Sigma_y}$, and 
+and $D_y \definedas \sqrt{I \hadaprod \Sigma_y}$, and 
 $D_\n \definedas \sqrt{I \hadaprod \Sigma_\n}$. 
 
-\marginpar{TODO: Define $\thetastan$.}
+%\marginpar{TODO: Define $\thetastan$.}
 
-By standard application of the Delta method \citep[e.g.][]{oehlert1992note}, the asymptotic variance of $\thetastan$ is 
+By standard application of the Delta method \citep[e.g.][]{oehlert1992note}, the asymptotic variance of $\thetastan$ can be shown to equal
 \begin{equation}\label{eq:deltamethod}
 	\left(\frac{d \thetastan}{d \theta}\right) 
 		\var(\theta) 
-	\left(\frac{d \thetastan}{d \theta}\right)',
+	\left(\frac{d \thetastan}{d \theta}\right)'.
 \end{equation}
-where $\var(\theta)$ is the appropriate asymptotic variance matrix of the free model parameters $\theta$ \cite[e.g.][]{satorra1989alternative}.
+Here $\var(\theta)$ is the appropriate asymptotic variance matrix of the free model parameters $\theta$ \cite[e.g.][]{satorra1989alternative}.
+The choice of the appropriate $\var(\theta)$ matrix allows for incorporation of 
+non-normal and complex sample data with possibly missing observations.
+
 
 
 \subsection{Derivatives of the standardized parameters}
 
-To obtain the full expression for the variance-covariance matrix of
-standardized parameters in equation \ref{eq:deltamethod}, the needed
-derivatives of the standardized parameters with respect to the free parameters
-of the model are derived here.
+
+The derivatives $d \thetastan / d \theta$ in equation \ref{eq:deltamethod} are not available in the literature and are derived here.
 
 From definition \ref{eq:lambda_s}, 
 \begin{multline}\label{eq:dveclam}
@@ -299,9 +384,6 @@ equation \ref{eq:dvecbeta} is
         \d\vec \Phi.
 \end{split}\end{equation}
 
-
-\marginpar{TODO: Lose the $G$? Just write $d\thetastan/d\theta$?}
-
 From the differentials in equations \ref{eq:dveclam_final} and
 \ref{eq:dvecbeta_final},
 we conclude that the derivative matrices  $G_{\tilde{\l}}$ and 
@@ -309,7 +391,7 @@ $G_{\tilde{\b}}$ of the standardized parameters $\vec \Bstan$ and
 $\vec \Lambdastan$ with respect to the free parameters of the model 
 $\theta$ will be the partitioned matrices
 \begin{multline}
-    G_{\tilde{\l}} = [
+\frac{d \tilde\l}{d \theta} = [
         (D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\l + 
             (D_\n \kronprod D_y^{-1}), \\
         (D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\p +
@@ -321,7 +403,7 @@ $\theta$ will be the partitioned matrices
 \end{multline}
 and
 \begin{multline}
-    G_{\tilde{\b}} = [
+\frac{d \tilde\b_0}{d \theta} = [
         \0,
         \{(D_\n B_0' \kronprod I_q) C_{\n2}  + 
             (I_q \kronprod D_\n^{-1}B_0) C_{\n1} \} \Delta^*_\p
@@ -338,27 +420,22 @@ and
 
 \section{Application: standard errors of standardized parameters}
 
+Estimating the 
+
 \begin{table}[ht]
 \begin{center}
-\begin{tabular}{lrrrrrrr}
-  \hline  \hline
-&  &\multicolumn{6}{c}{Education level}\\\cline{3-8}
-&	&	Primary		&VMBO		&		MBO	&HAVO/VWO&	HBO	&	WO	\\	
-&	&	$n=279$		&$n=940$	&		$n=782$	&$n=369$	&	$n=799$	&	$n=256$	\\	
-                                                                                  
-	\hline              
-\multicolumn{2}{l}{Year}\\                                                      
-&	2007	&	0.799	&	0.821	&		0.822	&0.891	&	0.869	&	0.896	\\	
-&		&	(0.029)	&	(0.014)	&		(0.015)	&(0.016)	&	(0.013)	&	(0.017)	\vspace{7pt}\\	
-                                                                                  
-&	2008	&	0.818	&	0.821	&		0.820	&0.879	&	0.878	&	0.898	\\	
-&		&	(0.024)	&	(0.013)	&		(0.014)	&(0.017)	&	(0.012)	&	(0.017)	\vspace{7pt}\\	
-	                                                                          
-&	2009	&	0.828	&	0.812	&		0.808	&0.896	&	0.863	&	0.886	\\	
-&		&	(0.023)	&	(0.014)	&		(0.015)	&(0.015)	&	(0.013)	&	(0.018)	\vspace{7pt}\\	
-	                                                                          
-&	2010	&	0.816	&	0.822	&		0.805	&0.877	&	0.874	&	0.887	\\	
-&		&	(0.027)	&	(0.014)	&		(0.017)	&(0.018)	&	(0.013)	&	(0.019)	\\	
+\begin{tabular}{lllcccc}  \hline  \hline
+&&&  \multicolumn{4}{c}{\emph{Year}}\\\cline{4-7}
+&&$n$& 2007&2008&2009&2010\\
+%&	&	Primary		&VMBO		&		MBO	&HAVO/VWO&	HBO	&	WO	\\	
+  \hline
+  \multicolumn{2}{l}{Education level}\\
+& Primary	   & $279$  & 0.799 (0.029) & 0.818 (0.024) & 0.828 (0.023) & 0.816 (0.027) \\ 
+& Lower secondary  & $940$  & 0.821 (0.014) & 0.821 (0.013) & 0.812 (0.014) & 0.822 (0.014) \\ 
+& Middle secondary & $782$  & 0.891 (0.016) & 0.879 (0.017) & 0.896 (0.015) & 0.877 (0.018) \\ 
+& Upper secondary  & $369$  & 0.822 (0.015) & 0.820 (0.014) & 0.808 (0.015) & 0.805 (0.017) \\ 
+& Lower tertiary   & $799$  & 0.869 (0.013) & 0.878 (0.012) & 0.863 (0.013) & 0.874 (0.013) \\ 
+& Upper tertiary   & $256$  & 0.896 (0.017) & 0.898 (0.017) & 0.886 (0.018) & 0.887 (0.019) \\ 
   \hline     \hline
 \end{tabular}
 \caption{Reliability of self-rated health in the Netherlands 2007-2010 for different educational groups. 
@@ -426,6 +503,7 @@ indirect effects.
 
 
 \bibliography{derivatives}
+
 
 \appendix
 
@@ -498,6 +576,32 @@ $\beta_{s,43}$& 0.960            &0.011  &85\\
 \caption{Standardized parameter estimates and asymptotic standard errors for the example ($n = 3425$).}
 \label{tab:vcov}\end{center}
 \end{table}
+\if 1=2
+\begin{table}[ht]
+\begin{center}
+\begin{tabular}{rrrrrrrrrrrrrrr}
+  \hline
+ & hlt.2007 & hlt.2008 & hlt.2009 & hlt.2010 &  & hlt.2007 & hlt.2008 & hlt.2009 & hlt.2010 &  & hlt.2007 & hlt.2008 & hlt.2009 & hlt.2010 \\ 
+  \hline
+1 & 1.00 &  &  &  &  & 1.00 &  &  &  &  & 1.00 &  &  &  \\ 
+  2 & 0.59 & 1.00 &  &  &  & 0.56 & 1.00 &  &  &  & 0.65 & 1.00 &  &  \\ 
+  3 & 0.61 & 0.67 & 1.00 &  &  & 0.52 & 0.61 & 1.00 &  &  & 0.62 & 0.71 & 1.00 &  \\ 
+  4 & 0.59 & 0.59 & 0.67 & 1.00 &  & 0.53 & 0.63 & 0.69 & 1.00 &  & 0.54 & 0.64 & 0.73 & 1.00 \\ 
+  5 & 2.83 & 2.91 & 2.84 & 2.82 &  & 2.98 & 3.08 & 3.01 & 2.97 &  & 3.21 & 3.24 & 3.27 & 3.20 \\ 
+  6 & 0.69 & 0.73 & 0.74 & 0.72 &  & 0.73 & 0.73 & 0.71 & 0.73 &  & 0.80 & 0.76 & 0.81 & 0.75 \\ 
+  7 &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\ 
+  8 & 1.00 &  &  &  &  & 1.00 &  &  &  &  & 1.00 &  &  &  \\ 
+  9 & 0.65 & 1.00 &  &  &  & 0.65 & 1.00 &  &  &  & 0.69 & 1.00 &  &  \\ 
+  10 & 0.59 & 0.62 & 1.00 &  &  & 0.57 & 0.67 & 1.00 &  &  & 0.60 & 0.74 & 1.00 &  \\ 
+  11 & 0.58 & 0.60 & 0.63 & 1.00 &  & 0.51 & 0.60 & 0.68 & 1.00 &  & 0.59 & 0.70 & 0.74 & 1.00 \\ 
+  12 & 3.17 & 3.18 & 3.16 & 3.10 &  & 3.28 & 3.28 & 3.22 & 3.22 &  & 3.33 & 3.35 & 3.32 & 3.29 \\ 
+  13 & 0.75 & 0.74 & 0.72 & 0.72 &  & 0.73 & 0.76 & 0.72 & 0.74 &  & 0.86 & 0.86 & 0.82 & 0.83 \\ 
+   \hline
+\end{tabular}
+\end{center}
+\caption{Correlations between the observed variables in each of the six groups of educational level.}
+\end{table}
+\fi
 
 
 
