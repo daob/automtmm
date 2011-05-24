@@ -48,6 +48,7 @@ equation models}
 \newcommand{\0}{\boldsymbol{0}}
 
 \newcommand{\var}{\mathrm{var}}
+\newcommand{\arctanh}{\mathrm{arctanh}}
 
 \newcommand{\R}{\texttt{R} 2.13.0 64-bit \citep{R}\;}
 \newcommand{\lavaan}{\texttt{lavaan} 0.4.9 \citep{lavaan}\;}
@@ -119,13 +120,15 @@ The quasi-simplex model can be formulated and estimated as a multiple-group stru
 
 
 \begin{figure}[bt]\begin{center}
-\caption{Quasi-simplex model for fours repeated measures of self-rated health in the LISS panel 2007--2010.}
+\caption{Quasi-simplex model for four repeated measures of self-rated health in the LISS panel 2007--2010. Parameter names for the 
+	so-called `stability coefficients' are shown as $\beta_{ji}$ in the picture. The variances of the disturbance terms $\zeta_i$ are denoted
+	$\phi_{ii}$, while the variances of the measurement error variables $\epsilon_i$ will be denoted $\psi_{ii}$.}
 \label{fig:model}
 \includegraphics[width=.9\textwidth]{self-rated-health-quasi-simplex}
 \end{center}
 \end{figure}
 
-We estimate this model using data from the LISS panel study in the Netherlands. The LISS panel is a random probability sample 
+We estimate this model using the LISS panel study, a probability sample 
 of 8000 Dutch citizens. The respondents answer questionnaires over the web. For more information about the LISS we refer to \cite{scherpenzeel2011data}.
 The  panel contains a study that included the commonly used self-rated health question\footnote{The original question was asked in Dutch. See \url{http://www.lissdata.nl/dataarchive/question_constructs/view/600}}. The question was asked as follows:
 \begin{quote}
@@ -216,10 +219,21 @@ Table \ref{tab:first-results} shows that there appear to be quite some differenc
 For the lowest educational level in 2007, the reliability coefficient of self-rated health is 0.799, while for the highest level it is 0.896.
 There also appear to be some differences between the years, although the differences across years are much smaller than those across
 different educational groups. Finally, the values of all reliability coefficients in table \ref{tab:first-results} are quite a bit higher than those reported by \cite{lundberg1996assessing} 
-for self-rated health. This may be due to differences in the question and/or mode of interviewing, but it may also be due to sampling. 
+for self-rated health. This may be due to differences in the population, in the question or in the mode of interviewing, but it may also be due to sampling. 
 
-One would require standard errors or confidence intervals to properly study the differences between people with different levels of attained education in reliability. The same is true if one would like to analyze these results together with those of \cite{lundberg1996assessing}  as a meta-analysis.
-It is clear, therefore, that to answer the questions that are of interest to the researcher, standard errors and confidence intervals for the 
+Since the reliability is a function of both the error variances and the total variances of the latent variables (which involve the 
+$\beta$ and $\psi$ parameters), a test for invariance of these unstandardized parameters will not suffice to test the desired hypotheses. 
+If the error variances are equal across groups, this does not mean that the reliabilities will be so, since they depend also on the
+variances of the latent variables. Conversely, if all parameters are tested for invariance one simultaneously imposes equality of the
+stability parameters, which is not desired.
+One would require standard errors or confidence intervals of the standardized parameters to properly study the differences between people with different levels of attained education in reliability.
+
+Another type of analysis that would require the variances of these estimates are meta-analyses of the reliabilities \citep[261, 271-2]{cooper2009handbook}. Examples of such meta-analyses are 
+\cite{andrews_construct_1984,scherpenzeel_validity_1997,saris_estimation_2007,alwin_margins_2007}. In the reliability study done 
+here, one may for example wish to combine the results with those of \cite{lundberg1996assessing}, to see whether differences in 
+reliability across educational groups hold across the studies.
+
+It is clear, therefore, that to answer the questions that are of interest to  researchers, standard errors and confidence intervals for the 
 reliability coefficients would be useful. The next section derives these standard errors for general structural equation models. 
 
 \section{Standard errors of standardized parameters}
@@ -270,15 +284,24 @@ $D_\n \definedas \sqrt{I \hadaprod \Sigma_\n}$.
 
 By standard application of the Delta method \citep[e.g.][]{oehlert1992note}, the asymptotic variance of $\thetastan$ can be shown to equal
 \begin{equation}\label{eq:deltamethod}
+\var(\thetastan) = 
 	\left(\frac{d \thetastan}{d \theta}\right) 
 		\var(\theta) 
 	\left(\frac{d \thetastan}{d \theta}\right)'.
 \end{equation}
-Here $\var(\theta)$ is the appropriate asymptotic variance matrix of the free model parameters $\theta$ \cite[e.g.][]{satorra1989alternative}.
+Here $\var(\theta)$ is the appropriate asymptotic variance matrix of the free model parameters $\theta$ \cite[e.g.][143-4]{satorra1989alternative}.
 The choice of the appropriate $\var(\theta)$ matrix allows for incorporation of 
 non-normal and complex sample data with possibly missing observations.
 
-
+Some authors have suggested applying the $z$-transform \citep[section 35]{fisher1925statistical} to standardized parameters.
+In this case, again following the delta method, the variance of the transformed parameters will equal
+\begin{equation}\label{eq:deltamethod-ztransform}
+\var[\arctanh(\thetastan)] = 
+		T\,
+		\var(\thetastan)\,
+		T',
+\end{equation}
+where $T$ is the diagonal matrix with elements $T_{(i,i)} = (1 - \thetastan_i^2)^{-1}$.
 
 \subsection{Derivatives of the standardized parameters}
 
@@ -390,7 +413,7 @@ we conclude that the derivative matrices  $G_{\tilde{\l}}$ and
 $G_{\tilde{\b}}$ of the standardized parameters $\vec \Bstan$ and 
 $\vec \Lambdastan$ with respect to the free parameters of the model 
 $\theta$ will be the partitioned matrices
-\begin{multline}
+\begin{multline}\label{eq:dlambda}
 \frac{d \tilde\l}{d \theta} = [
         (D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\l + 
             (D_\n \kronprod D_y^{-1}), \\
@@ -402,7 +425,7 @@ $\theta$ will be the partitioned matrices
  ] 
 \end{multline}
 and
-\begin{multline}
+\begin{multline}\label{eq:dbeta}
 \frac{d \tilde\b_0}{d \theta} = [
         \0,
         \{(D_\n B_0' \kronprod I_q) C_{\n2}  + 
@@ -420,7 +443,9 @@ and
 
 \section{Application: standard errors of standardized parameters}
 
-Estimating the 
+Table  \ref{tab:first-results} showed the standardized estimates for our example application. We can now obtain the 
+ asymptotic variance-covariance matrix of those standardized estimates 
+by applying equation \ref{eq:deltamethod}, together with the derivatives derived in the previous section (equations \ref{eq:dbeta} and \ref{eq:dlambda}). This was done for the multiple group SEM discussed earlier. The results are shown in table \ref{tab:health-education}.
 
 \begin{table}[ht]
 \begin{center}
@@ -443,6 +468,15 @@ Asymptotic standard errors based on the method described in this paper are also 
 differences between the groups in reliability, see table \ref{tab:tests}.}\label{tab:health-education}
 \end{center}
 \end{table}
+
+\begin{figure}[htbp]
+\begin{center}
+\caption{Confidence intervals constructed via the Fisher z-transformation.}
+\includegraphics[width=\textwidth]{CI}
+\label{default}
+\end{center}
+\end{figure}
+
 
 
 % latex table generated in R 2.13.0 by xtable 1.5-6 package
