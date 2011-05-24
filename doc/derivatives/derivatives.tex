@@ -13,7 +13,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 
-\title{Derivatives and standard errors of standardized parameters in structural
+\title{Standard errors and confidence intervals of standardized parameters in structural
 equation models}
 \author{Daniel Oberski\\RECSM research paper, Universitat Pompeu Fabra}
 
@@ -67,6 +67,7 @@ for standardized parameters. %Due to this lack of availability of analytical der
 We derive an explicit expression in terms of the model parameters 
 for derivatives and the asymptotic variance-covariance matrix of 
 standardized parameters in structural equation models, that is straightforward to implement in standard SEM software. 
+The construction of confidence intervals via the Fisher $z$-transformation is also discussed.
 The solution is applied to an analysis of the reliability of self-rated health in groups with different levels of education.
 \end{abstract}
 
@@ -82,7 +83,7 @@ Although the main interest in such models lies in the parameters of
 the model, researchers' interest often also focuses on the so-called 
 `standardized' parameters \citep{bollen1989structural}. Typical applications include examination of factor loadings and correlations in factor analysis, as well as the evaluation of the relative size of regression coefficients, possibly of latent variables.
 
-In spite of the interest in standardized coefficients in structural equation models, to our knowledge the literature does not provide any explicit expression for the asymptotic standard errors of standardized coefficients. As a consequence, standard errors and confidence intervals for these coefficients are usually not provided by the standard software\footnote{At the time of writing, the exception is Mplus version 5.2 and above \citep{muthen1998mplus}.}.  We remedy this situation by deriving an explicit expression, in terms of the unstandardized parameter estimates, for the asymptotic variance-covariance matrix of the standardized coefficients. The solution requires only the parameter estimates of the model and can be readily implemented in SEM software.
+Although the general principle of deriving standard errors and confidence intervals for standardized parameters is well known, to our knowledge the literature does not provide any explicit expression for the asymptotic standard errors of standardized coefficients in SEM. As a consequence, standard errors and confidence intervals for these coefficients are usually not provided by the standard software\footnote{At the time of writing, the exception is Mplus version 5.2 and above \citep{muthen1998mplus}.}.  We remedy this situation by deriving an explicit expression, in terms of the unstandardized parameter estimates, for the asymptotic variance-covariance matrix of the standardized coefficients. The solution requires only the parameter estimates of the model and can be readily implemented in SEM software.
 
 Section 2 provides a motivating example, using a SEM model with latent
 variables where standardized parameters and their standard errors and confidence
@@ -293,7 +294,8 @@ Here $\var(\theta)$ is the appropriate asymptotic variance matrix of the free mo
 The choice of the appropriate $\var(\theta)$ matrix allows for incorporation of 
 non-normal and complex sample data with possibly missing observations.
 
-Some authors have suggested applying the $z$-transform \citep[section 35]{fisher1925statistical} to standardized parameters.
+In order to construct confidence intervals, it may be advantageous to apply the 
+$z$-transform, defined as $z = \arctanh(\thetastan)$  \citep[section 35]{fisher1925statistical}, to standardized parameters.
 In this case, again following the delta method, the variance of the transformed parameters will equal
 \begin{equation}\label{eq:deltamethod-ztransform}
 \var[\arctanh(\thetastan)] = 
@@ -447,7 +449,7 @@ Table  \ref{tab:first-results} showed the standardized estimates for our example
  asymptotic variance-covariance matrix of those standardized estimates 
 by applying equation \ref{eq:deltamethod}, together with the derivatives derived in the previous section (equations \ref{eq:dbeta} and \ref{eq:dlambda}). This was done for the multiple group SEM discussed earlier. The results are shown in table \ref{tab:health-education}.
 
-\begin{table}[ht]
+\begin{table}[tbh]
 \begin{center}
 \begin{tabular}{lllcccc}  \hline  \hline
 &&&  \multicolumn{4}{c}{\emph{Year}}\\\cline{4-7}
@@ -469,16 +471,20 @@ differences between the groups in reliability, see table \ref{tab:tests}.}\label
 \end{center}
 \end{table}
 
-\begin{figure}[htbp]
-\begin{center}
-\caption{Confidence intervals constructed via the Fisher z-transformation.}
-\includegraphics[width=\textwidth]{CI}
-\label{default}
-\end{center}
-\end{figure}
+Table \ref{tab:health-education} shows, as is to be expected, that educational subgroups with more observations 
+such as the Lower Secondary group have lower standard errors for the reliability coefficients. However, the sample size
+is not the only factor that determines the standard error of reliabilities: the value of the reliability itself exerts an influence as well,
+as can be confirmed by comparing the standard errors in the relatively small-sample Upper Tertiary group with those of the Primary group.
+The Primary group has the larger sample size (279 observations rather than 256), but the standard errors of the reliabilities
+of self-rated health in that group are larger. This is due to the difference in the reliability estimates, as the Upper Tertiary group 
+has the higher reliability in all cases.
 
+Using the obtained standard errors, one may construct pairwise hypothesis test of the hypothesis that the reliability of self-rated health
+is equal across groups with different levels of attained education. Table \ref{tab:tests} shows the $t$-values and statistical significance of the resulting multiple comparisons -- using corrected $p$-values  \citep{holm1979simple} -- for the reliability of self-rated health in 2007. It can be seen that this rather simplistic analysis suggests that the 
+groups Upper Secondary and Upper Tertiary are not statistically significantly different from each other, but do 
+differ significantly from the lower three groups.
 
-
+\if 1=2
 % latex table generated in R 2.13.0 by xtable 1.5-6 package
 % Sun May 15 22:42:47 2011
 \begin{table}[ht]
@@ -509,35 +515,93 @@ vmbo $<$$>$ wo & -3.35 & 0.00 & 0.01 & * \\
 	the corresponding $p$-value and $p$-value adjusted for multiple comparisons \citep{holm1979simple}, respectively.}\label{tab:tests}
 \end{center}
 \end{table}
+\fi
+\begin{table}[tbh]
+\begin{center}
+\begin{tabular}{rccccc}
+  \hline
+ & Primary & Low 2nd & Mid 2nd & High 2nd & Low 3rd \\
+   \hline
+  Low 2nd & -0.68 \\ 
+  Mid 2nd & -0.71 & -0.06  \\ 
+  High 2nd & -2.76* & -3.25* &3.12*   \\ 
+  Low 3rd & -2.18 & -2.46 & -2.33 & 1.07   \\ 
+  High 3rd & -2.86* & -3.35* & -3.22* & -0.22 & -1.26  \\ 
+   \hline
+\end{tabular}\caption{$t$-values for comparisons of the reliability of self-rated health in 2007 
+	 between groups with different levels of education. The comparisons made can be read 
+	by examining the corresponding row and column. The cells show $t$-values for the test of no difference
+	 between the groups in reliability. Comparisons marked with a ``*'' have an adjusted $p$-value
+	 with $p_{\mathrm{adj}}<0.05$.}\label{tab:tests}
+\end{center}
+\end{table}
 
 
-\section{Discussion}
 
-\subsection{Scope}
+A different method of examining such hypotheses is the examination of 95\% confidence intervals of the reliability coefficient of self-rated health in the different groups.
+In order to improve the normal approximation to the confidence interval for correlations, \cite{fisher1925statistical} suggested the $z$-transformation, $z = \arctanh(\thetastan)$. This method can also be applied to the standardized estimates to obtain confidence 
+intervals that cannot exceed the natural bounds of -1 and +1. By applying equation \ref{eq:deltamethod-ztransform} to the variance
+matrix obtained for the example, 95\% confidence intervals on the reliability coefficients were constructed. The resulting confidence
+intervals for the reliabilities are shown for different years and educational groups in figure \ref{fig:ci}.
 
-Limited, categorical variables, effects/correlations between latent variables,
-factor loadings, error correlations.
+\begin{figure}[bth]
+\begin{center}
+\caption{Confidence intervals for the reliability coefficients (standardized $\l$'s) constructed via the Fisher z-transformation. For each group of  education level and year, the 95\% C.I. is shown.}\label{fig:ci}
+\includegraphics[width=.99\textwidth]{CI}
+\label{default}
+\end{center}
+\end{figure}
 
-\subsection{Others}
-\cite{bollen1990direct} note that an approximate method exists for regression
-analysis that does not take the estimation of the model-implied standard
-deviations into account. 
+Figure \ref{fig:ci} confirms the observations that the upper three educational groups significantly differ from the lower three groups, but
+the 95\% confidence intervals within the upper and the lower three groups overlap. Due to the use of the Fisher transformation, the
+confidence intervals are not symmetric around the point estimates. Another observation of interest is that none of the confidence
+intervals contain 0.70, the traditional cutoff point for acceptable reliability coefficients. It can be concluded that there
+are significant differences between people with higher and lower levels of education, but in all groups the reliability of self-rated health
+is acceptable.
 
-References to Delta method but without providing the derivatives.
 
-Likelihood based confidence intervals, bootstrapping.
 
-Our method dispenses with the need for approximate methods or numerical
-derivatives.
+\section{Discussion and conclusion}
 
-\subsection{Future}
+In section 2, we discussed an example analysis of the reliability of self-rated health in the Netherlands. Since this measure is widely used in 
+ public health research, it is vital that its reliability should be acceptable. Furthermore, if correlations between self-rated health and 
+ other variables are to be compared across groups with different levels of education, the reliability of self-rated health should be the 
+ same across the groups. A model allowing for the estimation of reliability was therefore estimated in six groups with different levels
+ of educational attainment. The reliability coefficients were obtained in the different groups, but without their standard errors the questions
+ of interest could not be answered.
+The example analysis of the first section therefore showed that, when standardized parameters such as reliability coefficients are of interest, it is necessary for the researcher to obtain the variance-covariance matrix of those standardized parameters in order to answer certain questions.
 
-Examine relative performance of confidence intervals, similar to work done for
-indirect effects.
+Although the principles applied here to obtain asymptotic standard errors and confidence intervals for standardized parameters are well-known, 
+an explicit formula in terms only of the model's unstandardized parameters was not yet available. The subsequent section remedied this situation by providing this formula, deriving the Jacobian of the standardized parameters with respect to the unstandardized ones. In additional, the 
+variance-covariance matrix of Fisher $z$-transformed standardized parameters was given for the construction of confidence intervals.
+
+Section 4 then applied the derived equations to the unstandardized parameters obtained in the example analysis of self-rated health, shown in table \ref{tab:results-unstandardized} -- thus obtaining standard errors for the reliability coefficients (standardized loadings). Confidence intervals obtained via the Fisher $z$-transformation were also calculated. These standard errors and confidence intervals for the standardized parameters allowed for 
+investigation of the hypotheses that reliability does not differ across levels of education, and that the reliability is acceptable in 
+different populations (i.e. higher than 0.70). Using the derived equations, we were able to conclude that the self-rated health measure
+is of acceptable reliability across groups of education, although there are significant differences in reliability between the educational groups (differential measurement error).
+
+\vspace{12pt}
+Due to the generality of SEM, the solution provided here encompasses many commonly used models as special cases. Standardized
+coefficients in (multivariate) regression \citep[discussed in ][121]{bollen1990direct}, errors-in-variables models, factor analysis, and SUR models are special cases, for example. 
+Complex sampling and non-normally distributed data are also accommodated  \citep{muthen1995complex}. Another interesting application
+is meta-analysis of reliability coefficients as in \cite{andrews_construct_1984,scherpenzeel_validity_1997,saris_estimation_2007,alwin_margins_2007}.
+
+
+In this paper we have given analytic solutions for the asymptotic variance matrices of standardized estimates in SEM and their 
+$z$-transformations. These explicit solutions were not yet available in the literature. The analytic solution to this problem is not, of course, the only  one possible. Other approaches include
+direct estimation by imposing model constraints \citep{chan2009testing}, bootstrapping, likelihood-based methods, and MCMC sampling
+of the standardized parameters. The advantage of the method presented here is that it is uses only the unstandardized parameter estimates which result from the estimation and is  straightforward to implement in standard SEM software. The question of which 
+method provides the most adequate approximation to the true sampling distribution of the standardized parameters  remains
+a topic for future study.
 
 
 \bibliography{derivatives}
+\end{document}
 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \appendix
 
