@@ -409,9 +409,9 @@ the differential of the standardized $\Lambdastan$ matrix is
         \d\vec B_0 +\\
      & [(D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\p + 
         (I_q \kronprod D_y^{-1}\Lambda) C_{\n1} \Delta^*_\p ] 
-        \d\vec \Phi +\\
+       P \d\vech \Phi +\\
      & (D_\n \Lambda' \kronprod I_p) C_{y2} 
-        \d\vec \Psi.
+       P \d\vech \Psi.
 \end{split}\end{equation}
 And similarly, the differential of the standardized $\Bstan_0$ matrix from
 equation \ref{eq:dvecbeta} is
@@ -424,7 +424,7 @@ equation \ref{eq:dvecbeta} is
         \d\vec B_0 +\\
      & [(D_\n B_0' \kronprod I_q) C_{\n2}  + 
         (I_q \kronprod D_\n^{-1}B_0) C_{\n1} ] \Delta^*_\p 
-        \d\vec \Phi.
+       P \d\vech \Phi.
 \end{split}\end{equation}
 
 \if 1=2
@@ -451,25 +451,25 @@ equation \ref{eq:dvecbeta} is
 
 From the differentials in equations \ref{eq:dveclam_final} and
 \ref{eq:dvecbeta_final},
-we conclude that the derivative matrices  of the standardized parameters $\vec \Bstan$, 
-$\vec \Lambdastan$, $\vec \Phistan$, and $\vec \Psistan$ with respect to the free 
+we conclude that the derivative matrices  of the standardized parameters 
+$\vec \Lambdastan$, $\vec \Bstan$, $\vech \Phistan$, and $\vech \Psistan$ with respect to the free 
 parameters of the model $\theta$ will be the partitioned matrices
 \begin{multline}\label{eq:dlambda}
 \frac{d \tilde\l}{d \theta} = [
         (D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\l + 
             (D_\n \kronprod D_y^{-1}), \\
-        (D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\p +
-         (I_q \kronprod D_y^{-1}\Lambda) C_{\n1} \Delta^*_\p, \\
+        (D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\p P +
+         (I_q \kronprod D_y^{-1}\Lambda) C_{\n1} \Delta^*_\p P, \\
         (D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\b + 
             (I_q \kronprod D_y^{-1}\Lambda) C_{\n1} \Delta^*_\b,\\
-        (D_\n \Lambda' \kronprod I_p) C_{y2}  
+        (D_\n \Lambda' \kronprod I_p) C_{y2}  P
  ] 
 \end{multline}
 \begin{multline}\label{eq:dbeta}
 \frac{d \tilde\b_0}{d \theta} = [
         \0,
          \{(D_\n B_0' \kronprod I_q) C_{\n2}  + 
-            (I_q \kronprod D_\n^{-1}B_0) C_{\n1} \} \Delta^*_\p
+            (I_q \kronprod D_\n^{-1}B_0) C_{\n1} \} \Delta^*_\p P
             ,\\
          \{(D_\n B_0' \kronprod I_q) C_{\n2}  + 
             (I_q \kronprod D_\n^{-1}B_0) C_{\n1} \} \Delta^*_\b +
@@ -478,29 +478,28 @@ parameters of the model $\theta$ will be the partitioned matrices
         \0
  ] .
 \end{multline}
-\marginpar{TODO: Add symmetry in Phi and Psi}
 \begin{multline}\label{eq:dphi}
 \frac{d \tilde{\phi}}{d \theta} = [
 \0,
       \{ (D^{-1}_\n \Phi \kronprod I_q)  + (I_q \kronprod D_\n^{-1}\Phi)  \} C_{\n2} \Delta^*_\b        
      ,\\
-      \{(D^{-1}_\n \Phi \kronprod I_q)  + (I_q \kronprod D_\n^{-1}\Phi)  \}  C_{\n2} \Delta^*_\p   +    (D_\n^{-1} \kronprod D_\n^{-1})
-     \}
+      \{(D^{-1}_\n \Phi \kronprod I_q)  + (I_q \kronprod D_\n^{-1}\Phi)  \}  C_{\n2} \Delta^*_\p  P +   
+      	 (D_\n^{-1} \kronprod D_\n^{-1}) P
               ,
         \0
  ] .
 \end{multline}
-\newcommand{\F}{(D^{-1}_y \Psi \kronprod I_p)  + (I_p \kronprod D_y^{-1}\Psi)  ]  C_{y2}}
+\newcommand{\F}{\{(D^{-1}_y \Psi \kronprod I_p)  + (I_p \kronprod D_y^{-1}\Psi)  \}  C_{y2}}
 \begin{multline}\label{eq:dpsi}
 \frac{d \tilde{\psi}}{d \theta} = [
 \F   \Delta_\l  ,\\
 \F   \Delta_\b         ,\\
-\F   \Delta_\p          ,\\
- \F   + D^{-1}_y \kronprod D^{-1}_y
+\F   \Delta_\p   P       ,\\
+ \F P  + D^{-1}_y \kronprod D^{-1}_y P
    ]
 \end{multline}
 
-By stacking the derivatives rowwise, we obtain the matrix $d \thetastan / d \theta$:
+By stacking the derivatives in equations \ref{eq:dlambda}--\ref{eq:dpsi} rowwise, we obtain the matrix $d \thetastan / d \theta$:
 \begin{equation}\label{eq:dthetatilde}
 \frac{d \thetastan}{d \theta} = [
 \left( \frac{d \tilde\l}{d \theta} \right)',
