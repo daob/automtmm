@@ -286,15 +286,23 @@ definite. In what follows we will write $\Sigma_.$ for $\Sigma_.(\theta)$ in
 the interest of clarity.
 
 The parameters of the model are collected in a parameter
-vector $$\theta \definedas [\vec{\Lambda}, \vech{\Phi}, \vec B_0, \vech
-\Psi].$$
+vector 
+$$
+\theta \definedas [\vec{\Lambda},  \vec B_0, \vech{\Phi}, \vech
+\Psi] 
+\definedas [\l, \beta, \phi, \psi].
+$$
 Interest focuses not only on the parameter vector $\theta$, 
 but also on the so-called ``standardized'' parameter vector, denoted
-$\thetastan \definedas [\Lambdastan, \Bstan_0]$, where:
+$\thetastan \definedas [\vec\Lambdastan, \vec\Bstan_0, \vech\Phistan, \vech\Psistan]$, where:
 \begin{align}\label{eq:lambda_s}
     \Lambdastan &\definedas D^{-1}_y \Lambda D_\n
     \\
     \Bstan_0 &\definedas D^{-1}_\n B_0 D_\n,\label{eq:beta_s}
+    \\
+    \Phistan  &\definedas D^{-1}_\n \Phi D^{-1}_\n,\label{eq:phi_s}
+    \\
+        \Psistan  &\definedas D^{-1}_y \Psi D^{-1}_y\label{eq:psi_s},
 \end{align}
 and $D_y \definedas \sqrt{I \hadaprod \Sigma_y}$, and 
 $D_\n \definedas \sqrt{I \hadaprod \Sigma_\n}$. 
@@ -458,10 +466,10 @@ parameters of the model $\theta$ will be the partitioned matrices
 \frac{d \tilde\l}{d \theta} = [
         (D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\l + 
             (D_\n \kronprod D_y^{-1}), \\
-        (D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\p P +
-         (I_q \kronprod D_y^{-1}\Lambda) C_{\n1} \Delta^*_\p P, \\
         (D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\b + 
             (I_q \kronprod D_y^{-1}\Lambda) C_{\n1} \Delta^*_\b,\\
+(D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\p P +
+         (I_q \kronprod D_y^{-1}\Lambda) C_{\n1} \Delta^*_\p P, \\            
         (D_\n \Lambda' \kronprod I_p) C_{y2}  P
  ] 
 \end{multline}
@@ -469,12 +477,12 @@ parameters of the model $\theta$ will be the partitioned matrices
 \frac{d \tilde\b_0}{d \theta} = [
         \0,
          \{(D_\n B_0' \kronprod I_q) C_{\n2}  + 
-            (I_q \kronprod D_\n^{-1}B_0) C_{\n1} \} \Delta^*_\p P
-            ,\\
-         \{(D_\n B_0' \kronprod I_q) C_{\n2}  + 
             (I_q \kronprod D_\n^{-1}B_0) C_{\n1} \} \Delta^*_\b +
             (D_\n \kronprod D_\n^{-1})
-            ,
+            ,\\
+         \{(D_\n B_0' \kronprod I_q) C_{\n2}  + 
+            (I_q \kronprod D_\n^{-1}B_0) C_{\n1} \} \Delta^*_\p P
+            ,  
         \0
  ] .
 \end{multline}
