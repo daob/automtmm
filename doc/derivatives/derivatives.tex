@@ -79,7 +79,7 @@
 
 \begin{document}
 \maketitle
-
+\newpage
 
 %\marginpar{Beter motiveren; quote Bentler}
 \begin{abstract}\noindent
@@ -99,7 +99,7 @@ We demonstrate the use of the derived expression on an example analysis of the
 reliability of self-rated health in groups with different levels of education.
 \end{abstract}
 
-\section{Introduction}\noindent
+\section{Introduction\label{sec:introduction}}\noindent
 Linear structural equation models (SEM) with latent variables
 have become a popular tool in the behavioral sciences. Such models encompass as special cases a diverse range of common models of interest such as factor
 analysis, multivariate regression, errors-in-variables models, growth, and
@@ -112,13 +112,16 @@ Researchers' interest often focuses on the so-called
 
 Although the general principle applied here to derive standard errors and confidence intervals for standardized parameters is well known  \citep[e.g.][]{oehlert1992note}, to our knowledge the literature does not provide any explicit expression for the asymptotic standard errors of standardized coefficients in SEM. As a consequence, standard errors and confidence intervals for these coefficients are usually not provided by the standard software\footnote{At the time of writing, the exception is Mplus version 5.2 and above \citep{muthen1998mplus}.}.  We remedy this situation by deriving an explicit expression, in terms of the unstandardized parameter estimates, for the asymptotic variance-covariance matrix of the standardized coefficients. The solution requires only the parameter estimates of the model and can be readily implemented in SEM software.
 
-Section 2 provides a motivating example, using a SEM model with latent
+Section \ref{sec:example}  provides a motivating example, using a SEM model with latent
 variables where standardized parameters and their standard errors and confidence
 intervals are of interest to the researcher.
-Section 3 derives the explicit expression for the asymptotic variance-covariance matrix of the standardized estimates. Section 4 applies this expression to the example. The last section discusses the scope and limitations of this proposal and suggests future research.
+Section \ref{sec:analytics} derives the explicit expression for the asymptotic variance-covariance matrix of the standardized estimates. Section \ref{sec:application} applies this expression to the example. A Monte Carlo study summarized in section \ref{sec:montecarlo}
+then evaluates the performance of the analytical standard errors and confidence intervals given here 
+by simulation.
+Finally, the last section concludes, discusses the scope and limitations of this proposal, and suggests future research.
 
 
-\section{Example SEM with interest in standardized parameters}
+\section{Example SEM with interest in standardized parameters\label{sec:example}}
 
 
 The study of differences across societal groups in self-rated health is of interest to researchers in public health.   For example,  \cite{von2006education} 
@@ -225,7 +228,7 @@ Chi-square:  6.923 on  12 degrees of freedom  ($p = 0.863$),  SRMR:  0.0041, RMS
 \end{small}\end{table}
 
 
-The last row of \ref{tab:results-unstandardized} shows that the error variance parameter $\psi_{ii}$ 
+The last row of table \ref{tab:results-unstandardized} shows that the error variance parameter $\psi_{ii}$ 
 differs somewhat across groups with different levels of education. The differences are statistically
 significant ($p < 0.01$), as revealed by a test that compared the estimated model with a model 
 containing equality constraints on $\psi_{ii}$ across the groups. However, it is not clear whether 
@@ -273,7 +276,7 @@ reliability across educational groups hold across the studies.
 It is clear, therefore, that to answer the questions that are of interest to  researchers, standard errors and confidence intervals for the 
 reliability coefficients would be useful. The next section derives these standard errors for general structural equation models. 
 
-\section{Standard errors of standardized parameters}
+\section{Standard errors of standardized parameters\label{sec:analytics}}
 
 Let $y$ be a $p$-vector of observed variables, from which a sample is obtained.
 The following SEM for $y$ is specified:
@@ -551,7 +554,7 @@ to obtain the variance matrix of the standardized parameters, while equation \re
 provides the variance matrix of $z$-transformed standardized parameters.
 
 
-\section{Application: standard errors of standardized parameters}
+\section{Application: standard errors of standardized parameters\label{sec:application}}
 
 Table  \ref{tab:first-results} showed the standardized estimates for our example application on the
 reliability of self-rated health in groups with different levels of education. We can now obtain the 
@@ -666,8 +669,29 @@ intervals contain 0.70, the traditional cutoff point for acceptable reliability 
 are significant differences between people with higher and lower levels of education, but in all groups the reliability of self-rated health
 is acceptable.
 
-\section{Monte Carlo evaluation of the approach}
+\section{Monte Carlo evaluation of the approach\label{sec:montecarlo}}
 
+To evaluate the performance of the asymptotic standard errors and confidence intervals in the example, 
+a Monte Carlo study was performed.  The multiple group model estimated in section \ref{sec:example} is taken as the true 
+population model, and 512 samples from this population model were simulated\footnote{All the analyses were
+performed in \R.}. Thus each sample contains six groups of different education levels, and the four observed
+variables within each group are drawn from a multivariate  normal distribution with population covariance
+matrix equal to the implied covariance matrix in that group from section \ref{sec:example} . 
+
+In each of the 512 simulated samples, the model shown in figure \ref{fig:model} was estimated, and the
+standardized loadings\footnote{Since the interest in this
+example focuses on the standardized loadings and for the sake of brevity, we will focus only on
+these standardized loadings here.} 
+ (reliability coefficients) and their asymptotic variance matrix were 
+ calculated according to equations \ref{eq:lambda_s} and \ref{eq:deltamethod}, respectively.
+Note that the analysis is carried out separately for each of the groups, some of which have a small
+sample size (see table \ref{tab:health-education}).
+ We then calculated the bias in the estimates by subtracting the average standardized loading over simulations
+ from the corresponding true population value given in table \ref{tab:health-education}. 
+ Similarly,  the average of the asymptotic standard error over simulated samples was  subtracted from the 
+ standard deviation of the standardized estimates.
+ The bias in the standardized estimates and their asymptotic standard errors over the 512 simulations
+ for the 24 standardized loadings are shown in table \ref{tab:montecarlo}.
 
 
 \begin{table}[htb]\begin{small}
@@ -687,7 +711,7 @@ Grp&   $\hat{\tilde\l}$ & s.e & cvg. &$\hat{\tilde\l}$ & s.e & cvg. &$\hat{\tild
   6   &0.000 & -0.001& 96\%&-0.000 & -0.000& 95\%&0.000 & -0.001& 95\%&0.001 & -0.000& 95\%\\
   \hline     \hline
 \end{tabular}\end{small}
-\caption{Monte Carlo results of 512 random samples taking the example model in section 2 as the true model.
+\caption{Monte Carlo results of 512 random samples taking the example model in section \ref{sec:example}  as the true model.
 Shown are the bias in the standardized estimates and their asymptotic standard errors as discussed above. 
 Also shown is the coverage of 95\% confidence intervals via the Fisher $z$-transformation.}\label{tab:montecarlo}
 \end{table}
@@ -698,39 +722,75 @@ Also shown is the coverage of 95\% confidence intervals via the Fisher $z$-trans
 %  5   &-0.000 & (0.000)& 95\%&0.000 & (-0.000)& 94\%&-0.000 & (-0.001)& 93\%&-0.000 & (-0.000)& 93\%\\
 %  6   &0.000 & (-0.001)& 96\%&-0.000 & (-0.000)& 95\%&0.000 & (-0.001)& 95\%&0.001 & (-0.000)& 95\%\\
 
-The standardized estimates are unbiased, the standard errors are very close to the monte carlo standard deviations 
-of the standardized estimates. The coverage of the 95\% confidence confidence intervals using the Fisher $z$-transform
-is close to 95\%, with the lowest observed coverage 95\%  and the highest coverage 97\%. The mean and median coverage
-of the 95\% coverage intervals across the 24 standardized parameters are 94.7\% and 95.0\%. 
+It can be seen in table \ref{tab:montecarlo} that the standardized loadings are unbiased estimates of the
+ true population values. The absolute relative bias (not shown here) was smaller than 0.5\% in all cases.
+The asymptotic standard errors are very close to the standard deviations observed over the simulations, 
+although there are some deviations. 
+The absolute relative bias of the standard errors as compared to the observed standard deviations 
+had a maximum of 10\% (for the reliability coefficient in 2007 in the lowest educational group). 
 
-\begin{figure}[htb]
+Confidence intervals were obtained in each sample as follows: 
+\begin{enumerate}
+\item  The variance matrix of $z$-transformed standardized loadings was calculated using equation 
+		\ref{eq:deltamethod-ztransform};
+\item Standard errors of the $z$-transformed standardized loadings were used to construct a 95\%
+		confidence interval for $z(\tilde\l)$;
+\item The upper and lower limits of the 95\% confidence interval for $z(\tilde\l)$ were back-transformed
+		to the original scale using $z^{-1}(x) = (\exp(2x) - 1) / (\exp(2x) + 1)$.
+\end{enumerate}
+It was then evaluated whether the nominal 95\% confidence interval thus obtained contained the true population
+value shown in table \ref{tab:health-education} or not. The percentage of samples in which this was the case is 
+shown in table \ref{tab:montecarlo} in the columns marked ``cvg.''. 
+
+Table \ref{tab:montecarlo} shows that in all cases the coverage of the 95\% confidence confidence 
+intervals using the Fisher $z$-transform is close to 95\%, with the lowest observed coverage 93\%  
+and the highest coverage 97\%. The mean and median coverage of the 95\% coverage intervals 
+across the 24 standardized parameters are 94.7\% and 95.0\% respectively. The confidence intervals via the Fisher
+$z$-transform therefore appear to perform well.
+
+Some authors have expressed concern about the use of the normal distribution as an approximation for
+the sampling distribution of standardized parameters. We therefore examined the quality of
+this approximation for all standardized loadings. Figure \ref{fig:normal} presents the results for one of the 
+standardized loadings in the lowest and highest educational groups.
+\begin{figure}[tb]
 \centering
-\subfigure[Reliability (left) and $z$ transform (right) distributions in group with only Primary education]{
+\subfigure[Primary education]{
 	\includegraphics[width=.48\textwidth]{normplots/normality-yr1-gp1}
-   \label{fig:subfig1}
+   \label{fig:normal-1}
  }
- \subfigure[Reliability (left) and $z$ transform (right) distributions in group with University education]{
+ \subfigure[University education]{
 	\includegraphics[width=.48\textwidth]{normplots/normality-yr1-gp6}
-   \label{fig:subfig2}
- }	\caption{Distribution and normal Q-Q plots of the reliability coefficients and their Fisher $z$-transforms
- 	 in 2007 in the lowest and highest educational group.}
+   \label{fig:normal-2}
+ }	\caption{Distribution and normal Q-Q plots of the reliability coefficients $\tilde\l$ and their Fisher $z$-transforms
+ 	 in 2007 in the lowest and highest educational group.}\label{fig:normal}
 \end{figure}
- 9 out of 24 Shapiro-Wilks tests for the raw stdized estimates are adjusted-significant, none of the transformed ones are. So it seems the 
-the normal approximation is better for the transformed. in exactly 2 thirds of the cases the fit is better for the transformed than for the
-raw standardized values.
+It can be seen in figure \ref{fig:normal} that the distribution of the raw standardized loading in both cases is somewhat skewed,
+and indeed a Shapiro-Wilks test of normality is rejected in both cases. The effect appears to be more pronounced for the 
+Primary group, which has the highest variance (see table \ref{tab:health-education}).
+The Fisher $z$-transformed quantities do appear to follow a normal distribution in these two cases.
 
+More generally, 9 out of 24 Shapiro-Wilks tests for the raw standardized estimates are rejected (when using
+adjusted $p$-values), while none of the tests for transformed estimates are. 
+Additionally, in exactly two-thirds of the cases the fit to a normal distribution is better for the transformed than for the
+raw standardized values. 
+
+In summary, this short simulation study shows that for the example the suggested procedure performs well.
+The standard errors for standardized parameters  are  very close to the observed standard deviation across 
+the simulations. Additionally, the derived asymptotic confidence intervals via the Fisher $z$-transformation
+show good coverage properties, while the sampling distribution of the  transformed standardized parameters is 
+the better approximated by the normal distribution.
 Note that the sample sizes in 
-some of the groups are relatively small, with $n$ ranging from 256 to 799 observations (see first column of table \ref{tab:health-education}).
-The approach taken here of providing asymptotic standard errors and confidence intervals for the 
-standardized estimates works well in this example, in spite of the smaller sample sizes. 
+some of the groups are relatively small, with $n$ ranging between 256 and 799 observations (see first column of table \ref{tab:health-education}).
+In spite of these smaller sample sizes the approach taken here of providing asymptotic standard errors and confidence intervals for the 
+standardized estimates works well in this example.
 
 
 
-\section{Discussion and conclusion}
+\section{Discussion and conclusion\label{sec:conclusion}}
 
 \marginpar{TODO: resumer intro}
 
-In section 2, we discussed an example analysis of the reliability of self-rated health in the Netherlands. Since this measure is widely used in 
+In section \ref{sec:example} , we discussed an example analysis of the reliability of self-rated health in the Netherlands. Since this measure is widely used in 
  public health research, it is vital that its reliability should be acceptable. Furthermore, if correlations between self-rated health and 
  other variables are to be compared across groups with different levels of education, the reliability of self-rated health should be the 
  same across the groups. A model allowing for the estimation of reliability was therefore estimated in six groups with different levels
@@ -747,19 +807,27 @@ investigation of the hypotheses that reliability does not differ across levels o
 different populations (i.e. higher than 0.70). Using the derived equations, we were able to conclude that the self-rated health measure
 is of acceptable reliability across groups of education, although there are significant differences in reliability between the educational groups (differential measurement error).
 
+\marginpar{TODO: MC summary}
+
 \vspace{12pt}
 Due to the generality of SEM, the solution provided here encompasses many commonly used models as special cases. Standardized
 coefficients in (multivariate) regression \citep[discussed in ][121]{bollen1990direct}, 
 errors-in-variables models, factor analysis, and SUR models are special cases, for example. 
 Complex sampling and non-normally distributed data can also be accommodated  \citep{muthen1995complex}. Another  application is meta-analysis of reliability coefficients as in \cite{andrews_construct_1984,scherpenzeel_validity_1997,saris_estimation_2007,alwin_margins_2007}.
 
-
-In this paper we have given analytic solutions for the asymptotic variance matrices of standardized estimates in SEM and their 
-$z$-transformations. These explicit solutions were not yet available in the literature. The analytic solution to this problem is not, of course, the only  one possible. Other approaches include
+The analytic solution to the problem of standard errors and confidence intervals for standardized parameters
+ is not, of course, the only  one possible. Other approaches include
 direct estimation by imposing model constraints \citep{chan2009testing}, analysis of correlation structures with constraints \citep{bentler1983covariance}, bootstrapping , likelihood-based methods, and MCMC sampling of the standardized parameters. The advantage of the method presented here is that it is uses only the unstandardized parameter estimates which result from the estimation, is  straightforward to implement in standard SEM software, and requires no further
-programming from the researcher. The question of which 
-method provides the most adequate approximation to the true sampling distribution of the standardized parameters  remains
+programming from the researcher. Our Monte Carlo study suggests that the approach works well in the example given, and with
+moderately small samples, but a systematic investigation of the conditions under which the approach may
+be expected to perform well remains to be done.
+The question of which 
+method provides the most adequate approximation to the true sampling distribution of the standardized parameters therefore remains
 a topic for future study.
+
+\marginpar{TODO: final words}
+In this paper we have given analytic solutions for the asymptotic variance matrices of standardized estimates in SEM and their 
+$z$-transformations. These explicit solutions were not yet available in the literature. 
 
 
 \begin{itemize}
