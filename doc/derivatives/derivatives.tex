@@ -310,7 +310,9 @@ $$
 $$
 Interest focuses not only on the parameter vector $\theta$, 
 but also on the so-called ``standardized'' parameter vector, denoted
-$\thetastan \definedas [\vec\Lambdastan, \vec\Bstan_0, \vech\Phistan, \vech\Psistan]$, where:
+$\thetastan \definedas [\vec\Lambdastan, \vec\Bstan_0, \vech\Phistan, \vech\Psistan] 
+\definedas [\tilde\l, \tilde\beta, \tilde\phi, \tilde\psi].
+$, where:
 \begin{align}\label{eq:lambda_s}
     \Lambdastan &\definedas D^{-1}_y \Lambda D_\n
     \\
@@ -322,6 +324,8 @@ $\thetastan \definedas [\vec\Lambdastan, \vec\Bstan_0, \vech\Phistan, \vech\Psis
 \end{align}
 and $D_y \definedas \sqrt{I \hadaprod \Sigma_y}$, and 
 $D_\n \definedas \sqrt{I \hadaprod \Sigma_\n}$. 
+Given these definitions, the explained variances in $\n$ and $y$, respectively $R^2_\n$ and $R^2_y$, 
+which may also be of interest,  equal the diagonal elements of the matrices $I - \tilde\Phi$ and $I - \tilde\Psi$. 
 
 %\marginpar{TODO: Define $\thetastan$.}
 
@@ -335,6 +339,14 @@ By standard application of the Delta method \citep[e.g.][]{oehlert1992note}, the
 Here $\var(\theta)$ is the appropriate asymptotic variance matrix of the free model parameters $\theta$ \cite[e.g.][143-4]{satorra1989alternative}.
 The choice of the appropriate $\var(\theta)$ matrix allows for incorporation of 
 non-normal and complex sample data with possibly missing observations.
+
+The variances of $\tilde\psi$ and $\tilde\phi$ from equation \ref{eq:deltamethod} also provide the 
+variances of $R^2_y$ and $R^2_\n$. 
+Therefore we will not derive the variance of the explained
+variances separately, with the understanding that the derivations for $\tilde\psi$ and $\tilde\phi$ already provide these\footnote{
+Let $R^2_y = Q \vech(I - \tilde\Psi)$, where $Q$ is a permutation matrix 
+selecting diagonal elements. Then $\var(R^2_y) = Q (d\tilde\psi/d\theta) \var(\theta) (d\tilde\psi/d\theta)' Q'$. The same
+argument applies to $\var(R^2_\n)$.}.
 
 In order to construct confidence intervals, it may be advantageous to apply the 
 $z$-transform, defined as $z = \arctanh(\thetastan)$  \citep[section 35]{fisher1925statistical}, to standardized parameters.
@@ -656,7 +668,7 @@ is acceptable.
 
 \section{Discussion and conclusion}
 
-\marginpar{TODO: resum\'e intro}
+\marginpar{TODO: resumer intro}
 
 In section 2, we discussed an example analysis of the reliability of self-rated health in the Netherlands. Since this measure is widely used in 
  public health research, it is vital that its reliability should be acceptable. Furthermore, if correlations between self-rated health and 
@@ -677,18 +689,28 @@ is of acceptable reliability across groups of education, although there are sign
 
 \vspace{12pt}
 Due to the generality of SEM, the solution provided here encompasses many commonly used models as special cases. Standardized
-coefficients in (multivariate) regression \citep[discussed in ][121]{bollen1990direct}, errors-in-variables models, factor analysis, and SUR models are special cases, for example. 
+coefficients in (multivariate) regression \citep[discussed in ][121]{bollen1990direct}, 
+errors-in-variables models, factor analysis, and SUR models are special cases, for example. 
 Complex sampling and non-normally distributed data can also be accommodated  \citep{muthen1995complex}. Another  application is meta-analysis of reliability coefficients as in \cite{andrews_construct_1984,scherpenzeel_validity_1997,saris_estimation_2007,alwin_margins_2007}.
 
 
 In this paper we have given analytic solutions for the asymptotic variance matrices of standardized estimates in SEM and their 
 $z$-transformations. These explicit solutions were not yet available in the literature. The analytic solution to this problem is not, of course, the only  one possible. Other approaches include
-direct estimation by imposing model constraints \citep{chan2009testing}, bootstrapping, likelihood-based methods, and MCMC sampling
-of the standardized parameters. The advantage of the method presented here is that it is uses only the unstandardized parameter estimates which result from the estimation, is  straightforward to implement in standard SEM software, and requires no further
+direct estimation by imposing model constraints \citep{chan2009testing}, analysis of correlation structures with constraints \citep{bentler1983covariance}, bootstrapping , likelihood-based methods, and MCMC sampling of the standardized parameters. The advantage of the method presented here is that it is uses only the unstandardized parameter estimates which result from the estimation, is  straightforward to implement in standard SEM software, and requires no further
 programming from the researcher. The question of which 
 method provides the most adequate approximation to the true sampling distribution of the standardized parameters  remains
 a topic for future study.
 
+
+\begin{itemize}
+\item Form of the model influences s.e. For example, adding predictors will decrease the variance of a beta: (19) and (17).
+\item $R^2$ is just $1-\tilde\psi$ or $1-\tilde\phi$ so the variance of $R^2$ is $
+- \frac{d \tilde{\psi}}{d \theta} \var{\theta} (-\frac{d \tilde{\psi}}{d \theta}') =
+ \frac{d \tilde{\psi}}{d \theta} \var{\theta} \frac{d \tilde{\psi}}{d \theta}' =
+ \var{\tilde\psi}
+$. So the variances for $\tilde\psi$ and $\tilde\phi$ already give the variances for $R^2_y$ and $R^2_\n$
+\item Add monte carlo?
+\end{itemize}
 
 \bibliography{derivatives}
 \end{document}
@@ -808,5 +830,21 @@ Then define the stacking matrix $Z_{p \times pg} \definedas \left[I_p, I_p,
 $$
 	(I_q \kronprod Z) G
 $$
+
+
+%
+% r = P . vec(I - Psi) = 
+%   = P.vec(I) - P.vec(Psi) = 
+%   = P.vec(I) - P.psi 
+
+% dr = -P dpsi
+
+% dr/dtheta   = dr/dpsi . dpsi/dtheta
+% 	    = -P.dpsi/dtheta
+
+%var(r)	= (dr/dtheta) var(theta) (dr/dtheta)'
+%	= (-P.dpsi/dtheta) var(theta) (-P.dpsi/dtheta)'
+%	= P (dpsi/dtheta) var(theta) (dpsi/dtheta)' P'
+%
 
 \end{document}
