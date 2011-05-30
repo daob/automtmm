@@ -1,6 +1,8 @@
 %\documentclass[a4paper,12pt,man]{apa}
 \documentclass[a4paper,11pt]{article}
 
+\usepackage{subfigure}
+
 %\usepackage[english]{babel}
 \usepackage{setspace}
 \doublespacing
@@ -664,6 +666,61 @@ intervals contain 0.70, the traditional cutoff point for acceptable reliability 
 are significant differences between people with higher and lower levels of education, but in all groups the reliability of self-rated health
 is acceptable.
 
+\section{Monte Carlo evaluation of the approach}
+
+
+\begin{table}[htb]\begin{small}
+\begin{tabular}{lrrrrrrrrrrrr}
+ \hline  \hline
+& \multicolumn{3}{c}{2007} & \multicolumn{3}{c}{2008} & \multicolumn{3}{c}{2009} & \multicolumn{3}{c}{2010}\\
+ \cline{2-13}
+&	     \multicolumn{2}{c}{Bias} &  & \multicolumn{2}{c}{Bias} &  &\multicolumn{2}{c}{Bias} &  &\multicolumn{2}{c}{Bias} &  \\
+\cline{2-3} \cline{5-6} \cline{8-9} \cline{11-12}
+Grp&   $\hat{\tilde\l}$ & s.e & cvg. &$\hat{\tilde\l}$ & s.e & cvg. &$\hat{\tilde\l}$ & s.e & cvg. &$\hat{\tilde\l}$ & s.e & cvg. \\
+  \hline
+  1   &0.003 & -0.003& 95\%&0.003 & -0.002& 94\%&0.004 & -0.002& 93\%&0.003 & -0.002& 94\%\\
+  2    &0.001 & 0.001& 97\%&0.001 & 0.001& 96\%&0.000 & 0.000& 96\%&0.001 & 0.000& 94\%\\
+  3   &-0.001 & 0.000& 95\%&-0.001 & 0.000& 96\%&-0.001 & -0.000& 96\%&-0.000 & -0.000& 96\%\\
+  4   &-0.000 & -0.000& 94\%&0.000 & -0.000& 94\%&-0.000 & 0.001& 95\%&0.000 & -0.000& 94\%\\
+  5   &-0.000 & 0.000& 95\%&0.000 & -0.000& 94\%&-0.000 & -0.001& 93\%&-0.000 & -0.000& 93\%\\
+  6   &0.000 & -0.001& 96\%&-0.000 & -0.000& 95\%&0.000 & -0.001& 95\%&0.001 & -0.000& 95\%\\
+  \hline     \hline
+\end{tabular}\end{small}
+\caption{Monte Carlo results of 512 random samples taking the example model in section 2 as the true model.
+Shown are the bias in the standardized estimates and their asymptotic standard errors as discussed above. 
+Also shown is the coverage of 95\% confidence intervals via the Fisher $z$-transformation.}\label{tab:montecarlo}
+\end{table}
+%  1   &0.003 & (-0.003)& 95\%&0.003 & (-0.002)& 94\%&0.004 & (-0.002)& 93\%&0.003 & (-0.002)& 94\%\\
+%  2    &0.001 & (0.001)& 97\%&0.001 & (0.001)& 96\%&0.000 & (0.000)& 96\%&0.001 & (0.000)& 94\%\\
+%  3   &-0.001 & (0.000)& 95\%&-0.001 & (0.000)& 96\%&-0.001 & (-0.000)& 96\%&-0.000 & (-0.000)& 96\%\\
+%  4   &-0.000 & (-0.000)& 94\%&0.000 & (-0.000)& 94\%&-0.000 & (0.001)& 95\%&0.000 & (-0.000)& 94\%\\
+%  5   &-0.000 & (0.000)& 95\%&0.000 & (-0.000)& 94\%&-0.000 & (-0.001)& 93\%&-0.000 & (-0.000)& 93\%\\
+%  6   &0.000 & (-0.001)& 96\%&-0.000 & (-0.000)& 95\%&0.000 & (-0.001)& 95\%&0.001 & (-0.000)& 95\%\\
+
+The standardized estimates are unbiased, the standard errors are very close to the monte carlo standard deviations 
+of the standardized estimates. The coverage of the 95\% confidence confidence intervals using the Fisher $z$-transform
+is close to 95\%, with the lowest observed coverage 95\%  and the highest coverage 97\%. The mean and median coverage
+of the 95\% coverage intervals across the 24 standardized parameters are 94.7\% and 95.0\%.
+
+\begin{figure}[htb]
+\centering
+\subfigure[Reliability (left) and $z$ transform (right) distributions in group with only Primary education]{
+	\includegraphics[width=.48\textwidth]{normplots/normality-yr1-gp1}
+   \label{fig:subfig1}
+ }
+ \subfigure[Reliability (left) and $z$ transform (right) distributions in group with University education]{
+	\includegraphics[width=.48\textwidth]{normplots/normality-yr1-gp6}
+   \label{fig:subfig2}
+ }	\caption{Distribution and normal Q-Q plots of the reliability coefficients and their Fisher $z$-transforms
+ 	 in 2007 in the lowest and highest educational group.}
+\end{figure}
+ 9 out of 24 Shapiro-Wilks tests for the raw stdized estimates are adjusted-significant, none of the transformed ones are. So it seems the 
+the normal approximation is better for the transformed. in exactly 2 thirds of the cases the fit is better for the transformed than for the
+raw standardized values.
+
+
+
+
 
 
 \section{Discussion and conclusion}
@@ -704,39 +761,7 @@ a topic for future study.
 
 \begin{itemize}
 \item Form of the model influences s.e. For example, adding predictors will decrease the variance of a beta: (19) and (17).
-\item Add monte carlo?
 \end{itemize}
-
-\begin{table}\begin{small}
-\begin{tabular}{lrrrrrrrrrrrr}
- \hline  \hline
-& \multicolumn{3}{c}{2007} & \multicolumn{3}{c}{2008} & \multicolumn{3}{c}{2009} & \multicolumn{3}{c}{2010}\\
- \cline{2-13}
-&	     \multicolumn{2}{c}{Bias} &  & \multicolumn{2}{c}{Bias} &  &\multicolumn{2}{c}{Bias} &  &\multicolumn{2}{c}{Bias} &  \\
-\cline{2-3} \cline{5-6} \cline{8-9} \cline{11-12}
-Grp&   $\hat{\tilde\l}$ & s.e & cvg. &$\hat{\tilde\l}$ & s.e & cvg. &$\hat{\tilde\l}$ & s.e & cvg. &$\hat{\tilde\l}$ & s.e & cvg. \\
-  \hline
-  1   &0.003 & -0.003& 95\%&0.003 & -0.002& 94\%&0.004 & -0.002& 93\%&0.003 & -0.002& 94\%\\
-  2    &0.001 & 0.001& 97\%&0.001 & 0.001& 96\%&0.000 & 0.000& 96\%&0.001 & 0.000& 94\%\\
-  3   &-0.001 & 0.000& 95\%&-0.001 & 0.000& 96\%&-0.001 & -0.000& 96\%&-0.000 & -0.000& 96\%\\
-  4   &-0.000 & -0.000& 94\%&0.000 & -0.000& 94\%&-0.000 & 0.001& 95\%&0.000 & -0.000& 94\%\\
-  5   &-0.000 & 0.000& 95\%&0.000 & -0.000& 94\%&-0.000 & -0.001& 93\%&-0.000 & -0.000& 93\%\\
-  6   &0.000 & -0.001& 96\%&-0.000 & -0.000& 95\%&0.000 & -0.001& 95\%&0.001 & -0.000& 95\%\\
-  \hline     \hline
-\end{tabular}\end{small}
-\caption{Monte Carlo results of 512 random samples taking the example model in section 2 as the true model.
-Shown are the bias in the standardized estimates and their asymptotic standard errors as discussed above. 
-Also shown is the coverage of 95\% confidence intervals via the Fisher $z$-transformation.}\label{tab:montecarlo}
-\end{table}
-
-%  1   &0.003 & (-0.003)& 95\%&0.003 & (-0.002)& 94\%&0.004 & (-0.002)& 93\%&0.003 & (-0.002)& 94\%\\
-%  2    &0.001 & (0.001)& 97\%&0.001 & (0.001)& 96\%&0.000 & (0.000)& 96\%&0.001 & (0.000)& 94\%\\
-%  3   &-0.001 & (0.000)& 95\%&-0.001 & (0.000)& 96\%&-0.001 & (-0.000)& 96\%&-0.000 & (-0.000)& 96\%\\
-%  4   &-0.000 & (-0.000)& 94\%&0.000 & (-0.000)& 94\%&-0.000 & (0.001)& 95\%&0.000 & (-0.000)& 94\%\\
-%  5   &-0.000 & (0.000)& 95\%&0.000 & (-0.000)& 94\%&-0.000 & (-0.001)& 93\%&-0.000 & (-0.000)& 93\%\\
-%  6   &0.000 & (-0.001)& 96\%&-0.000 & (-0.000)& 95\%&0.000 & (-0.001)& 95\%&0.001 & (-0.000)& 95\%\\
-
-
 
 \bibliography{derivatives}
 \end{document}
