@@ -669,6 +669,7 @@ is acceptable.
 \section{Monte Carlo evaluation of the approach}
 
 
+
 \begin{table}[htb]\begin{small}
 \begin{tabular}{lrrrrrrrrrrrr}
  \hline  \hline
@@ -700,7 +701,7 @@ Also shown is the coverage of 95\% confidence intervals via the Fisher $z$-trans
 The standardized estimates are unbiased, the standard errors are very close to the monte carlo standard deviations 
 of the standardized estimates. The coverage of the 95\% confidence confidence intervals using the Fisher $z$-transform
 is close to 95\%, with the lowest observed coverage 95\%  and the highest coverage 97\%. The mean and median coverage
-of the 95\% coverage intervals across the 24 standardized parameters are 94.7\% and 95.0\%.
+of the 95\% coverage intervals across the 24 standardized parameters are 94.7\% and 95.0\%. 
 
 \begin{figure}[htb]
 \centering
@@ -718,8 +719,10 @@ of the 95\% coverage intervals across the 24 standardized parameters are 94.7\% 
 the normal approximation is better for the transformed. in exactly 2 thirds of the cases the fit is better for the transformed than for the
 raw standardized values.
 
-
-
+Note that the sample sizes in 
+some of the groups are relatively small, with $n$ ranging from 256 to 799 observations (see first column of table \ref{tab:health-education}).
+The approach taken here of providing asymptotic standard errors and confidence intervals for the 
+standardized estimates works well in this example, in spite of the smaller sample sizes. 
 
 
 
