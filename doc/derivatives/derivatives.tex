@@ -1,5 +1,5 @@
 %\documentclass[a4paper,12pt,man]{apa}
-\documentclass[a4paper,11pt]{article}
+\documentclass[a4paper,12pt]{article}
 
 \usepackage{subfigure}
 
@@ -315,6 +315,12 @@ where  $\Psi$ is the variance-covariance matrix of $\epsilon$.
 We assume throughout that both $\Sigma_y$ and $\Sigma_\n$ are positive
 definite. In what follows we will write $\Sigma_.$ for $\Sigma_.(\theta)$ in
 the interest of clarity.
+
+In what follows we formulate our discussion in the framework described, which corresponds to the 
+LISREL ``all-y'' framework \citep{joreskog1996lisrel}. Due to the fact the LISREL all-y model is 
+equivalent to other SEM frameworks in use by standard software such as the RAM and Bentler-Weeks models 
+\citep{mcardle1984some,bentler1980linear},
+this formulation does not imply a loss of generality, however.
 
 The parameters of the model are collected in a parameter
 vector 
@@ -809,8 +815,8 @@ standardized estimates works well in this example.
 
 \section{Discussion and conclusion\label{sec:conclusion}}
 
-
-\marginpar{TODO: resumer intro}
+In this paper we have given analytic solutions for the asymptotic variance matrices of standardized estimates in SEM and their 
+$z$-transformations, which were not yet available in the literature. 
 
 In section \ref{sec:example} , we discussed an example analysis of the reliability of self-rated health in the Netherlands. Since this measure is widely used in 
  public health research, it is vital that its reliability should be acceptable. Furthermore, if correlations between self-rated health and 
@@ -821,15 +827,17 @@ In section \ref{sec:example} , we discussed an example analysis of the reliabili
 The example analysis of the first section therefore showed that, when standardized parameters such as reliability coefficients are of interest, it is necessary for the researcher to obtain the variance-covariance matrix of those standardized parameters in order to answer certain questions.
 
 Although the principles applied here to obtain asymptotic standard errors and confidence intervals for standardized parameters are well-known, 
-an explicit formula in terms only of the model's unstandardized parameters was not yet available. The subsequent section remedied this situation by providing this formula, deriving the Jacobian of the standardized parameters with respect to the unstandardized ones. In additional, the 
+an explicit formula in terms only of the model's unstandardized parameters was not yet available. The subsequent section remedied this situation by providing this formula, providing the derivative matrix of the standardized parameters with respect to the unstandardized ones. In additional, the 
 variance-covariance matrix of Fisher $z$-transformed standardized parameters was given to allow the construction of confidence intervals.
 
-Section 4 then applied the derived equations to the unstandardized parameters obtained in the example analysis of self-rated health, shown in table \ref{tab:results-unstandardized} -- thus obtaining standard errors for the reliability coefficients (standardized loadings). Confidence intervals obtained via the Fisher $z$-transformation were also calculated. These standard errors and confidence intervals for the standardized parameters allowed for 
+Section \ref{sec:application} then obtained standard errors for the reliability coefficients (standardized loadings) in the example analysis of self-rated health. Confidence intervals were calculated via the Fisher $z$-transformation. These standard errors and confidence intervals for the standardized parameters allowed for 
 investigation of the hypotheses that reliability does not differ across levels of education, and that the reliability is acceptable in 
-different populations (i.e. higher than 0.70). Using the derived equations, we were able to conclude that the self-rated health measure
-is of acceptable reliability across groups of education, although there are significant differences in reliability between the educational groups (differential measurement error).
+different populations (i.e. higher than 0.70). We were able to conclude that the self-rated health question
+has acceptable reliability across groups of education, although there are significant differences in reliability between the groups (differential measurement error).
 
-\marginpar{TODO: MC summary}
+Subsequently section \ref{sec:montecarlo}  evaluated the asymptotic standard errors and confidence intervals for the 
+example model by simulation. It was found that the confidence intervals for standardized parameters indeed provided the nominal coverage rates.
+
 
 \vspace{12pt}
 Due to the generality of SEM, the solution provided here encompasses many commonly used models as special cases. Standardized
@@ -837,12 +845,12 @@ coefficients in (multivariate) regression \citep[discussed in ][121]{bollen1990d
 errors-in-variables models, factor analysis, and SUR models are special cases, for example. 
 Complex sampling and non-normally distributed data can also be accommodated  \citep{muthen1995complex}. Another  application is meta-analysis of reliability coefficients as in \cite{andrews_construct_1984,scherpenzeel_validity_1997,saris_estimation_2007,alwin_margins_2007}.
 
-Our discussion is similar to the classical work on correlations 
+Our discussion of providing standard errors and confidence intervals for standardized estimates
+has parallels with the  classical work on correlations between observed variables
 \citep[e.g.][chapter 32]{johnson1995distributions}; it is more general than that theory, however,
-since standardized parameters in SEM may comprise not only correlations between observed variables, but
-also between latent variables, multiple regression coefficients of latent and observed variables, factor loadings, 
-error correlations, and $R^2$ measures.
-
+in the sense that standardized parameters in SEM may comprise not only correlations between observed variables, but
+also between latent variables, as well as multiple regression coefficients of latent and observed variables, factor loadings, 
+error correlations, and $R^2$ measures for both observed and latent variables.
 
 The analytic solution to the problem of standard errors and confidence intervals for standardized parameters
  is not, of course, the only  one possible. Other approaches include
@@ -851,17 +859,16 @@ programming from the researcher. Our Monte Carlo study suggests that the approac
 moderately small samples, but a systematic investigation of the conditions under which the approach may
 be expected to perform well remains to be done.
 The question of which 
-method provides the most adequate approximation to the true sampling distribution of the standardized parameters therefore remains
+method provides the most adequate approximation to the true sampling distribution of the standardized parameters  remains
 a topic for future study.
 
-\marginpar{TODO: final words}
-In this paper we have given analytic solutions for the asymptotic variance matrices of standardized estimates in SEM and their 
-$z$-transformations. These explicit solutions were not yet available in the literature. 
 
 
-\begin{itemize}
-\item Form of the model influences s.e. For example, adding predictors will decrease the variance of a beta: (19) and (17).
-\end{itemize}
+
+
+%\begin{itemize}
+%\item Form of the model influences s.e. For example, adding predictors will decrease the variance of a beta: (19) and (17).
+%\end{itemize}
 
 \bibliography{derivatives}
 \end{document}
