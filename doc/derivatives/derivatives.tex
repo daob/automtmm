@@ -124,18 +124,23 @@ Finally, the last section concludes, discusses the scope and limitations of this
 \section{Example SEM with interest in standardized parameters\label{sec:example}}
 
 
-The study of differences across societal groups in self-rated health is of interest to researchers in public health.   For example,  \cite{von2006education} 
+Several researchers in public health have studied differences  in self-rated health across societal groups.   For example,  \cite{von2006education} 
 compare people with different incomes, age groups, and level of education.
 It is well-known, however, that in order to be able to compare correlations across groups it is necessary for the reliability of 
-the measures to be the same \citep[e.g.][]{steenkamp1998assessing,saris_design_2007}. Therefore not only between-group comparison of the levels of self-rated health are of interest, 
+the measures to be the same \citep[e.g.][]{steenkamp1998assessing,saris_design_2007}. 
+For example, for comparisons of correlations between self-rated health and other measures
+across groups with different levels of educations to be meaningful, the reliability
+of self-rated health should be equal for people with different educational attainments.
+Therefore not only between-group comparison of the levels of self-rated health are of interest, 
 but also the evaluation of differences between the groups in reliability \citep{lundberg1996assessing}. 
 
 Different types of designs exist to estimate the reliability of survey measures. One such design is the repeated measures design, wherein the
-same question is asked at least three times with a certain interval. One can then apply the so-called `quasi-simplex' model in different groups to the estimate
+same question is asked at least three times with a certain suitably long interval: once a year, for, instance. 
+One can then apply the so-called `quasi-simplex' model in different groups to the estimate
 reliability, and compare reliabilities across groups \citep{heise1970validity,wiley35wiley}. For an overview of other designs for the estimation of reliability of single questions we refer to \cite{alwin_margins_2007}. 
 
 The quasi-simplex model can be formulated and estimated as a multiple-group structural equation model for groups with different  levels of highest completed education. This model is shown for four repetitions in figure 
-\ref{fig:model}. Following \cite{wiley35wiley}, the unstandardized error variances are restricted to be equal across the four repetitions. The reliability coefficients of interest are then the standardized loadings. This yields the  structural equation model shown as a path diagram in figure \ref{fig:model}.
+\ref{fig:model}. Following \cite{wiley35wiley}, the unstandardized error variances are restricted to be equal across the four repetitions. The reliability coefficients of interest are then the standardized loadings. 
 \if 1=2
 \begin{eqnarray*}\begin{split}
 \textbf{y} =  \textbf{I} {\eta} + \epsilon,& &
@@ -153,14 +158,15 @@ The quasi-simplex model can be formulated and estimated as a multiple-group stru
 \begin{figure}[bt]\begin{center}
 \caption{Quasi-simplex model for four repeated measures of self-rated health in the LISS panel 2007--2010. Parameter names for the 
 	so-called `stability coefficients' are shown as $\beta_{ji}$ in the picture. The variances of the disturbance terms $\zeta_i$ are denoted
-	$\phi_{ii}$, while the variances of the measurement error variables $\epsilon_i$ will be denoted $\psi_{ii}$.}
+	$\phi_{ii}$, while the variances of the measurement error variables $\epsilon_i$ will be denoted $\psi$.}
 \label{fig:model}
 \includegraphics[width=.9\textwidth]{self-rated-health-quasi-simplex}
 \end{center}
 \end{figure}
 
 We estimate this model using the LISS panel study, a probability sample 
-of 8735 Dutch citizens. The respondents answer questionnaires over the web. For more information about the LISS we refer to \cite{scherpenzeel2011data}.
+of 8735 Dutch citizens, who regularly answer questionnaires over the web. 
+For more information about the LISS we refer to \cite{scherpenzeel2011data}.
 The  panel contains a study that included the commonly used self-rated health question\footnote{The original question was asked in Dutch. See \url{http://www.lissdata.nl/dataarchive/question_constructs/view/600}}. The question was asked as follows:
 \begin{quote}
 	How would you describe your health, generally speaking?
@@ -195,7 +201,7 @@ The  panel contains a study that included the commonly used self-rated health qu
    \hline
    \hline
 \end{tabular}
-\caption{Means and standard deviations (in brackets) of the self-rated health question across the four repetitions, in 
+\caption{Means and standard deviations (in brackets) of the self-rated health question across the four repetitions (2007--2010), in 
 groups with different levels of education.}\label{tab:descriptives}
 \end{center}\end{small}
 \end{table}
@@ -219,7 +225,7 @@ $\phi_{44}$   & 0.06 (0.027) & 0.06 (0.035) & -0.02 (0.017) & 0.02 (0.019) & 0.0
 $\beta_{21}$  & 0.78 (0.051) & 0.85 (0.062) & 0.84 (0.045) & 0.96 (0.050) & 0.99 (0.098) & 0.89 (0.043) \\ 
 $\beta_{32}$  & 0.99 (0.055) & 0.87 (0.052) & 0.89 (0.039) & 0.89 (0.041) & 1.01 (0.074) & 0.83 (0.034) \\ 
 $\beta_{43}$  & 0.84 (0.044) & 0.95 (0.057) & 1.07 (0.041) & 0.96 (0.044) & 0.92 (0.065) & 0.94 (0.039) \\ 
-$\psi_{ii}$   & 0.13 (0.015) & 0.14 (0.019) & 0.17 (0.010) & 0.18 (0.010) & 0.17 (0.017) & 0.13 (0.010) \\ 
+$\psi$   & 0.13 (0.015) & 0.14 (0.019) & 0.17 (0.010) & 0.18 (0.010) & 0.17 (0.017) & 0.13 (0.010) \\ 
      \hline  \hline
 \end{tabularx}\caption{Unstandardized parameter estimates and standard errors for the 
 multiple group quasi-simplex model shown in figure \ref{fig:model}.
@@ -228,13 +234,13 @@ Chi-square:  6.923 on  12 degrees of freedom  ($p = 0.863$),  SRMR:  0.0041, RMS
 \end{small}\end{table}
 
 
-The last row of table \ref{tab:results-unstandardized} shows that the error variance parameter $\psi_{ii}$ 
+The last row of table \ref{tab:results-unstandardized} shows that the error variance parameter $\psi$ 
 differs somewhat across groups with different levels of education. The differences are statistically
 significant ($p < 0.01$), as revealed by a test that compared the estimated model with a model 
-containing equality constraints on $\psi_{ii}$ across the groups. However, it is not clear whether 
+containing equality constraints on $\psi$ across the groups. However, it is not clear whether 
 the reliability coefficients differ across the groups also.
 Since the reliability is a function of both the error variances and the total variances of the latent variables (which involve the 
-$\beta$ and $\psi$ parameters), a test for invariance of these unstandardized parameters will not suffice to test the desired hypotheses. 
+$\beta_{ji}$ and $\psi$ parameters), a test for invariance of these unstandardized parameters will not suffice to test the desired hypotheses. 
 If the error variances are equal across groups, this does not mean that the reliabilities will be so, since they depend also on the
 variances of the latent variables. Conversely, if all parameters are tested for invariance one simultaneously imposes equality of the
 stability parameters, which is not desired.
@@ -268,10 +274,14 @@ There also appear to be some differences between the years, although the differe
 different educational groups. Finally, the values of all reliability coefficients in table \ref{tab:first-results} are quite a bit higher than those reported by \cite{lundberg1996assessing} 
 for self-rated health. This may be due to differences in the population, in the question or in the mode of interviewing, but it may also be due to sampling; in order to evaluate this last possibility the variance matrix of the standardized parameters is needed. 
 
-Another type of analysis that would require the variances of these estimates are meta-analyses of the reliabilities \citep[261, 271-2]{cooper2009handbook}. Examples of such meta-analyses are 
-\cite{andrews_construct_1984,scherpenzeel_validity_1997,saris_estimation_2007,alwin_margins_2007}. In the reliability study done 
-here, one may for example wish to combine the results with those of \cite{lundberg1996assessing}, to see whether differences in 
-reliability across educational groups hold across the studies.
+Another type of analysis that would require the variances of these estimates are meta-analyses of the reliabilities;
+to combine the reliability coefficients across years or educational groups for the purpose of secondary analysis, 
+their variance-covariance matrix would be required  \citep[261, 271-2]{cooper2009handbook}.
+Such secondary analyses may, for instance, be used to assess the effect of the choice of survey mode, sampling characteristics, or
+other question characteristics on the reliability  --
+examples are 
+\cite{andrews_construct_1984,scherpenzeel_validity_1997,saris_estimation_2007,alwin_margins_2007}. 
+
 
 It is clear, therefore, that to answer the questions that are of interest to  researchers, standard errors and confidence intervals for the 
 reliability coefficients would be useful. The next section derives these standard errors for general structural equation models. 
@@ -279,7 +289,7 @@ reliability coefficients would be useful. The next section derives these standar
 \section{Standard errors of standardized parameters\label{sec:analytics}}
 
 Let $y$ be a $p$-vector of observed variables, from which a sample is obtained.
-The following SEM for $y$ is specified:
+Structural equation models can be formulated as:
 \begin{align}
 \label{eq:lisrel_observed}
 y &= \Lambda \n + \epsilon\\
@@ -332,8 +342,6 @@ $D_\n \definedas \sqrt{I \hadaprod \Sigma_\n}$.
 Given these definitions, the explained variances in $\n$ and $y$, respectively $R^2_\n$ and $R^2_y$, 
 which may also be of interest,  equal the diagonal elements of the matrices $I - \tilde\Phi$ and $I - \tilde\Psi$. 
 
-%\marginpar{TODO: Define $\thetastan$.}
-
 By standard application of the Delta method \citep[e.g.][]{oehlert1992note}, the asymptotic variance of $\thetastan$ can be shown to equal
 \begin{equation}\label{eq:deltamethod}
 \var(\thetastan) = 
@@ -343,19 +351,19 @@ By standard application of the Delta method \citep[e.g.][]{oehlert1992note}, the
 \end{equation}
 Here $\var(\theta)$ is the appropriate asymptotic variance matrix of the free model parameters $\theta$ \cite[e.g.][143-4]{satorra1989alternative}.
 The choice of the appropriate $\var(\theta)$ matrix allows for incorporation of 
-non-normal and complex sample data with possibly missing observations.
+non-normal and complex sample data with possibly missing observations \citep{muthen1995complex}.
 
 The variances of $\tilde\psi$ and $\tilde\phi$ from equation \ref{eq:deltamethod} also provide the 
 variances of $R^2_y$ and $R^2_\n$. 
 Therefore we will not derive the variance of the explained
 variances separately, with the understanding that the derivations for $\tilde\psi$ and $\tilde\phi$ already provide these\footnote{
-Let $R^2_y = Q \vech(I - \tilde\Psi)$, where $Q$ is a permutation matrix 
+Let $R^2_y = Q \vech(I - \tilde\Psi)$, where $Q$ is a selection matrix 
 selecting diagonal elements. Then $\var(R^2_y) = Q (d\tilde\psi/d\theta) \var(\theta) (d\tilde\psi/d\theta)' Q'$. The same
 argument applies to $\var(R^2_\n)$.}.
 
 In order to construct confidence intervals, it may be advantageous to apply the 
 $z$-transform, defined as $z = \arctanh(\thetastan)$  \citep[section 35]{fisher1925statistical}, to standardized parameters.
-In this case, again following the delta method, the variance of the transformed parameters will equal
+In this case, again following the delta method, the asymptotic variance of the transformed parameters will equal
 \begin{equation}\label{eq:deltamethod-ztransform}
 \var[\arctanh(\thetastan)] = 
 		T\,
@@ -404,10 +412,10 @@ matrix $\Sigma_y$ of the observed variables. To ensure completeness of the treat
 \end{equation}
 where the commutation matrix $K$, the duplication matrix $P$, and the operators
 $\vec$ and $\vech$ are defined in \cite{magnus1988matrix}
-Let $\Delta_\l$ equal the coefficient matrix
+Let $\Delta_{y\l}$ equal the coefficient matrix
  of $\d\vec\Lambda$ in equation \ref{eq:delta_y}, 
-$\Delta_\b$ the coefficient  of $\d\vec B_0$, and
-$\Delta_\p$ the coefficient  of $\d\vech\Phi$.
+$\Delta_{y\b}$ the coefficient  of $\d\vec B_0$, and
+$\Delta_{y\phi}$ the coefficient  of $\d\vech\Phi$.
 
 
 The differential of the variance matrix of $\n$ can be obtained as:
@@ -419,39 +427,38 @@ The differential of the variance matrix of $\n$ can be obtained as:
 (B^{-1} \kronprod  B^{-1}) P \d \vech \Phi.
 \end{split}
 \end{equation}
-Let $\Delta^*_\b$ and $\Delta^*_\p$  be the coefficients of $\d\vec B_0$ and
+Let $\Delta_{\n\b}$ and $\Delta_{\n\p}$  be the coefficients of $\d\vec B_0$ and
 $\d\vech\Phi$ respectively in equation \ref{eq:delta_n}.
 
 Also, let
 \begin{align}
-    C_{y2} \definedas&
+    G^{(\sigma^{-1}_y)} \definedas&
         - (I_p \kronprod \frac{1}{2 (I_p \hadaprod \Sigma_y)^{\frac{3}{2}}})
         \diag[\vec(I_p)],
 \\
-    C_{\n1} \definedas&
+    G^{(\sigma_\n)} \definedas&
         (I_q \kronprod \frac{1}{2 (I_q \hadaprod \Sigma_\n)^{\frac{1}{2}}})
         \diag[\vec(I_q)],
 \\
-    C_{\n2} \definedas&
+    G^{(\sigma^{-1}_\n)} \definedas&
         - (I_q \kronprod \frac{1}{2 (I_q \hadaprod \Sigma_\n)^{\frac{3}{2}}})
         \diag[\vec(I_q)].
 \end{align}
 
-Then, applying standard operations on \ref{eq:dveclam} and rearranging terms,
-the differential of the standardized $\Lambdastan$ matrix is
+The differential of the standardized $\Lambdastan$ matrix may then be written
 \begin{equation}\label{eq:dveclam_final}
 \begin{split}
   \d\vec\Lambdastan = 
-     & [(D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\l + 
+     & [(D_\n \Lambda' \kronprod I_p) G^{(\sigma^{-1}_y)} \Delta_{y\l} + 
         (D_\n \kronprod D_y^{-1})] 
         \d\vec\Lambda +\\
-     & [(D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\b + 
-        (I_q \kronprod D_y^{-1}\Lambda) C_{\n1} \Delta^*_\b ] 
+     & [(D_\n \Lambda' \kronprod I_p) G^{(\sigma^{-1}_y)} \Delta_{y\b} + 
+        (I_q \kronprod D_y^{-1}\Lambda) G^{(\sigma_\n)} \Delta_{\n\b} ] 
         \d\vec B_0 +\\
-     & [(D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\p + 
-        (I_q \kronprod D_y^{-1}\Lambda) C_{\n1} \Delta^*_\p ] 
+     & [(D_\n \Lambda' \kronprod I_p) G^{(\sigma^{-1}_y)} \Delta_{y\phi} + 
+        (I_q \kronprod D_y^{-1}\Lambda) G^{(\sigma_\n)} \Delta_{\n\p} ] 
        P \d\vech \Phi +\\
-     & (D_\n \Lambda' \kronprod I_p) C_{y2} 
+     & (D_\n \Lambda' \kronprod I_p) G^{(\sigma^{-1}_y)} 
        P \d\vech \Psi.
 \end{split}\end{equation}
 And similarly, the differential of the standardized $\Bstan_0$ matrix from
@@ -459,12 +466,12 @@ equation \ref{eq:dvecbeta} is
 \begin{equation}\label{eq:dvecbeta_final}
 \begin{split}
   \d\vec \Bstan_0 =
-     & [\{(D_\n B_0' \kronprod I_q) C_{\n2}  + 
-        (I_q \kronprod D_\n^{-1}B_0) C_{\n1} \} \Delta^*_\b +
+     & [\{(D_\n B_0' \kronprod I_q) G^{(\sigma^{-1}_\n)}  + 
+        (I_q \kronprod D_\n^{-1}B_0) G^{(\sigma_\n)} \} \Delta_{\n\b} +
            (D_\n \kronprod D_\n^{-1})  ] 
         \d\vec B_0 +\\
-     & [(D_\n B_0' \kronprod I_q) C_{\n2}  + 
-        (I_q \kronprod D_\n^{-1}B_0) C_{\n1} ] \Delta^*_\p 
+     & [(D_\n B_0' \kronprod I_q) G^{(\sigma^{-1}_\n)}  + 
+        (I_q \kronprod D_\n^{-1}B_0) G^{(\sigma_\n)} ] \Delta_{\n\p} 
        P \d\vech \Phi.
 \end{split}\end{equation}
 
@@ -472,19 +479,19 @@ equation \ref{eq:dvecbeta} is
 \begin{equation}\label{eq:dvecphi_final}
 \begin{split}
   \d\vec \Phistan = \{
-     & [  (D^{-1}_\n \Phi \kronprod I_q)  + (I_q \kronprod D_\n^{-1}\Phi)  ] C_{\n2} \Delta^*_\b        \d\vec B_0 +\\
-     & [(D^{-1}_\n \Phi \kronprod I_q)  + (I_q \kronprod D_\n^{-1}\Phi)  ]  C_{\n2} \Delta^*_\p   +    (D_\n^{-1} \kronprod D_\n^{-1})
+     & [  (D^{-1}_\n \Phi \kronprod I_q)  + (I_q \kronprod D_\n^{-1}\Phi)  ] G^{(\sigma^{-1}_\n)} \Delta_{\n\b}        \d\vec B_0 +\\
+     & [(D^{-1}_\n \Phi \kronprod I_q)  + (I_q \kronprod D_\n^{-1}\Phi)  ]  G^{(\sigma^{-1}_\n)} \Delta_{\n\p}   +    (D_\n^{-1} \kronprod D_\n^{-1})
      \}   \d\vec \Phi.
 \end{split}\end{equation}
 
 \begin{equation}\label{eq:dvecpsi_final}
 \begin{split}
   \d\vec \Psistan = 
-   [(D^{-1}_y \Psi \kronprod I_p)  + (I_p \kronprod D_y^{-1}\Psi)  ]  C_{y2} 
+   [(D^{-1}_y \Psi \kronprod I_p)  + (I_p \kronprod D_y^{-1}\Psi)  ]  G^{(\sigma^{-1}_y)} 
    [
-   \Delta_\l \d\vec\Lambda +\\
-   \Delta_\b         \d\vec B_0 +
-   \Delta_\p         \d\vec \Phi +
+   \Delta_{y\l} \d\vec\Lambda +\\
+   \Delta_{y\b}         \d\vec B_0 +
+   \Delta_{y\phi}         \d\vec \Phi +
    (I_{q^2}  + D^{-1}_y \kronprod D^{-1}_y) \d\vec \Psi
    ]
 \end{split}\end{equation}
@@ -493,49 +500,52 @@ equation \ref{eq:dvecbeta} is
 From the differentials in equations \ref{eq:dveclam_final} and
 \ref{eq:dvecbeta_final},
 we conclude that the derivative matrices  of the standardized parameters 
-$\vec \Lambdastan$, $\vec \Bstan$, $\vech \Phistan$, and $\vech \Psistan$ with respect to the free 
+$\vec \Lambdastan$ and $\vec \Bstan$  with respect to the  
 parameters of the model $\theta$ will be the partitioned matrices
 \begin{multline}\label{eq:dlambda}
 \frac{d \tilde\l}{d \theta} = [
-        (D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\l + 
+        (D_\n \Lambda' \kronprod I_p) G^{(\sigma^{-1}_y)} \Delta_{y\l} + 
             (D_\n \kronprod D_y^{-1}), \\
-        (D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\b + 
-            (I_q \kronprod D_y^{-1}\Lambda) C_{\n1} \Delta^*_\b,\\
-(D_\n \Lambda' \kronprod I_p) C_{y2} \Delta_\p P +
-         (I_q \kronprod D_y^{-1}\Lambda) C_{\n1} \Delta^*_\p P, \\            
-        (D_\n \Lambda' \kronprod I_p) C_{y2}  P
+        (D_\n \Lambda' \kronprod I_p) G^{(\sigma^{-1}_y)} \Delta_{y\b} + 
+            (I_q \kronprod D_y^{-1}\Lambda) G^{(\sigma_\n)} \Delta_{\n\b},\\
+(D_\n \Lambda' \kronprod I_p) G^{(\sigma^{-1}_y)} \Delta_{y\phi} P +
+         (I_q \kronprod D_y^{-1}\Lambda) G^{(\sigma_\n)} \Delta_{\n\p} P, \\            
+        (D_\n \Lambda' \kronprod I_p) G^{(\sigma^{-1}_y)}  P
  ] 
 \end{multline}
 \begin{multline}\label{eq:dbeta}
 \frac{d \tilde\b_0}{d \theta} = [
         \0,
-         \{(D_\n B_0' \kronprod I_q) C_{\n2}  + 
-            (I_q \kronprod D_\n^{-1}B_0) C_{\n1} \} \Delta^*_\b +
+         \{(D_\n B_0' \kronprod I_q) G^{(\sigma^{-1}_\n)}  + 
+            (I_q \kronprod D_\n^{-1}B_0) G^{(\sigma_\n)} \} \Delta_{\n\b} +
             (D_\n \kronprod D_\n^{-1})
             ,\\
-         \{(D_\n B_0' \kronprod I_q) C_{\n2}  + 
-            (I_q \kronprod D_\n^{-1}B_0) C_{\n1} \} \Delta^*_\p P
+         \{(D_\n B_0' \kronprod I_q) G^{(\sigma^{-1}_\n)}  + 
+            (I_q \kronprod D_\n^{-1}B_0) G^{(\sigma_\n)} \} \Delta_{\n\p} P
             ,  
         \0
  ] .
 \end{multline}
+
+By a similar derivation (not shown here), we also obtain the derivatives of $\vech \Phistan$, and $\vech \Psistan$
+with respect to the parameters.
 \begin{multline}\label{eq:dphi}
 \frac{d \tilde{\phi}}{d \theta} = [
 \0,
-      \{ (D^{-1}_\n \Phi \kronprod I_q)  + (I_q \kronprod D_\n^{-1}\Phi)  \} C_{\n2} \Delta^*_\b        
+      \{ (D^{-1}_\n \Phi \kronprod I_q)  + (I_q \kronprod D_\n^{-1}\Phi)  \} G^{(\sigma^{-1}_\n)} \Delta_{\n\b}        
      ,\\
-      \{(D^{-1}_\n \Phi \kronprod I_q)  + (I_q \kronprod D_\n^{-1}\Phi)  \}  C_{\n2} \Delta^*_\p  P +   
+      \{(D^{-1}_\n \Phi \kronprod I_q)  + (I_q \kronprod D_\n^{-1}\Phi)  \}  G^{(\sigma^{-1}_\n)} \Delta_{\n\p}  P +   
       	 (D_\n^{-1} \kronprod D_\n^{-1}) P
               ,
         \0
  ] .
 \end{multline}
-\newcommand{\F}{\{(D^{-1}_y \Psi \kronprod I_p)  + (I_p \kronprod D_y^{-1}\Psi)  \}  C_{y2}}
+\newcommand{\F}{\{(D^{-1}_y \Psi \kronprod I_p)  + (I_p \kronprod D_y^{-1}\Psi)  \}  G^{(\sigma^{-1}_y)}}
 \begin{multline}\label{eq:dpsi}
 \frac{d \tilde{\psi}}{d \theta} = [
-\F   \Delta_\l  ,\\
-\F   \Delta_\b         ,\\
-\F   \Delta_\p   P       ,\\
+\F   \Delta_{y\l}  ,\\
+\F   \Delta_{y\b}         ,\\
+\F   \Delta_{y\phi}   P       ,\\
  \F P  + D^{-1}_y \kronprod D^{-1}_y P
    ]
 \end{multline}
@@ -552,14 +562,16 @@ By stacking the derivatives in equations \ref{eq:dlambda}--\ref{eq:dpsi} rowwise
 This equation can be applied to equation \ref{eq:deltamethod} to 
 to obtain the variance matrix of the standardized parameters, while equation \ref{eq:deltamethod-ztransform}
 provides the variance matrix of $z$-transformed standardized parameters.
+Consistent estimates of both may be obtained by replacing the parameters by their sample estimates \citep{satorra1989alternative}.
 
 
 \section{Application: standard errors of standardized parameters\label{sec:application}}
 
-Table  \ref{tab:first-results} showed the standardized estimates for our example application on the
-reliability of self-rated health in groups with different levels of education. We can now obtain the 
- asymptotic variance-covariance matrix of those standardized estimates 
-by applying equation \ref{eq:deltamethod}, together with the derivatives derived in equation \ref{eq:dthetatilde} of the previous section. The results are shown in table \ref{tab:health-education}.
+Table  \ref{tab:first-results} showed the standardized estimates for our example application. We can now obtain 
+a consistent estimate of the asymptotic variance matrix of those estimates 
+by applying equation \ref{eq:deltamethod}, together with the derivatives derived in equation \ref{eq:dthetatilde},
+replacing the parameter matrices by their sample estimates. 
+The resulting standard errors for the different groups are shown in table \ref{tab:health-education}.
 
 \begin{table}[tbh]
 \begin{center}
@@ -628,9 +640,9 @@ vmbo $<$$>$ wo & -3.35 & 0.00 & 0.01 & * \\
 \end{center}
 \end{table}
 \fi
-\begin{table}[tbh]
+\begin{table}[b]
 \begin{center}
-\begin{tabular}{rccccc}
+\begin{tabular}{rrrrrr}
   \hline
  & Primary & Low 2nd & Mid 2nd & High 2nd & Low 3rd \\
    \hline
@@ -651,7 +663,8 @@ vmbo $<$$>$ wo & -3.35 & 0.00 & 0.01 & * \\
 The  researcher may also wish to examine 95\% confidence intervals of the reliability coefficient of self-rated health in the different groups.
 In order to improve the normal approximation to the confidence interval for correlations, \cite{fisher1925statistical} suggested the $z$-transformation, $z = \arctanh(\thetastan)$. This method can also be applied to the standardized estimates to obtain confidence 
 intervals that cannot exceed the natural bounds of -1 and +1. By applying equation \ref{eq:deltamethod-ztransform} to the variance
-matrix obtained for the example, 95\% confidence intervals on the reliability coefficients were constructed. The resulting confidence
+matrix obtained for the example and replacing the standardized parameters in that equation with their sample estimates, 
+95\% confidence intervals on the reliability coefficients were constructed. The resulting confidence
 intervals for the reliabilities are shown for different years and educational groups as a coefficient plot in figure \ref{fig:ci}.
 
 \begin{figure}[bth]
@@ -676,22 +689,22 @@ a Monte Carlo study was performed.  The multiple group model estimated in sectio
 population model, and 512 samples from this population model were simulated\footnote{All the analyses were
 performed in \R.}. Thus each sample contains six groups of different education levels, and the four observed
 variables within each group are drawn from a multivariate  normal distribution with population covariance
-matrix equal to the implied covariance matrix in that group from section \ref{sec:example} . 
+matrix and sample size equal to the implied covariance matrix and sample size in that group from section \ref{sec:example} . 
 
 In each of the 512 simulated samples, the model shown in figure \ref{fig:model} was estimated, and the
 standardized loadings\footnote{Since the interest in this
 example focuses on the standardized loadings and for the sake of brevity, we will focus only on
 these standardized loadings here.} 
- (reliability coefficients) and their asymptotic variance matrix were 
- calculated according to equations \ref{eq:lambda_s} and \ref{eq:deltamethod}, respectively.
+ (reliability coefficients) and a consistent estimate of their asymptotic variance matrix was
+ calculated.
 Note that the analysis is carried out separately for each of the groups, some of which have a small
 sample size (see table \ref{tab:health-education}).
  We then calculated the bias in the estimates by subtracting the average standardized loading over simulations
  from the corresponding true population value given in table \ref{tab:health-education}. 
- Similarly,  the average of the asymptotic standard error over simulated samples was  subtracted from the 
- standard deviation of the standardized estimates.
+The asymptotic standard errors from table \ref{tab:health-education} were  subtracted from the 
+corresponding standard deviations of the standardized estimates  over simulated samples.
  The bias in the standardized estimates and their asymptotic standard errors over the 512 simulations
- for the 24 standardized loadings are shown in table \ref{tab:montecarlo}.
+ for the 24 standardized loadings is shown in table \ref{tab:montecarlo}.
 
 
 \begin{table}[htb]\begin{small}
@@ -731,14 +744,13 @@ had a maximum of 10\% (for the reliability coefficient in 2007 in the lowest edu
 
 Confidence intervals were obtained in each sample as follows: 
 \begin{enumerate}
-\item  The variance matrix of $z$-transformed standardized loadings was calculated using equation 
-		\ref{eq:deltamethod-ztransform};
+\item  The variance of $z$-transformed standardized loadings was calculated from the parameter values;
 \item Standard errors of the $z$-transformed standardized loadings were used to construct a 95\%
 		confidence interval for $z(\tilde\l)$;
 \item The upper and lower limits of the 95\% confidence interval for $z(\tilde\l)$ were back-transformed
-		to the original scale using $z^{-1}(x) = (\exp(2x) - 1) / (\exp(2x) + 1)$.
+		to the original scale as $z^{-1}(x) = \tanh(x)$.%$z^{-1}(x) = (\exp(2x) - 1) / (\exp(2x) + 1)$.
 \end{enumerate}
-It was then evaluated whether the nominal 95\% confidence interval thus obtained contained the true population
+It was then evaluated in each sample whether the nominal 95\% confidence interval thus obtained contained the true population
 value shown in table \ref{tab:health-education} or not. The percentage of samples in which this was the case is 
 shown in table \ref{tab:montecarlo} in the columns marked ``cvg.''. 
 
@@ -772,7 +784,16 @@ The Fisher $z$-transformed quantities do appear to follow a normal distribution 
 More generally, 9 out of 24 Shapiro-Wilks tests for the raw standardized estimates are rejected (when using
 adjusted $p$-values), while none of the tests for transformed estimates are. 
 Additionally, in exactly two-thirds of the cases the fit to a normal distribution is better for the transformed than for the
-raw standardized values. 
+raw standardized values. When the normal distribution does not provide an accurate approximation 
+to the sampling distribution of the standardized estimates, confidence intervals via the $z$-transformation may
+still be expected to provide accurate coverage. 
+
+This result is of course in line with the classic results for correlations
+\citep[e.g.][chapter 32]{johnson1995distributions}, and indeed in the example model, the standardized loadings
+are correlations: the difference in this case is that the classical theory deals with correlations between observed variables,
+while the standardized loadings examined here are correlations between an observed variable and a latent variable. 
+In addition, it should be clear that the presentation given here is not limited to models where the standardized parameters
+represent correlations.
 
 In summary, this short simulation study shows that for the example the suggested procedure performs well.
 The standard errors for standardized parameters  are  very close to the observed standard deviation across 
@@ -787,6 +808,7 @@ standardized estimates works well in this example.
 
 
 \section{Discussion and conclusion\label{sec:conclusion}}
+
 
 \marginpar{TODO: resumer intro}
 
@@ -814,6 +836,13 @@ Due to the generality of SEM, the solution provided here encompasses many common
 coefficients in (multivariate) regression \citep[discussed in ][121]{bollen1990direct}, 
 errors-in-variables models, factor analysis, and SUR models are special cases, for example. 
 Complex sampling and non-normally distributed data can also be accommodated  \citep{muthen1995complex}. Another  application is meta-analysis of reliability coefficients as in \cite{andrews_construct_1984,scherpenzeel_validity_1997,saris_estimation_2007,alwin_margins_2007}.
+
+Our discussion is similar to the classical work on correlations 
+\citep[e.g.][chapter 32]{johnson1995distributions}; it is more general than that theory, however,
+since standardized parameters in SEM may comprise not only correlations between observed variables, but
+also between latent variables, multiple regression coefficients of latent and observed variables, factor loadings, 
+error correlations, and $R^2$ measures.
+
 
 The analytic solution to the problem of standard errors and confidence intervals for standardized parameters
  is not, of course, the only  one possible. Other approaches include
