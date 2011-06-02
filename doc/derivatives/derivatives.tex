@@ -87,8 +87,7 @@ In structural equation models (SEM), the standard errors not only of parameters 
 also of standardized parameters may be of interest to the researcher. 
 Examples are the comparison of reliability coefficients across different groups, and meta-analysis of 
 standardized quantities.
-The literature does not, however, provide explicit analytical standard errors 
-for standardized parameters. %Due to this lack of availability of analytical derivatives in the literature, standard SEM software that wishes to provide SEM users with standard errors of the standardized parameters requires the use of numerical derivatives or approximate methods.
+ %Due to this lack of availability of analytical derivatives in the literature, standard SEM software that wishes to provide SEM users with standard errors of the standardized parameters requires the use of numerical derivatives or approximate methods.
 
 We provide the analytical asymptotic variance matrix of standardized parameters in SEM, 
 expressed only in terms of the model parameters. The expression is straightforward to 
@@ -110,15 +109,16 @@ and censored dependent variables as well as complex sampling
 Researchers' interest often focuses on the so-called 
 `standardized' parameters of the model \citep{bollen1989structural}. Typical applications include examination of factor loadings and correlations in factor analysis, as well as the evaluation of the relative size of regression coefficients, possibly of latent variables.
 
-Although the general principle applied here to derive standard errors and confidence intervals for standardized parameters is well known  \citep[e.g.][]{oehlert1992note}, to our knowledge the literature does not provide any explicit expression for the asymptotic standard errors of standardized coefficients in SEM. As a consequence, standard errors and confidence intervals for these coefficients are usually not provided by the standard software\footnote{At the time of writing, the exception is Mplus version 5.2 and above \citep{muthen1998mplus}.}.  We remedy this situation by deriving an explicit expression, in terms of the unstandardized parameter estimates, for the asymptotic variance-covariance matrix of the standardized coefficients. The solution requires only the parameter estimates of the model and can be readily implemented in SEM software.
+Although the general principle applied here to derive standard errors and confidence intervals for standardized parameters is well known  \citep[e.g.][]{oehlert1992note}, to our knowledge the literature does not provide the asymptotic standard errors of standardized coefficients in SEM directly as a
+function of the parameter estimates. As a consequence, standard errors and confidence intervals for these coefficients are usually not provided by the standard software\footnote{At the time of writing, the exception is Mplus version 5.2 and above \citep{muthen1998mplus}.}.  We remedy this situation by deriving an expression  for the asymptotic variance-covariance matrix of the standardized coefficients in terms of the unstandardized parameter estimates. The solution requires only the parameter estimates of the model and can be readily implemented in SEM software.
 
 Section \ref{sec:example}  provides a motivating example, using a SEM model with latent
 variables where standardized parameters and their standard errors and confidence
 intervals are of interest to the researcher.
-Section \ref{sec:analytics} derives the explicit expression for the asymptotic variance-covariance matrix of the standardized estimates. Section \ref{sec:application} applies this expression to the example. A Monte Carlo study summarized in section \ref{sec:montecarlo}
+Section \ref{sec:analytics} derives the asymptotic variance-covariance matrix of the standardized estimates. Section \ref{sec:application} applies this expression to the example. A Monte Carlo study summarized in section \ref{sec:montecarlo}
 then evaluates the performance of the analytical standard errors and confidence intervals given here 
 by simulation.
-Finally, the last section concludes, discusses the scope and limitations of this proposal, and suggests future research.
+The last section concludes, discusses the scope and limitations of this proposal, and suggests future research.
 
 
 \section{Example SEM with interest in standardized parameters\label{sec:example}}
@@ -313,14 +313,13 @@ observed variables:
 \end{equation}
 where  $\Psi$ is the variance-covariance matrix of $\epsilon$. 
 We assume throughout that both $\Sigma_y$ and $\Sigma_\n$ are positive
-definite. In what follows we will write $\Sigma_.$ for $\Sigma_.(\theta)$ in
-the interest of clarity.
+definite. 
 
-In what follows we formulate our discussion in the framework described, which corresponds to the 
-LISREL ``all-y'' framework \citep{joreskog1996lisrel}. Due to the fact the LISREL all-y model is 
-equivalent to other SEM frameworks in use by standard software such as the RAM and Bentler-Weeks models 
-\citep{mcardle1984some,bentler1980linear},
-this formulation does not imply a loss of generality, however.
+The model described corresponds to the so-called
+LISREL ``all-y'' framework \citep{joreskog1996lisrel}. It also encompasses a variety of other models
+due to the fact the LISREL all-y model is 
+equivalent to other SEM frameworks in use by standard software such as the Bentler-Weeks and RAM  models 
+\citep{bentler1980linear,mcardle1984some}.
 
 The parameters of the model are collected in a parameter
 vector 
@@ -329,6 +328,12 @@ $$
 \Psi] 
 \definedas [\l, \beta, \phi, \psi].
 $$
+In general model \ref{eq:sigma_y} is not identified without additional restrictions. 
+Typically these restrictions set certain elements to a constant or impose equality constraints.
+Assume, therefore, that $\theta$ is a continuously differentiable function $\theta = \theta(\delta)$, where
+$\delta$ is a $t$-dimensional vector of free parameters of the model, which may then be estimated by minimization of
+a discrepancy function \citep{shapiro1985asymptotic}. We also define $A \definedas \partial \theta(\delta) / \partial\delta$.
+
 Interest focuses not only on the parameter vector $\theta$, 
 but also on the so-called ``standardized'' parameter vector, denoted
 $\thetastan \definedas [\vec\Lambdastan, \vec\Bstan_0, \vech\Phistan, \vech\Psistan] 
@@ -348,15 +353,15 @@ $D_\n \definedas \sqrt{I \hadaprod \Sigma_\n}$.
 Given these definitions, the explained variances in $\n$ and $y$, respectively $R^2_\n$ and $R^2_y$, 
 which may also be of interest,  equal the diagonal elements of the matrices $I - \tilde\Phi$ and $I - \tilde\Psi$. 
 
-By standard application of the Delta method \citep[e.g.][]{oehlert1992note}, the asymptotic variance of $\thetastan$ can be shown to equal
+By application of the delta method, the asymptotic variance of $\thetastan$ can be shown to equal
 \begin{equation}\label{eq:deltamethod}
 \var(\thetastan) = 
-	\left(\frac{d \thetastan}{d \theta}\right) 
-		\var(\theta) 
-	\left(\frac{d \thetastan}{d \theta}\right)'.
+	\left(\frac{\partial \thetastan}{\partial \theta}\right) A
+		\var(\delta) 
+	A' \left(\frac{\partial \thetastan}{\partial \theta}\right)'.
 \end{equation}
-Here $\var(\theta)$ is the appropriate asymptotic variance matrix of the free model parameters $\theta$ \cite[e.g.][143-4]{satorra1989alternative}.
-The choice of the appropriate $\var(\theta)$ matrix allows for incorporation of 
+Here $\var(\delta)$ is the appropriate asymptotic variance matrix of the free model parameters $\delta$ \cite[e.g.][143-4]{satorra1989alternative}.
+The choice of the appropriate $\var(\delta)$ matrix allows for incorporation of 
 non-normal and complex sample data with possibly missing observations \citep{muthen1995complex}.
 
 The variances of $\tilde\psi$ and $\tilde\phi$ from equation \ref{eq:deltamethod} also provide the 
@@ -364,7 +369,7 @@ variances of $R^2_y$ and $R^2_\n$.
 Therefore we will not derive the variance of the explained
 variances separately, with the understanding that the derivations for $\tilde\psi$ and $\tilde\phi$ already provide these\footnote{
 Let $R^2_y = Q \vech(I - \tilde\Psi)$, where $Q$ is a selection matrix 
-selecting diagonal elements. Then $\var(R^2_y) = Q (d\tilde\psi/d\theta) \var(\theta) (d\tilde\psi/d\theta)' Q'$. The same
+selecting diagonal elements. Then $\var(R^2_y) = Q (\partial\tilde\psi/\partial\theta) \var(\theta) (\partial\tilde\psi/\partial\theta)' Q'$. The same
 argument applies to $\var(R^2_\n)$.}.
 
 In order to construct confidence intervals, it may be advantageous to apply the 
@@ -381,7 +386,8 @@ where $T$ is the diagonal matrix with elements $T_{(i,i)} = (1 - \thetastan_i^2)
 \subsection{Derivatives of the standardized parameters}
 
 
-The derivatives $d \thetastan / d \theta$ in equation \ref{eq:deltamethod} are not available in the literature and are derived here.
+The derivatives $\partial \thetastan / \partial \theta$ in equation \ref{eq:deltamethod} are not available in the literature and are derived here%\footnote{Strictly speaking, in order to obtain the asymptotic variance, only $\partial\tilde\theta/\partial\delta$ is required. However, since the full matrix  may be useful for other applications and the required derivatives are easily obtained by multiplication with $A$, we provide the full derivative matrix here.}
+.
 
 From definition \ref{eq:lambda_s}, 
 \begin{multline}\label{eq:dveclam}
@@ -509,7 +515,7 @@ we conclude that the derivative matrices  of the standardized parameters
 $\vec \Lambdastan$ and $\vec \Bstan$  with respect to the  
 parameters of the model $\theta$ will be the partitioned matrices
 \begin{multline}\label{eq:dlambda}
-\frac{d \tilde\l}{d \theta} = [
+\frac{\partial \tilde\l}{\partial \theta} = [
         (D_\n \Lambda' \kronprod I_p) G^{(\sigma^{-1}_y)} \Delta_{y\l} + 
             (D_\n \kronprod D_y^{-1}), \\
         (D_\n \Lambda' \kronprod I_p) G^{(\sigma^{-1}_y)} \Delta_{y\b} + 
@@ -520,7 +526,7 @@ parameters of the model $\theta$ will be the partitioned matrices
  ] 
 \end{multline}
 \begin{multline}\label{eq:dbeta}
-\frac{d \tilde\b_0}{d \theta} = [
+\frac{\partial \tilde\b_0}{\partial \theta} = [
         \0,
          \{(D_\n B_0' \kronprod I_q) G^{(\sigma^{-1}_\n)}  + 
             (I_q \kronprod D_\n^{-1}B_0) G^{(\sigma_\n)} \} \Delta_{\n\b} +
@@ -536,7 +542,7 @@ parameters of the model $\theta$ will be the partitioned matrices
 By a similar derivation (not shown here), we also obtain the derivatives of $\vech \Phistan$, and $\vech \Psistan$
 with respect to the parameters.
 \begin{multline}\label{eq:dphi}
-\frac{d \tilde{\phi}}{d \theta} = [
+\frac{\partial \tilde{\phi}}{\partial \theta} = [
 \0,
       \{ (D^{-1}_\n \Phi \kronprod I_q)  + (I_q \kronprod D_\n^{-1}\Phi)  \} G^{(\sigma^{-1}_\n)} \Delta_{\n\b}        
      ,\\
@@ -548,7 +554,7 @@ with respect to the parameters.
 \end{multline}
 \newcommand{\F}{\{(D^{-1}_y \Psi \kronprod I_p)  + (I_p \kronprod D_y^{-1}\Psi)  \}  G^{(\sigma^{-1}_y)}}
 \begin{multline}\label{eq:dpsi}
-\frac{d \tilde{\psi}}{d \theta} = [
+\frac{\partial \tilde{\psi}}{\partial \theta} = [
 \F   \Delta_{y\l}  ,\\
 \F   \Delta_{y\b}         ,\\
 \F   \Delta_{y\phi}   P       ,\\
@@ -558,11 +564,11 @@ with respect to the parameters.
 
 By stacking the derivatives in equations \ref{eq:dlambda}--\ref{eq:dpsi} rowwise, we obtain the matrix $d \thetastan / d \theta$:
 \begin{equation}\label{eq:dthetatilde}
-\frac{d \thetastan}{d \theta} = [
-\left( \frac{d \tilde\l}{d \theta} \right)',
-\left( \frac{d \tilde\b_0}{d \theta} \right)',
-\left( \frac{d \tilde{\phi}}{d \theta} \right)',
-\left( \frac{d \tilde{\psi}}{d \theta}\right)'
+\frac{\partial \thetastan}{\partial \theta} = [
+\left( \frac{\partial \tilde\l}{\partial \theta} \right)',
+\left( \frac{\partial \tilde\b_0}{\partial \theta} \right)',
+\left( \frac{\partial \tilde{\phi}}{\partial \theta} \right)',
+\left( \frac{\partial \tilde{\psi}}{\partial \theta}\right)'
 ]'.
 \end{equation}
 This equation can be applied to equation \ref{eq:deltamethod} to 
@@ -780,7 +786,8 @@ standardized loadings in the lowest and highest educational groups.
 	\includegraphics[width=.48\textwidth]{normplots/normality-yr1-gp6}
    \label{fig:normal-2}
  }	\caption{Distribution and normal Q-Q plots of the reliability coefficients $\tilde\l$ and their Fisher $z$-transforms
- 	 in 2007 in the lowest and highest educational group.}\label{fig:normal}
+ 	 in 2007 in the lowest and highest educational group. The $p$-value for a Shapiro-Wilks test of normality is 
+	 also shown.}\label{fig:normal}
 \end{figure}
 It can be seen in figure \ref{fig:normal} that the distribution of the raw standardized loading in both cases is somewhat skewed,
 and indeed a Shapiro-Wilks test of normality is rejected in both cases. The effect appears to be more pronounced for the 
